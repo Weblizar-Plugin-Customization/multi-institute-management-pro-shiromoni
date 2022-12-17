@@ -20,10 +20,10 @@ class WL_MIM_Invoice {
 		$institute_id              = WL_MIM_Helper::get_current_institute_id();
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
-		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
+		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
 
 		if ($start_date && $end_date) {
-			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
+			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
 		}
 		if ( count( $data ) !== 0 ) {
 			foreach ( $data as $row ) {
@@ -38,7 +38,7 @@ class WL_MIM_Invoice {
 				$added_by       = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
 
 				$pending_amount = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_installments WHERE institute_id = $institute_id AND invoice_id = $row->id ORDER BY id DESC" );
-				
+
 				if ($pending_amount) {
 					$due_amount=0;
 					foreach ($pending_amount as $pending) {
@@ -49,6 +49,7 @@ class WL_MIM_Invoice {
 						$total_due_amount = $amount;
 				}
 
+				$phone = $row->phone;
 				$student_name = $row->first_name;
 				if ( $row->last_name ) {
 					$student_name .= " $row->last_name";
@@ -59,13 +60,14 @@ class WL_MIM_Invoice {
 					$student_id = $row->id;
 				}
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
-				
+
 				$results["data"][] = array(
 					esc_html( $invoice_number ) . '<a class="ml-2" href="#print-invoice-fee-invoice" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-print"></i></a>',
 					esc_html( $invoice_title ),
 					esc_html( $amount ),
 					esc_html( $enrollment_id ),
 					esc_html( $student_name ),
+					esc_html( $phone ),
 					esc_html( $total_due_amount ),
 					wp_kses( $status, array( 'strong' => array( 'class' => 'text-danger', 'text-success' ) ) ),
 					esc_html( date_format( date_create( $row->due_date ), "d-m-Y" ) ),
@@ -180,7 +182,7 @@ class WL_MIM_Invoice {
 			<label for="wlim-invoice-due-date-amount" class="col-form-label"><?php esc_html_e( 'Installment Due Date Amount', WL_MIM_DOMAIN ); ?>:</label>
 			<input name="invoice_due_date_amount" type="text" class="form-control" id="wlim-invoice-due-date-amount" placeholder="<?php esc_attr_e( "Installment Payable", WL_MIM_DOMAIN ); ?>">
 		</div>
-      
+
         <div class="form-group">
             <label for="wlim-invoice-created_at" class="col-form-label">* <strong><?php esc_html_e( 'Installment Date', WL_MIM_DOMAIN ); ?>:</strong></label>
             <input name="created_at" type="text" class="form-control wlim-created_at" id="wlim-invoice-created_at" placeholder="<?php esc_html_e( "Date", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( date('d-m-Y') ); ?>">
@@ -218,7 +220,7 @@ class WL_MIM_Invoice {
 		if ( empty( $invoice_title ) ) {
 			$errors['invoice_title'] = esc_html__( 'Please provide a unique invoice title.', WL_MIM_DOMAIN );
 		}
-		
+
 		if ( empty( $due_date ) ) {
 			$errors['invoice_due_date'] = esc_html__( 'Please provide a Due Date.', WL_MIM_DOMAIN );
 		}

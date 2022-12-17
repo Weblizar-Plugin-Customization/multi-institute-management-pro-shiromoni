@@ -21,7 +21,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
     <!-- row 1 -->
     <!-- <div class="row">
         <div class="col">
-           
+
             <h1 class="text-center wlim-institute-dashboard-title">
                 <span class="border-bottom"><i class="fa fa-tachometer"></i> <?php echo esc_html( $institute_name ); ?></span>
             </h1>
@@ -37,7 +37,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
             <div class="mt-3 alert alert-info text-center" role="alert">
 				<?php esc_html_e( 'Here, you can find invoices or add a new invoice.', WL_MIM_DOMAIN ); ?>
             </div>
-            
+
         </div>
     </div> -->
     <!-- end - row 1 -->
@@ -89,9 +89,9 @@ if ( empty( $general_institute['institute_name'] ) ) {
 								<div class="col-md-3 col-sm-4 col-xs-2 mb-4">
 									<ul class="list-group">
 										<li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
-											<a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
+											<span href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
 												<?php esc_html_e( 'Total', WL_MIM_DOMAIN ); ?>
-											</a>
+											</span>
 										</li>
 										<li class="list-group-item h6">
 											<span class="text-secondary"><?php esc_html_e( 'Total Pending', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span><?php echo esc_html( $total_pending ); ?></span>
@@ -104,8 +104,8 @@ if ( empty( $general_institute['institute_name'] ) ) {
 										</li>
 									</ul>
 								</div>
-								
-								<?php 
+
+								<?php
 								$yesterday_pending = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'pending' AND due_date = '$yesterday'" );
                                 $yesterday_paid    = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'paid' AND due_date = '$yesterday'" );
                                 $yesterday_installments = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND due_date = '$yesterday'" );
@@ -114,9 +114,9 @@ if ( empty( $general_institute['institute_name'] ) ) {
 								<div class="col-md-3 col-sm-4 col-xs-2 mb-4">
 									<ul class="list-group">
 										<li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
-											<a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
+											<span href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
 												<?php esc_html_e( 'Yesterday', WL_MIM_DOMAIN ); ?>
-											</a>
+											</span>
 										</li>
 										<li class="list-group-item h6">
 											<span class="text-secondary"><?php esc_html_e( 'Yesterday Pending', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span><?php echo esc_html( $yesterday_pending ); ?></span>
@@ -130,7 +130,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
 									</ul>
 								</div>
 
-								<?php 
+								<?php
 								$today_pending = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'pending' AND due_date = '$today'" );
                                 $today_paid    = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'paid' AND due_date = '$today'" );
                                 $today_installments = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND due_date = '$today'" );
@@ -139,9 +139,9 @@ if ( empty( $general_institute['institute_name'] ) ) {
 								<div class="col-md-3 col-sm-4 col-xs-2 mb-4">
 									<ul class="list-group">
 										<li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
-											<a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
+											<span href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
 												<?php esc_html_e( 'Today', WL_MIM_DOMAIN ); ?>
-											</a>
+											</span>
 										</li>
 										<li class="list-group-item h6">
 											<span class="text-secondary"><?php esc_html_e( 'Today Pending', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span><?php echo esc_html( $today_pending ); ?></span>
@@ -155,7 +155,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
 									</ul>
 								</div>
 
-								<?php 
+								<?php
 								$tommorow_pending = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'pending' AND due_date = '$tommorow'" );
                                 $tommorow_paid    = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'paid' AND due_date = '$tommorow'" );
                                 $tommorow_installments = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND due_date = '$tommorow'" );
@@ -164,9 +164,9 @@ if ( empty( $general_institute['institute_name'] ) ) {
 								<div class="col-md-3 col-sm-4 col-xs-2 mb-4">
 									<ul class="list-group">
 										<li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
-											<a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
+											<span href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
 												<?php esc_html_e( 'Tomorrow', WL_MIM_DOMAIN ); ?>
-											</a>
+											</span>
 										</li>
 										<li class="list-group-item h6">
 											<span class="text-secondary"><?php esc_html_e( 'Tomorrow Pending', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span><?php echo esc_html( $tommorow_pending ); ?></span>
@@ -206,7 +206,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
 						</div>
 						<div class="row mb-4 text-left">
 							<div class="col-sm-12 col-md-3">
-							
+
 							</div>
 						</div>
 				</form>
@@ -222,6 +222,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
 						        	<th scope="col"><?php esc_html_e( 'Amount Payable', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Student Name', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Phone NO.', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Due Amount', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Status', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Due Date', WL_MIM_DOMAIN ); ?></th>
@@ -261,7 +262,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
 	                            <option value="">-------- <?php esc_html_e( "Select a Student", WL_MIM_DOMAIN ); ?> --------</option>
 	                        <?php
 	                        if ( count( $wlim_active_students ) > 0 ) {
-	                            foreach ( $wlim_active_students as $active_student ) { 
+	                            foreach ( $wlim_active_students as $active_student ) {
 									if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
 										$student_id = $active_student->enrollment_id;
 									} else {
