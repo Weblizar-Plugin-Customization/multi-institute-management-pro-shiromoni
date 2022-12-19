@@ -145,10 +145,20 @@ class WL_MIM_Menu {
 				));
 				add_action('admin_print_styles-' . $invoices, array('WL_MIM_Menu', 'fees_assets'));
 				
-				$reminders = add_submenu_page('multi-institute-management', esc_html__('Reminders', WL_MIM_DOMAIN), esc_html__('Reminders', WL_MIM_DOMAIN), 'wl_min_manage_reminders', 'multi-institute-management-reminders', array(
+
+				if ( current_user_can('administrator') ) {
+					$reminders = add_submenu_page('multi-institute-management', esc_html__('Reminders', WL_MIM_DOMAIN), esc_html__('Reminders', WL_MIM_DOMAIN), 'wl_min_manage_fees', 'multi-institute-management-reminders', array(
 					'WL_MIM_Menu',
 					'reminders'
 				));
+				} else {
+					$reminders = add_submenu_page('multi-institute-management', esc_html__('Reminders', WL_MIM_DOMAIN), esc_html__('Reminders', WL_MIM_DOMAIN), 'wl_min_manage_reminders', 'multi-institute-management-reminders', array(
+					'WL_MIM_Menu',
+					'reminders'
+				));
+				}
+
+				
 				add_action('admin_print_styles-' . $reminders, array('WL_MIM_Menu', 'fees_assets'));
 
 				/* Fees submenu */

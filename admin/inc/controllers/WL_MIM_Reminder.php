@@ -7,10 +7,6 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.
 class WL_MIM_Reminder {
 
 	public static function get_reminder_data() {
-		// self::check_permission();
-		// if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
-		// 	die();
-		// }
 		global $wpdb;
 		$institute_id              = WL_MIM_Helper::get_current_institute_id();
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
@@ -39,9 +35,8 @@ class WL_MIM_Reminder {
 				$status     = $row->status_code ;
 				$created_at = date_format( date_create( $row->created_at ), "d-m-Y" );
 				$phone      = $row->phone;
-				$user_info = get_userdata($row->added_by);
-				$added_by = $user_info->user_nicename;
-				// var_dump($user_info); die;
+				$user_info  = get_userdata($row->added_by);
+				$added_by   = $user_info->user_nicename;
 
 				$student_name = $row->first_name;
 				if ( $row->last_name ) {
@@ -53,7 +48,6 @@ class WL_MIM_Reminder {
 				} else {
 					$delete = '';
 				}
-				
 
 				$results["data"][] = array(
 					esc_html( '' ),
@@ -66,7 +60,6 @@ class WL_MIM_Reminder {
 					esc_html( ucfirst($added_by) ),
 					esc_html( $created_at ),
 					'<a class="mr-3" href="#update-reminder" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-edit"></i></a> '. $delete
-					
 				);
 			}
 		} else {
@@ -77,9 +70,6 @@ class WL_MIM_Reminder {
 
 	public static function add_reminder() {
 		self::check_permission();
-		// if ( ! wp_verify_nonce( $_POST['add-reminder'], 'add-reminder' ) ) {
-		// 	die();
-		// }
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
 
