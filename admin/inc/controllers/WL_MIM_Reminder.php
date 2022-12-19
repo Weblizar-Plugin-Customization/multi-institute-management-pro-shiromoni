@@ -48,6 +48,13 @@ class WL_MIM_Reminder {
 					$student_name .= " $row->last_name";
 				}
 
+				if (current_user_can('administrator')) {
+					$delete = '<a href="javascript:void(0)" delete-reminder-security="' . wp_create_nonce( "delete-reminder-$id" ) . '"delete-reminder-id="' . esc_html( $id ) . '" class="delete-reminder"> <i class="fa fa-trash text-danger"></i></a>';
+				} else {
+					$delete = '';
+				}
+				
+
 				$results["data"][] = array(
 					esc_html( '' ),
 					esc_html( $title ),
@@ -58,7 +65,8 @@ class WL_MIM_Reminder {
 					esc_html( $phone ),
 					esc_html( ucfirst($added_by) ),
 					esc_html( $created_at ),
-					$row ? '<a class="mr-3" href="#update-reminder" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-reminder-security="' . wp_create_nonce( "delete-reminder-$id" ) . '"delete-reminder-id="' . esc_html( $id ) . '" class="delete-reminder"> <i class="fa fa-trash text-danger"></i></a>' : '' . '<a href="javascript:void(0)" delete-reminder-security="' . wp_create_nonce( "delete-reminder-$id" ) . '"delete-reminder-id="' . esc_html( $id ) . '" class="delete-reminder"> <i class="fa fa-trash text-danger"></i></a>'
+					'<a class="mr-3" href="#update-reminder" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-edit"></i></a> '. $delete
+					
 				);
 			}
 		} else {
