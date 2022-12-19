@@ -7,7 +7,7 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.
 class WL_MIM_Reminder {
 
 	public static function get_reminder_data() {
-		self::check_permission();
+		// self::check_permission();
 		// if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
 		// 	die();
 		// }
@@ -51,7 +51,7 @@ class WL_MIM_Reminder {
 				$results["data"][] = array(
 					esc_html( '' ),
 					esc_html( $title ),
-					esc_html( wp_trim_words($message, 5) ),
+					esc_html( ($message) ),
 					esc_html( $follow_up ),
 					esc_html( $status ),
 					esc_html( $student_name ),

@@ -1551,8 +1551,8 @@ class WL_MIM_Student
 		</div>
 		<div class="row">
 			<div class="col-sm-6 form-group">
-				<label for="wlim-student-qualification_update" class="col-form-label"><?php esc_html_e('Qualification', WL_MIM_DOMAIN); ?>:</label>
-				<input name="qualification" type="text" class="form-control" id="wlim-student-qualification_update" placeholder="<?php esc_html_e("Qualification", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->qualification); ?>">
+				<label for="wlim-student-qualification_update" class="col-form-label"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?>:</label>
+				<input name="qualification" type="text" class="form-control" id="wlim-student-qualification_update" placeholder="<?php esc_html_e("Course", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->qualification); ?>">
 			</div>
 			<div class="col-sm-6 form-group">
 				<label for="wlim-student-id_proof_update" class="col-form-label"><?php esc_html_e('ID Proof', WL_MIM_DOMAIN); ?>:</label><br>
@@ -2469,8 +2469,8 @@ class WL_MIM_Student
 		</div>
 		<div class="row">
 			<div class="col-sm-6 form-group">
-				<label for="wlim-student-qualification" class="col-form-label"><?php esc_html_e('Qualification', WL_MIM_DOMAIN); ?>:</label>
-				<input name="qualification" type="text" class="form-control" id="wlim-student-qualification" placeholder="<?php esc_html_e("Qualification", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->qualification); ?>">
+				<label for="wlim-student-qualification" class="col-form-label"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?>:</label>
+				<input name="qualification" type="text" class="form-control" id="wlim-student-qualification" placeholder="<?php esc_html_e("Course", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->qualification); ?>">
 			</div>
 			<div class="col-sm-6 form-group">
 				<input type="hidden" name="id_proof_in_db" value="<?php echo esc_attr($row->id_proof); ?>">
@@ -3100,8 +3100,8 @@ class WL_MIM_Student
 	</div>
 	<div class="row">
 		<div class="col-sm-6 form-group">
-			<label for="wlim-student-qualification" class="col-form-label"><?php esc_html_e('Qualification', WL_MIM_DOMAIN); ?>:</label>
-			<input name="qualification" type="text" class="form-control" id="wlim-student-qualification" placeholder="<?php esc_html_e("Qualification", WL_MIM_DOMAIN); ?>">
+			<label for="wlim-student-qualification" class="col-form-label"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?>:</label>
+			<input name="qualification" type="text" class="form-control" id="wlim-student-qualification" placeholder="<?php esc_html_e("Course", WL_MIM_DOMAIN); ?>">
 		</div>
 		<div class="col-sm-6 form-group">
 			<label for="wlim-student-id_proof" class="col-form-label"><?php esc_html_e('ID Proof', WL_MIM_DOMAIN); ?>:</label><br>

@@ -65,7 +65,6 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 			<div class="card-body">
 
 			<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" id="wlim-reminder-filter-form" enctype="multipart/form-data">
-			<input type="text" name="student_id" value="<?php echo $user; ?>" hidden>
                     <div class="row">
                         <div class="col-sm-12 col-md-3">
                             <div class="form-group">

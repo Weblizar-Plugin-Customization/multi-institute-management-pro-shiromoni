@@ -26,7 +26,8 @@ class WL_MIM_Helper {
 			'wl_min_manage_notifications'  => esc_html__('Manage Notifications', WL_MIM_DOMAIN),
 			'wl_min_manage_noticeboard'    => esc_html__('Manage Noticeboard', WL_MIM_DOMAIN),
 			'wl_min_manage_administrators' => esc_html__('Manage Administrators', WL_MIM_DOMAIN),
-			'wl_min_manage_settings'       => esc_html__('Manage Settings', WL_MIM_DOMAIN)
+			'wl_min_manage_settings'       => esc_html__('Manage Settings', WL_MIM_DOMAIN),
+			'wl_min_manage_reminders'       => esc_html__('Manage Reminders', WL_MIM_DOMAIN)
 		);
 	}
 

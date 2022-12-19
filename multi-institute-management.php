@@ -61,8 +61,3 @@ final class WL_MIM_InstituteManagementAdvanced {
 	}
 }
 WL_MIM_InstituteManagementAdvanced::get_instance();
-
-// Todo : status to response code
-// Fixme: invoice date range filter 
-// invoice relabel to installment done
-// invoice due amount if partially paid
