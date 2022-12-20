@@ -1,9 +1,9 @@
 <?php
 /*
- * Plugin Name: Multi Institute Management - Shiromoni
+ * Plugin Name: Multi Institute Management - Shiromoni 2
  * Plugin URI: https://weblizar.com
  * Description: Manage multiple institutes directly from your WordPress website. Assign admins to manage individual institute.
- * Version: 6.5
+ * Version: 6.6
  * Author: Weblizar
  * Author URI: https://weblizar.com
  * Text Domain: WL-MIM
