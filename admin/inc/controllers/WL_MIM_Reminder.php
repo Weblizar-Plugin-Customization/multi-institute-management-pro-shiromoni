@@ -259,7 +259,7 @@ class WL_MIM_Reminder {
 	/* Check permission to manage reminder */
 	private static function check_permission() {
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
-		if ( ! current_user_can( 'wl_min_manage_fees' ) || ! $institute_id ) {
+		if ( ! current_user_can( 'wl_min_manage_reminders' ) || ! $institute_id ) {
 			die();
 		}
 	}
