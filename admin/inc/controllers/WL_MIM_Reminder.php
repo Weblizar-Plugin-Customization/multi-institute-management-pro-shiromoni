@@ -17,12 +17,12 @@ class WL_MIM_Reminder {
 
 		if ($start_date && $end_date) {
 			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.follow_up BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY r.id DESC" );
-			// var_dump($data); die;
+			
 		} else {
 			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id ORDER BY r.id DESC" );
 		}
 
-		if ($student_id !== 'null') {
+		if ($student_id !== NULL) {
 			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone, r.student_id FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.student_id = $student_id ORDER BY r.id DESC" );
 		}
 
@@ -36,7 +36,7 @@ class WL_MIM_Reminder {
 				$created_at = date_format( date_create( $row->created_at ), "d-m-Y" );
 				$phone      = $row->phone;
 				$user_info  = get_userdata($row->added_by);
-				$added_by   = $user_info->user_nicename;
+				$added_by   = $user_info->display_name;
 
 				$student_name = $row->first_name;
 				if ( $row->last_name ) {
