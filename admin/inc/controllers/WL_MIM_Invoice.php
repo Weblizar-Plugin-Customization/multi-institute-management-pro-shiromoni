@@ -61,6 +61,12 @@ class WL_MIM_Invoice {
 				}
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
+				if (current_user_can( 'wl_min_edit_fee' )) {
+					$icon = '<i class="fa fa-trash text-danger"></i>';
+				} else {
+					$icon = '';
+				}
+
 				$results["data"][] = array(
 					esc_html( $invoice_number ) . '<a class="ml-2" href="#print-invoice-fee-invoice" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-print"></i></a>',
 					esc_html( $invoice_title ),
@@ -73,7 +79,7 @@ class WL_MIM_Invoice {
 					esc_html( date_format( date_create( $row->due_date ), "d-m-Y" ) ),
 					esc_html( $added_by ),
 					esc_html( $date ),
-					$row->status != 'paid' ? '<a class="mr-3" href="#update-invoice" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-invoice-security="' . wp_create_nonce( "delete-invoice-$id" ) . '"delete-invoice-id="' . esc_html( $id ) . '" class="delete-invoice"> <i class="fa fa-trash text-danger"></i></a>' : '' . '<a href="javascript:void(0)" delete-invoice-security="' . wp_create_nonce( "delete-invoice-$id" ) . '"delete-invoice-id="' . esc_html( $id ) . '" class="delete-invoice"> <i class="fa fa-trash text-danger"></i></a>'
+					$row->status != 'paid' ? '<a class="mr-3" href="#update-invoice" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-invoice-security="' . wp_create_nonce( "delete-invoice-$id" ) . '"delete-invoice-id="' . esc_html( $id ) . '" class="delete-invoice"> '.$icon.'</a>' : '' . '<a href="javascript:void(0)" delete-invoice-security="' . wp_create_nonce( "delete-invoice-$id" ) . '"delete-invoice-id="' . esc_html( $id ) . '" class="delete-invoice"> '.$icon.'</a>'
 				);
 			}
 		} else {

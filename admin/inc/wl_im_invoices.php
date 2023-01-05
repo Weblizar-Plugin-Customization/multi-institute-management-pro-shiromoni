@@ -301,7 +301,9 @@ if ( empty( $general_institute['institute_name'] ) ) {
 			<div class="modal-body pr-4 pl-4" id="fetch_invoice"></div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal"><?php esc_html_e( 'Cancel', WL_MIM_DOMAIN ); ?></button>
-				<button type="button" class="btn btn-primary update-invoice-submit"><?php esc_html_e( 'Update Installment', WL_MIM_DOMAIN ); ?></button>
+				<?php if (current_user_can( 'wl_min_edit_fee' ) ): ?>
+					<button type="button" class="btn btn-primary update-invoice-submit"><?php esc_html_e( 'Update Installment', WL_MIM_DOMAIN ); ?></button>
+				<?php endif ?>
 			</div>
 		</div>
 	</div>

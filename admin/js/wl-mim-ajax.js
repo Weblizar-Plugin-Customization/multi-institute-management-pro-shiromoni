@@ -109,7 +109,9 @@
                 var formData = {};
                 if (form) {
                     formData = jQuery(form).serializeObject();
+                    // formData = new formData(this.form)
                 }
+                console.log(formData);
                 jQuery(selector).prop('disabled', true);
                 jQuery.ajax({
                     type: 'POST',
@@ -1211,8 +1213,9 @@
         /* Actions for fee installment */
         initializeDatatable('#installment-table', 'wl-mim-get-installment-data');
         save('.add-installment-submit', 'wl-mim-add-installment', '#wlim-add-installment-form', '#add-installments', ['#installment-table']);
+        // saveWithFiles('#add-installment-submit', '#wlim-add-installment-form', '#add-installments', ['installment-table']);
 
-        // saveWithFiles('#add-installment-submit', '#wlim-add-installment-form', '#add-installments', ['#installment-table']);
+        saveWithFiles('#add-installment-submit', '#wlim-add-installment-form', '#add-installments', ['#installment-table']);
 
         jQuery(document).on('show.bs.modal', '#update-installment', function (e) {
             var id = jQuery(e.relatedTarget).data('id');

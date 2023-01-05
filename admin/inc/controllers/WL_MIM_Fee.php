@@ -42,6 +42,14 @@ class WL_MIM_Fee {
 					}
 				}
 
+				if (current_user_can( 'wl_min_edit_fee' )) {
+					$edit = '<a class="mr-3" href="#update-installment" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-installment-security="' . wp_create_nonce( "delete-installment-$id" ) . '"delete-installment-id="' . $id . '" class="delete-installment"> <i class="fa fa-trash text-danger"></i></a>';
+					$delete = '<a href="#print-student-fees-report" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a>';
+				} else {
+					$edit = '';
+					$delete= '';
+				}
+
 				$results["data"][] = array(
 					'<input type="checkbox" class="wl-mim-select-single wl-mim-bulk-students" name="bulk_data[]" value="' . esc_attr($row->id) . '">',
 					esc_html( $receipt ) . '<a class="ml-2" href="#print-installment-fee-receipt" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-print"></i></a>',
@@ -53,8 +61,8 @@ class WL_MIM_Fee {
 					esc_html( $payment_id ),
 					esc_html( $date ),
 					esc_html( $added_by ),
-					'<a class="mr-3" href="#update-installment" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-installment-security="' . wp_create_nonce( "delete-installment-$id" ) . '"delete-installment-id="' . $id . '" class="delete-installment"> <i class="fa fa-trash text-danger"></i></a>',
-					'<a href="#print-student-fees-report" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a>'
+					$edit,
+					$delete
 				);
 			}
 		} else {
@@ -79,6 +87,7 @@ class WL_MIM_Fee {
 
 		$note       = ( isset( $_POST['note'] )) ? sanitize_text_field($_POST['note']) : null;
 		$attachment = (isset($_FILES['attachment']) && is_array($_FILES['attachment'])) ? $_FILES['attachment'] : null;
+		var_dump($attachment); die;
 
 		$errors = array();
 
@@ -605,11 +614,6 @@ class WL_MIM_Fee {
 			<label for="wlim-invoice-amount_paid" class="col-form-label"><?php esc_html_e( 'Amount Paid', WL_MIM_DOMAIN ); ?>:</label>
 			<input name="invoice_amount_paid" type="text" class="form-control" id="wlim-invoice-amount_paid" placeholder="<?php esc_attr_e( "Amount Paid", WL_MIM_DOMAIN ); ?>">
 		</div>
-
-		<!-- <div class="form-group">
-			<label for="wlim-student-attachment" class="col-form-label"><?php esc_html_e('Choose Attachment', WL_MIM_DOMAIN); ?>:</label><br>
-			<input name="attachment" type="file" id="wlim-student-attachment">
-		</div> -->
 
 		<div class="form-group">
 			<label for="wlim-invoice-note" class="col-form-label"><?php esc_html_e( 'Note', WL_MIM_DOMAIN ); ?>:</label>
