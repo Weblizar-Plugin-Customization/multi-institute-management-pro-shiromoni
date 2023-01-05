@@ -87,7 +87,7 @@ class WL_MIM_Fee {
 
 		$note       = ( isset( $_POST['note'] )) ? sanitize_text_field($_POST['note']) : null;
 		$attachment = (isset($_FILES['attachment']) && is_array($_FILES['attachment'])) ? $_FILES['attachment'] : null;
-		var_dump($attachment); die;
+
 
 		$errors = array();
 
@@ -123,6 +123,15 @@ class WL_MIM_Fee {
 				$errors['attachment'] = esc_html__('Please provide photo in JPG, JPEG, Pdf or PNG format.', WL_MIM_DOMAIN);
 			}
 		}
+
+		if ( ! empty( $attachment ) ) {
+			$attachment = media_handle_upload( 'attachment', 0 );
+			if ( is_wp_error( $attachment ) ) {
+				throw new Exception( esc_html__( $attachment->get_error_message(), WL_MIM_DOMAIN ) );
+			}
+			$attachment = $attachment;
+		}
+			// var_dump($data); die;
 
 		if ( count( $errors ) < 1 ) {
 			try {

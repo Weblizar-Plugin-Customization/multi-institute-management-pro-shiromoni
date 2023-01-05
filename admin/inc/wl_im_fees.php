@@ -215,17 +215,17 @@ if (empty($general_institute['institute_name'])) {
                                 ?>
                             </select>
                             <div id="wlim_add_installment_fetch_fees"></div>
-                            <!-- <div class="form-group">
+                            <div class="form-group">
                                 <label for="wlim-student-attachment" class="col-form-label"><?php esc_html_e('Choose Attachment', WL_MIM_DOMAIN); ?>:</label><br>
                                 <input name="attachment" type="file" id="wlim-student-attachment">
-                            </div> -->
+                            </div>
                         </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php esc_html_e('Cancel', WL_MIM_DOMAIN); ?></button>
-                    <button type="button" class="btn btn-primary add-installment-submit" id="add-installment-submit"><?php esc_html_e('Collect Payment', WL_MIM_DOMAIN); ?></button>
+                    <button type="submit" class="btn btn-primary add-installment-submit" id="add-installment-submit"><?php esc_html_e('Collect Payment', WL_MIM_DOMAIN); ?></button>
                 </div>
             </form>
         </div>
