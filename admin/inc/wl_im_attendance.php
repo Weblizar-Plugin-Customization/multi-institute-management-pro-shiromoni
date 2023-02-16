@@ -65,7 +65,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group wlim-selectpicker">
                                 <label for="wlim-attendance-batch" class="col-form-label"><?php esc_html_e( "Batch", WL_MIM_DOMAIN ); ?>:</label>
-                                <select multiple name="batch[]" class="form-control selectpicker" id="wlim-attendance-batch">
+                                <select multiple name="batch[]" class="form-control selectpicker" id="wlim-attendance-batch" data-live-search="true">
 									<?php
 									if ( count( $get_active_batches ) > 0 ) {
 										foreach ( $get_active_batches as $active_batch ) {

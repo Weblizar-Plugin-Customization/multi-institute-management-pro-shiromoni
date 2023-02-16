@@ -136,7 +136,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 	                <div class="wlim-add-reminder-form-fields">
 						<div class="form-group">
 	                        <label for="wlim-reminder-student" class="col-form-label"><?php esc_html_e( "Student", WL_MIM_DOMAIN ); ?>:</label>
-	                        <select name="student_id" class="form-control selectpicker" id="wlim-reminder-student">
+	                        <select name="student_id" class="form-control selectpicker" id="wlim-reminder-student" data-live-search="true">
 	                            <option value="">-------- <?php esc_html_e( "Select a Student", WL_MIM_DOMAIN ); ?> --------</option>
 	                        <?php
 	                        if ( count( $wlim_active_students ) > 0 ) {

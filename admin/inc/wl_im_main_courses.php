@@ -96,7 +96,7 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_Helper.php' );
                         </div>
                         <div class="col form-group wlim_select_col">
                             <label for="wlim-main-course-duration_in" class="pt-2"><?php esc_html_e( 'Duration In', WL_MIM_DOMAIN ); ?>:</label>
-                            <select name="duration_in" class="form-control" id="wlim-main-course-duration_in">
+                            <select name="duration_in" class="form-control" id="wlim-main-course-duration_in" data-live-search="true">
 								<?php
 								foreach ( WL_MIM_Helper::get_duration_in() as $value ) { ?>
                                     <option value="<?php echo esc_attr( $value ); ?>"><?php esc_html_e( $value, WL_MIM_DOMAIN ); ?></option>
@@ -112,7 +112,7 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_Helper.php' );
                     <div class="form-group">
                         <label for="wlim-main-course-period"
                                class="pt-2"><?php esc_html_e( 'Fees Period', WL_MIM_DOMAIN ); ?>:</label>
-                        <select name="period" class="form-control" id="wlim-main-course-period">
+                        <select name="period" class="form-control" id="wlim-main-course-period" data-live-search="true">
                             <?php
                             foreach ( WL_MIM_Helper::get_period_in() as $key => $value ) { ?>
                                 <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>

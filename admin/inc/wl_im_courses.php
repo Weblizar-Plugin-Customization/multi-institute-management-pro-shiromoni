@@ -152,7 +152,7 @@ if ( current_user_can( WL_MIM_Helper::get_multi_institute_capability() ) ) {
                     <input type="hidden" name="add-course" value="<?php echo esc_attr( $nonce ); ?>">
                     <div class="form-group wlim-selectpicker">
                         <label for="wlim-course-category" class="col-form-label"><?php esc_html_e( "Category", WL_MIM_DOMAIN ); ?>:</label>
-                        <select name="category" class="form-control selectpicker" id="wlim-course-category">
+                        <select name="category" class="form-control selectpicker" id="wlim-course-category" data-live-search="true">
                             <option value="">-------- <?php esc_html_e( "Select a Category", WL_MIM_DOMAIN ); ?> --------</option>
 							<?php
 							if ( count( $wlim_active_categories ) > 0 ) {
@@ -184,7 +184,7 @@ if ( current_user_can( WL_MIM_Helper::get_multi_institute_capability() ) ) {
                         </div>
                         <div class="col form-group wlim_select_col">
                             <label for="wlim-course-duration_in" class="pt-2"><?php esc_html_e( 'Duration In', WL_MIM_DOMAIN ); ?>:</label>
-                            <select name="duration_in" class="form-control" id="wlim-course-duration_in">
+                            <select name="duration_in" class="form-control" id="wlim-course-duration_in" data-live-search="true">
 								<?php
 								foreach ( WL_MIM_Helper::get_duration_in() as $value ) { ?>
                                     <option value="<?php echo esc_attr( $value ); ?>"><?php esc_html_e( $value, WL_MIM_DOMAIN ); ?></option>
@@ -200,7 +200,7 @@ if ( current_user_can( WL_MIM_Helper::get_multi_institute_capability() ) ) {
                     <div class="form-group">
                         <label for="wlim-course-period"
                                class="pt-2"><?php esc_html_e( 'Fees Period', WL_MIM_DOMAIN ); ?>:</label>
-                        <select name="period" class="form-control" id="wlim-course-period">
+                        <select name="period" class="form-control" id="wlim-course-period" data-live-search="true">
                             <?php
                             foreach ( WL_MIM_Helper::get_period_in() as $key => $value ) { ?>
                                 <option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $value ); ?></option>

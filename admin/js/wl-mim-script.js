@@ -220,6 +220,8 @@
         appendModalToBody('#add-installment');
         appendModalToBody('#update-installment');
         appendModalToBody('#add-invoice');
+        appendModalToBody('#add-reminder');
+        appendModalToBody('#add-installments');
         appendModalToBody('#update-invoice');
         appendModalToBody('#print-installment-fee-receipt');
         appendModalToBody('#add-notice');

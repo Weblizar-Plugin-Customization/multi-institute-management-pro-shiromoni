@@ -111,7 +111,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                     <div class="form-group wlim-selectpicker">
                         <label for="wlim-batch-course" class="col-form-label">* <?php esc_html_e( "Course", WL_MIM_DOMAIN ); ?>
                             :</label>
-                        <select name="course" class="form-control selectpicker" id="wlim-batch-course">
+                        <select name="course" class="form-control selectpicker" id="wlim-batch-course" data-live-search="true">
                             <option value="">-------- <?php esc_html_e( "Select a Course", WL_MIM_DOMAIN ); ?> --------</option>
 							<?php
 							if ( count( $wlim_active_courses ) > 0 ) {

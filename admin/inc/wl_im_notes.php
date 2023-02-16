@@ -111,7 +111,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                     </div>
                     <div class="form-group wlim-selectpicker">
                         <label for="wlim-note-batch" class="col-form-label">* <?php esc_html_e( "Batch", WL_MIM_DOMAIN ); ?>:</label>
-                        <select name="batch" class="form-control selectpicker" id="wlim-note-batch">
+                        <select name="batch" class="form-control selectpicker" id="wlim-note-batch" data-live-search="true">
                             <option value=""><?php esc_html_e( "-------- Select a Batch --------", WL_MIM_DOMAIN ); ?></option>
 							<?php
 							if ( count( $get_active_batches ) > 0 ) {

@@ -31,7 +31,7 @@ global $wpdb;
 				<?php $nonce = wp_create_nonce( 'set-institute' ); ?>
                 <input type="hidden" name="set-institute" value="<?php echo esc_attr( $nonce ); ?>">
                 <input type="hidden" name="action" value="wl-mim-set-institute">
-                <select name="institute" class="selectpicker form-control" id="wlim-institute-current">
+                <select name="institute" class="selectpicker form-control" id="wlim-institute-current" data-live-search="true">
                     <option value="">-------- <?php esc_html_e( "Select Institute", WL_MIM_DOMAIN ); ?> --------</option>
 					<?php
 					if ( count( $wlim_institutes ) > 0 ) {

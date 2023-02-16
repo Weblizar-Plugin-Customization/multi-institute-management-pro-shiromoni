@@ -63,7 +63,7 @@ $wlim_institute_exams = $wpdb->get_results( "SELECT id, exam_title, exam_code FR
 		                        <label for="wlim-admit-card-exam" class="col-form-label">
 									*<strong><?php esc_html_e( "Exam", WL_MIM_DOMAIN ); ?></strong>
 								</label>
-		                        <select name="exam" class="form-control" id="wlim-admit-card-exam">
+		                        <select name="exam" class="form-control" id="wlim-admit-card-exam" data-live-search="true">
 		                            <option value="">-------- <?php esc_html_e( "Select an Exam", WL_MIM_DOMAIN ); ?> --------</option>                           
 									<?php
 									if ( count( $wlim_institute_exams ) > 0 ) {

@@ -258,7 +258,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
 	                <div class="wlim-add-invoice-form-fields">
 						<div class="form-group">
 	                        <label for="wlim-invoice-student" class="col-form-label"><?php esc_html_e( "Student", WL_MIM_DOMAIN ); ?>:</label>
-	                        <select name="student" class="form-control selectpicker" id="wlim-invoice-student">
+	                        <select name="student" class="form-control selectpicker" id="wlim-invoice-student" data-live-search="true">
 	                            <option value="">-------- <?php esc_html_e( "Select a Student", WL_MIM_DOMAIN ); ?> --------</option>
 	                        <?php
 	                        if ( count( $wlim_active_students ) > 0 ) {

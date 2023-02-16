@@ -128,7 +128,7 @@ if (empty($general_institute['institute_name'])) {
                     </div>
                     <div class="form-group">
                         <label for="wlim-fee-type-period" class="pt-2"><?php esc_html_e('Period', WL_MIM_DOMAIN); ?>:</label>
-                        <select name="period" class="form-control" id="wlim-fee-type-period">
+                        <select name="period" class="form-control" id="wlim-fee-type-period" data-live-search="true">
                             <?php
                             foreach (WL_MIM_Helper::get_period_in() as $key => $value) {
                             ?>
@@ -194,7 +194,7 @@ if (empty($general_institute['institute_name'])) {
                     <div class="wlim-add-installment-form-fields">
                         <div class="form-group">
                             <label for="wlim-installment-student" class="col-form-label"><?php esc_html_e('Student', WL_MIM_DOMAIN); ?>:</label>
-                            <select name="student" class="form-control selectpicker" id="wlim-installment-student">
+                            <select name="student" class="form-control selectpicker" id="wlim-installment-student" data-live-search="true">
                                 <option value="">-------- <?php esc_html_e('Select a Student', WL_MIM_DOMAIN); ?>--------
                                 </option>
                                 <?php
