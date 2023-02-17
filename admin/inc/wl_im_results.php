@@ -108,7 +108,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                                             <div class="form-group wlim-selectpicker">
                                                 <label for="wlim-result-exam" class="col-form-label">* <?php esc_html_e( "Exam", WL_MIM_DOMAIN ); ?>
                                                     :</label>
-                                                <select name="exam" class="form-control selectpicker">
+                                                <select name="exam" class="form-control selectpicker" data-live-search="true">
                                                     <option value="">-------- <?php esc_html_e( "Select an Exam", WL_MIM_DOMAIN ); ?> --------</option>
 													<?php
 													if ( count( $wlim_exams ) > 0 ) {
@@ -137,7 +137,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                                             <div class="form-group wlim-selectpicker">
                                                 <label for="wlim-result-exam" class="col-form-label">* <?php esc_html_e( "Exam", WL_MIM_DOMAIN ); ?>
                                                     :</label>
-                                                <select name="exam" class="form-control selectpicker">
+                                                <select name="exam" class="form-control selectpicker" data-live-search="true">
                                                     <option value="">-------- <?php esc_html_e( "Select an Exam", WL_MIM_DOMAIN ); ?> --------</option>
 													<?php
 													if ( count( $wlim_exams ) > 0 ) {

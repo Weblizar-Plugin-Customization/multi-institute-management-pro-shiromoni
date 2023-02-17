@@ -59,7 +59,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <form id="wlim-view-report-form">
                             <div class="form-group">
                                 <label for="wlim-report-student" class="col-form-label"><?php esc_html_e( "View Report", WL_MIM_DOMAIN ); ?>:</label>
-                                <select name="student" class="form-control selectpicker" id="wlim-report-student">
+                                <select name="student" class="form-control selectpicker" id="wlim-report-student" data-live-search="true">
                                     <option value="">-------- <?php esc_html_e( "Select a Student", WL_MIM_DOMAIN ); ?>
                                         --------
                                     </option>
@@ -109,7 +109,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <form id="wlim-view-overall-report-form">
                             <div class="form-group">
                                 <label for="wlim-overall-report" class="col-form-label"><?php esc_html_e( "View Report", WL_MIM_DOMAIN ); ?>:</label>
-                                <select name="report_by" class="form-control selectpicker" id="wlim-overall-report">
+                                <select name="report_by" class="form-control selectpicker" id="wlim-overall-report" data-live-search="true">
                                     <option value="">-------- <?php esc_html_e( "Select Report Type", WL_MIM_DOMAIN ); ?> --------</option>
 									<?php
 									foreach ( WL_MIM_Helper::get_report_by_list() as $key => $value ) { ?>
@@ -131,7 +131,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                                 <div class="form-group wlim-predefined-period">
                                     <label for="wlim-predefined-period" class="col-form-label"><?php esc_html_e( "Select Period", WL_MIM_DOMAIN ); ?>
                                         :</label>
-                                    <select name="predefined_period" class="form-control selectpicker" id="wlim-predefined-period">
+                                    <select name="predefined_period" class="form-control selectpicker" id="wlim-predefined-period" data-live-search="true">
                                         <option value="">-------- <?php esc_html_e( "Select Period", WL_MIM_DOMAIN ); ?> --------</option>
 										<?php
 										foreach ( WL_MIM_Helper::get_report_period() as $key => $value ) { ?>

@@ -228,7 +228,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <div class="row">
                             <div class="form-group col-sm-12">
                                 <label for="wlim-setting-payment_currency" class="col-form-label"><?php esc_html_e( "Currency", WL_MIM_DOMAIN ); ?>:</label>
-                                <select name="payment_currency" class="form-control" id="wlim-setting-payment_currency">
+                                <select name="payment_currency" class="form-control" id="wlim-setting-payment_currency" data-live-search="true">
                                     <option value=""><?php esc_html_e( "None", WL_MIM_DOMAIN ); ?></option>
 									<?php
 									foreach ( WL_MIM_PaymentHelper::get_all_currencies() as $code => $value ) { ?>

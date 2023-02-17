@@ -307,7 +307,7 @@ WHERE sr.ID = ' . absint( $id )
 
 										<div class="form-group pt-3">
 											<label for="wlim-invoice-id" class="col-form-label"><?php esc_html_e( "Select Installment", WL_MIM_DOMAIN ); ?>:</label>
-											<select name="invoice_id" class="form-control selectpicker" id="wlim-invoice-id" data-student_id="<?php echo esc_attr( $student->id ); ?>">
+											<select name="invoice_id" class="form-control selectpicker" id="wlim-invoice-id" data-student_id="<?php echo esc_attr( $student->id ); ?>" data-live-search="true">
 												<option value="">-------- <?php esc_html_e( "Select Installment", WL_MIM_DOMAIN ); ?> --------</option>
 											<?php
 												foreach ( $invoices as $invoice ) {

@@ -62,7 +62,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <form id="wlim-notification-configure-form">
                             <div class="form-group">
                                 <label for="wlim-notification_by" class="text-primary"><?php esc_html_e( 'Notification By', WL_MIM_DOMAIN ); ?>:</label>
-                                <select name="notification_by" class="form-control" id="wlim-notification_by">
+                                <select name="notification_by" class="form-control" id="wlim-notification_by" data-live-search="true">
                                     <option value="">---- <?php esc_html_e( 'Select Notification By', WL_MIM_DOMAIN ); ?> ----</option>
 									<?php
 									foreach ( $notification_by_list as $key => $notification_by ) { ?>

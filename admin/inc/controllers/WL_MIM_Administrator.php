@@ -919,7 +919,7 @@ class WL_MIM_Administrator {
             <hr>
             <div class="form-group">
                 <label for="wlim-administrator-institute_update" class="col-form-label"><?php esc_html_e( "Manage Single Institute", WL_MIM_DOMAIN ); ?>:</label>
-                <select name="institute" class="form-control selectpicker" id="wlim-administrator-institute_update">
+                <select name="institute" class="form-control selectpicker" id="wlim-administrator-institute_update" data-live-search="true">
                     <option value="">-------- <?php esc_html_e( "Select Institute", WL_MIM_DOMAIN ); ?>--------</option>
 					<?php
 					if ( count( $wlim_active_institutes ) > 0 ) {

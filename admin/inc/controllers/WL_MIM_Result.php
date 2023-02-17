@@ -1107,7 +1107,7 @@ class WL_MIM_Result {
 							if ( count( $students ) ) { ?>
                                 <div class="form-group wlim-selectpicker">
                                     <label for="wlim-students" class="col-form-label"><?php esc_html_e( "Student", WL_MIM_DOMAIN ); ?>:</label>
-                                    <select name="student" class="form-control selectpicker" id="wlim-students">
+                                    <select name="student" class="form-control selectpicker" id="wlim-students" data-live-search="true">
                                         <option value="">-------- <?php esc_html_e( "Select a Student", WL_MIM_DOMAIN ); ?> --------</option>
 										<?php
 										foreach ( $students as $row ) {
@@ -1315,7 +1315,7 @@ class WL_MIM_Result {
 							if ( count( $students ) ) { ?>
                                 <div class="form-group wlim-selectpicker">
                                     <label for="wlim-students" class="col-form-label"><?php esc_html_e( "Student", WL_MIM_DOMAIN ); ?>:</label>
-                                    <select name="student" class="form-control selectpicker" id="wlim-students">
+                                    <select name="student" class="form-control selectpicker" id="wlim-students" data-live-search="true">
                                         <option value="">-------- <?php esc_html_e( "Select a Student", WL_MIM_DOMAIN ); ?> --------</option>
 										<?php
 										foreach ( $students as $row ) {

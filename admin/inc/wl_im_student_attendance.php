@@ -23,7 +23,7 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_Helper.php' );
                         <div class="form-group wlim-predefined-period">
                             <label for="wlim-predefined-period" class="col-form-label"><?php esc_html_e( "Select Period", WL_MIM_DOMAIN ); ?>
                                 :</label>
-                            <select name="predefined_period" class="form-control selectpicker" id="wlim-predefined-period">
+                            <select name="predefined_period" class="form-control selectpicker" id="wlim-predefined-period" data-live-search="true">
                                 <option value="">-------- <?php esc_html_e( "Select Period", WL_MIM_DOMAIN ); ?> --------</option>
                                 <?php
                                 foreach ( WL_MIM_Helper::get_report_period() as $key => $value ) { ?>

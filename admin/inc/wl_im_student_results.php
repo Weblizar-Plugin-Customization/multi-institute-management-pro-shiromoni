@@ -17,7 +17,7 @@ $wlim_exams = WL_MIM_Helper::get_published_exams();
                         <label for="wlim-result-exam" class="col-form-label">*
                             <strong><?php esc_html_e( "Exam", WL_MIM_DOMAIN ); ?>:</strong>
                         </label>
-                        <select name="exam" class="form-control" id="wlim-result-exam">
+                        <select name="exam" class="form-control" id="wlim-result-exam" data-live-search="true">
                             <option value="">-------- <?php esc_html_e( "Select an Exam", WL_MIM_DOMAIN ); ?> --------</option>
 							<?php
 							if ( count( $wlim_exams ) > 0 ) {

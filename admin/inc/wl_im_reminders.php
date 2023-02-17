@@ -169,7 +169,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 						<div class="from-group">
 							<label for="wlim-status" class="col-form-label"><?php esc_html_e( "Response Code", WL_MIM_DOMAIN ); ?>:</label>
 							<!-- <input name="status" type="text" class="form-control" id="wlim-status" placeholder="<?php _e( "Reminder status", WL_MIM_DOMAIN ); ?>"> -->
-							<select name="status" id="status" class="form-control">
+							<select name="status" id="status" class="form-control" data-live-search="true">
 								<?php foreach ($status_codes as $code): ?>
 								<option value="<?= $code->field_name; ?>"><?php echo esc_html($code->field_name); ?></option>
 								<?php endforeach ?> 
