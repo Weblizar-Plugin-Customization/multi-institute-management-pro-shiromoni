@@ -104,10 +104,11 @@ class WL_MIM_Enquiry {
 		$photo         = ( isset( $_FILES['photo'] ) && is_array( $_FILES['photo'] ) ) ? $_FILES['photo'] : null;
 		$signature     = ( isset( $_FILES['signature'] ) && is_array( $_FILES['signature'] ) ) ? $_FILES['signature'] : null;
 		$message       = isset( $_POST['message'] ) ? sanitize_textarea_field( $_POST['message'] ) : '';
-		$is_active     = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 0;
+		$is_active     = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 1;
 		$custom_fields = ( isset( $_POST['custom_fields'] ) && is_array( $_POST['custom_fields'] ) ) ? $_POST['custom_fields'] : array();
 		$follow_up_date= ( isset( $_POST['follow_up_date'] ) && ! empty( $_POST['follow_up_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up_date'] ) ) ) : null;
 		$note          = isset( $_POST['note'] ) ? sanitize_textarea_field( $_POST['note'] ) : '';
+		$business_manager          = isset( $_POST['business_manager'] ) ? sanitize_textarea_field( $_POST['business_manager'] ) : '';
 
 		/* Validations */
 		$errors = array();
@@ -295,7 +296,8 @@ class WL_MIM_Enquiry {
 					'institute_id'  => $institute_id,
 					'custom_fields' => $custom_fields,
 					'follow_up_date'=> $follow_up_date,
-					'note'          => $note
+					'note'          => $note,
+					'business_manager' => $business_manager
 				);
 
 				$data['created_at'] = current_time( 'Y-m-d H:i:s' );
@@ -568,6 +570,11 @@ class WL_MIM_Enquiry {
 		<div class="form-group">
 			<label for="wlim-enquiry-note" class="col-form-label"><?php esc_html_e( 'Note', WL_MIM_DOMAIN ); ?>:</label>
 			<textarea name="note" class="form-control" rows="3" id="wlim-enquiry-note_update" placeholder="<?php esc_html_e( "Note", WL_MIM_DOMAIN ); ?>"><?php echo esc_html( $row->note ); ?></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="wlim-enquiry-note" class="col-form-label"><?php esc_html_e( 'Business manager', WL_MIM_DOMAIN ); ?>:</label>
+			<input name="business_manager" type="text" class="form-control" id="wlim-enquiry-business_manager" placeholder="<?php esc_html_e( "Business manager", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->business_manager ); ?>">
 		</div>
 
         <div class="form-check pl-0">
