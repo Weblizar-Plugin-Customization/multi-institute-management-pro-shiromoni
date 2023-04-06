@@ -29,6 +29,8 @@ class WL_MIM_Helper {
 			'wl_min_manage_settings'       => esc_html__('Manage Settings', WL_MIM_DOMAIN),
 			'wl_min_manage_reminders'      => esc_html__('Manage Reminders', WL_MIM_DOMAIN),
 			'wl_min_edit_fee'              => esc_html__('Edit Fees', WL_MIM_DOMAIN),
+			'wl_min_manage_export_data'    => esc_html__('Manage Export data', WL_MIM_DOMAIN),
+			'wl_min_manage_collect_fees'   => esc_html__('Manage Collect fees', WL_MIM_DOMAIN),
 		);
 	}
 

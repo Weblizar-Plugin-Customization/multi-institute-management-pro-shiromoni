@@ -159,9 +159,13 @@ if ( empty( $general_institute['institute_name'] ) ) {
                     <label class="col-form-label"><?php esc_html_e( 'Permissions', WL_MIM_DOMAIN ); ?>:</label>
 					<?php
 					foreach ( WL_MIM_Helper::get_capabilities() as $capability_key => $capability_value ) {
-						if ( ! current_user_can( $capability_key ) ) {
-							continue;
-						} ?>
+
+                        if ( !current_user_can('administrator') ) {
+                            if ( ! current_user_can( $capability_key ) ) {
+                                continue;
+                            } 
+                        } 
+                        ?>
                         <div class="form-check pl-0">
                             <input name="permissions[]" class="position-static mt-0 form-check-input" type="checkbox" id="<?php echo esc_attr( $capability_key ); ?>" value="<?php echo esc_attr( $capability_key ); ?>">
                             <label class="form-check-label" for="<?php echo esc_attr( $capability_key ); ?>"><?php esc_html_e( $capability_value, WL_MIM_DOMAIN ); ?></label>

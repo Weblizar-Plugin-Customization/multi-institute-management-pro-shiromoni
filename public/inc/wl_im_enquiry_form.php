@@ -196,20 +196,7 @@ if ( isset( $attr['id'] ) ) {
                                 <input name="business_manager" type="text" class="form-control" id="wlim-enquiry-business_manager" placeholder="<?php esc_html_e( "Business manager", WL_MIM_DOMAIN ); ?>">
                             </div>
                         </div>
-						<?php if ( ! $institute ) { ?>
-                            <div id="wlim-fetch-institute-custom-fields"></div>
-						<?php } else { if ( count( $custom_fields ) ) { ?>
-                            <div class="row">
-								<?php foreach ( $custom_fields as $key => $custom_field ) { ?>
-                                    <div class="col-sm-6 form-group">
-                                        <label for="wlim-enquiry-custom_fields_<?php echo esc_attr( $key ); ?>" class="col-form-label"><?php echo esc_html( $custom_field->field_name ); ?>:</label>
-                                        <input type="hidden" name="custom_fields[name][]" value="<?php echo esc_attr( $custom_field->field_name ); ?>">
-                                        <input name="custom_fields[value][]" type="text" class="form-control" id="wlim-enquiry-custom_fields_<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $custom_field->field_name ); ?>">
-                                    </div>
-								<?php } ?>
-                            </div>
-						<?php }
-						} ?>
+						
                         <div class="form-group">
                             <label for="wlim-enquiry-message" class="col-form-label"><?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?>:</label>
                             <textarea name="message" class="form-control" rows="3" id="wlim-enquiry-message" placeholder="<?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>"></textarea>
