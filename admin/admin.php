@@ -160,6 +160,8 @@ add_action( 'wp_ajax_wl-mim-fetch-invoice-amount', array( 'WL_MIM_Fee', 'fetch_i
 // student invoice data
 add_action( 'wp_ajax_wl-mim-get-student-invoice-data', array( 'WL_MIM_Invoice', 'get_student_invoice_data' ) );
 
+add_action( 'wp_ajax_wl-mim-get-inactive-invoice-data', array( 'WL_MIM_Invoice', 'get_inactive_invoice_data' ) );
+
 /* Actions for invoice */
 add_action( 'wp_ajax_wl-mim-get-invoice-data', array( 'WL_MIM_Invoice', 'get_invoice_data' ) );
 add_action( 'wp_ajax_wl-mim-add-invoice', array( 'WL_MIM_Invoice', 'add_invoice' ) );

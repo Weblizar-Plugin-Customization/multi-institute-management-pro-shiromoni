@@ -83,6 +83,14 @@ if ( empty( $general_institute['institute_name'] ) ) {
                                 global $wpdb;
 
                                 $total_pending = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'pending'" );
+								
+								$total_inactive_student_pending = $wpdb->get_var( "
+									SELECT SUM(i.payable_amount)
+									FROM {$wpdb->prefix}wl_min_invoices as i
+									JOIN {$wpdb->prefix}wl_min_students as s ON i.student_id = s.id
+									WHERE i.institute_id = $institute_id AND i.status = 'pending' AND is_active = 0
+								" );
+
                                 $total_paid    = $wpdb->get_var( "SELECT sum(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id AND `status` = 'paid'" );
                                 $total_installments = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wl_min_invoices WHERE institute_id = $institute_id" );
                                 ?>
@@ -101,6 +109,9 @@ if ( empty( $general_institute['institute_name'] ) ) {
 										</li>
 										<li class="list-group-item h6">
 											<span class="text-secondary"><?php esc_html_e( 'Installments', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span><?php echo esc_html( $total_installments ); ?></span>
+										</li>
+										<li class="list-group-item h6">
+											<span class="text-secondary"><?php esc_html_e( 'Total Pending (Inactive Students)', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span><?php echo esc_html( $total_inactive_student_pending ); ?></span>
 										</li>
 									</ul>
 								</div>
@@ -235,6 +246,33 @@ if ( empty( $general_institute['institute_name'] ) ) {
 					</div>
 				</div>
 				<!-- end - card body content -->
+
+				<div class="div">
+					<h5>Inactive Students Installments</h5> 
+					<br>
+					<div class="row">
+					<div class="col">
+						<table class="table table-hover table-striped table-bordered" id="inactive-invoice-table">
+							<thead>
+								<tr>
+						        	<th scope="col"><?php esc_html_e( 'Installment No.', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Installment Title', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Amount Payable', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Student Name', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Phone NO.', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Due Amount', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Status', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Due Date', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Added By', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Added On', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Edit', WL_MIM_DOMAIN ); ?></th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -90,6 +90,90 @@ class WL_MIM_Invoice {
 		wp_send_json( $results );
 	}
 
+	public static function get_inactive_invoice_data() {
+		self::check_permission();
+		if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
+			die();
+		}
+
+		$start_date  = ( isset( $_REQUEST['start_date'] ) && ! empty( $_REQUEST['start_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['start_date'] ) ) ) : NULL;
+		$end_date  = ( isset( $_REQUEST['end_date'] ) && ! empty( $_REQUEST['end_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['end_date'] ) ) ) : NULL;
+
+
+		global $wpdb;
+		$institute_id              = WL_MIM_Helper::get_current_institute_id();
+		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
+
+		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND is_active = 0 ORDER BY i.id DESC" );
+
+		if ($start_date && $end_date) {
+			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
+		}
+		if ( count( $data ) !== 0 ) {
+			foreach ( $data as $row ) {
+				$id             = $row->id;
+				$invoice_number = WL_MIM_Helper::get_invoice( $id );
+				$invoice_title  = $row->invoice_title;
+				$status_text    = ucwords( $row->status );
+				$status         = ( $row->status == 'paid' ) ? "<strong class='text-success'>$status_text</strong>" : "<strong class='text-danger'>$status_text</strong>";
+				$amount         =  number_format( $row->payable_amount, 2, '.', '' ) ;
+				$date           = date_format( date_create( $row->created_at ), "d-m-Y" );
+				// $due_date       = date_format( date_create( $row->due_date ), "d-m-Y" );
+				$added_by       = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
+
+				$pending_amount = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_installments WHERE institute_id = $institute_id AND invoice_id = $row->id ORDER BY id DESC" );
+
+				if ($pending_amount) {
+					$due_amount=0;
+					foreach ($pending_amount as $pending) {
+						$due_amount += $pending->paid_amount;
+					}
+					$total_due_amount = ($amount - $due_amount);
+				} else {
+						$total_due_amount = $amount;
+				}
+
+				$phone = $row->phone;
+				$student_name = $row->first_name;
+				if ( $row->last_name ) {
+					$student_name .= " $row->last_name";
+				}
+				if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+					$student_id = $row->enrollment_id;
+				} else {
+					$student_id = $row->id;
+				}
+				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
+
+				if (current_user_can( 'wl_min_edit_fee' )) {
+					$icon = '<i class="fa fa-trash text-danger"></i>';
+				} else {
+					$icon = '';
+				}
+
+				$results["data"][] = array(
+					esc_html( $invoice_number ) . '<a class="ml-2" href="#print-invoice-fee-invoice" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-print"></i></a>',
+					esc_html( $invoice_title ),
+					esc_html( $amount ),
+					esc_html( $enrollment_id ),
+					esc_html( $student_name ),
+					esc_html( $phone ),
+					esc_html( $total_due_amount ),
+					wp_kses( $status, array( 'strong' => array( 'class' => 'text-danger', 'text-success' ) ) ),
+					esc_html( date_format( date_create( $row->due_date ), "d-m-Y" ) ),
+					esc_html( $added_by ),
+					esc_html( $date ),
+					$row->status != 'paid' ? '<a class="mr-3" href="#update-invoice" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . esc_html( $id ) . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-invoice-security="' . wp_create_nonce( "delete-invoice-$id" ) . '"delete-invoice-id="' . esc_html( $id ) . '" class="delete-invoice"> '.$icon.'</a>' : '' . '<a href="javascript:void(0)" delete-invoice-security="' . wp_create_nonce( "delete-invoice-$id" ) . '"delete-invoice-id="' . esc_html( $id ) . '" class="delete-invoice"> '.$icon.'</a>'
+				);
+			}
+		} else {
+			$results["data"] = array();
+			$results["paid"] = array();
+			$results["pending"] = array();
+		}
+		wp_send_json( $results );
+	}
+
 	public static function get_student_invoice_data() {
 		if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
 			die();

@@ -401,6 +401,8 @@
 
         initializeDatatable('#student-invoice-table', 'wl-mim-get-student-invoice-data');
 
+        initializeDatatable('#inactive-invoice-table', 'wl-mim-get-inactive-invoice-data');
+
         /* Actions for fee invoice */
         initializeDatatable('#invoice-table', 'wl-mim-get-invoice-data');
         save('.add-invoice-submit', 'wl-mim-add-invoice', '#wlim-add-invoice-form', '#add-invoice', ['#invoice-table']);
