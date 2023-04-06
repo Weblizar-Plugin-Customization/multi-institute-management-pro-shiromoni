@@ -200,9 +200,7 @@ if ( isset( $attr['id'] ) ) {
                         <div class="form-group">
                             <label for="wlim-enquiry-message" class="col-form-label"><?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?>:</label>
                             <textarea name="message" class="form-control" rows="3" id="wlim-enquiry-message" placeholder="<?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>"></textarea>
-                        </div>
-                            
-                        
+                        </div>                         
 
                         <div class="mt-3">
                             <button type="submit" class="btn btn-block add-enquiry-submit"><?php esc_html_e( 'Submit!', WL_MIM_DOMAIN ); ?></button>

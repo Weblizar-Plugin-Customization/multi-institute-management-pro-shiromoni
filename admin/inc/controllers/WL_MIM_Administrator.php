@@ -300,9 +300,9 @@ class WL_MIM_Administrator {
         </label>
 		<?php
 		foreach ( WL_MIM_Helper::get_capabilities() as $capability_key => $capability_value ) {
-			if ( ! current_user_can( $capability_key ) ) {
-				continue;
-			}
+			// if ( ! current_user_can( $capability_key ) ) {
+			// 	continue;
+			// }
 			?>
             <div class="form-check pl-0">
                 <input name="permissions[]" class="position-static mt-0 form-check-input" type="checkbox" id="<?php echo esc_attr( $capability_key ) . "_update"; ?>" value="<?php echo esc_attr( $capability_key ); ?>" <?php echo user_can( $row->ID, WL_MIM_Helper::$core_capability ) ? 'disabled' : '' ?>  <?php if ( get_current_user_id() == $id ) {
@@ -538,9 +538,9 @@ class WL_MIM_Administrator {
 				if ( get_current_user_id() != $id ) {
 					if ( ! user_can( $user, WL_MIM_Helper::$core_capability ) ) {
 						foreach ( WL_MIM_Helper::get_capabilities() as $capability_key => $capability_value ) {
-							if ( ! current_user_can( $capability_key ) ) {
-								continue;
-							}
+							// if ( ! current_user_can( $capability_key ) ) {
+							// 	continue;
+							// }
 							if ( in_array( $capability_key, $permissions ) ) {
 								$user->add_cap( $capability_key );
 							} else {
