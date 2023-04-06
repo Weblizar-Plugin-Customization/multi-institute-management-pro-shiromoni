@@ -6,14 +6,14 @@ class WL_MIM_SettingHelper {
 	public static function get_general_enquiry_settings($institute_id) {
 		global $wpdb;
 		$enquiry_form_title_enable = '1';
-		$enquiry_form_title        = esc_html__("Admission Enquiry", WL_MIM_DOMAIN);
+		$enquiry_form_title        = esc_html__("Student Registration Form", WL_MIM_DOMAIN);
 		$general_enquiry           = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'general_enquiry'");
 		if ($general_enquiry) {
 			$general_enquiry           = unserialize($general_enquiry->mim_value);
 			$enquiry_form_title_enable = isset($general_enquiry['enquiry_form_title_enable']) ? $general_enquiry['enquiry_form_title_enable'] : '';
 			$enquiry_form_title        = isset($general_enquiry['enquiry_form_title']) ? $general_enquiry['enquiry_form_title'] : '';
 			if (empty($enquiry_form_title)) {
-				$enquiry_form_title = esc_html__("Admission Enquiry", WL_MIM_DOMAIN);
+				$enquiry_form_title = esc_html__("Student Registration Form", WL_MIM_DOMAIN);
 			}
 		}
 

@@ -28,8 +28,6 @@ define('WL_MIM_MENU_CERTIFICATES', 'multi-institute-management-certificate');
 define('WL_MIM_WEBLIZAR_PLUGIN_URL', 'https://weblizar.com/plugins/multi-institute-management/');
 define('WL_MIM_VERSION', '6.5');
 
-include 'wlim-update-checker.php';
-
 final class WL_MIM_InstituteManagementAdvanced {
 	private static $instance = null;
 
