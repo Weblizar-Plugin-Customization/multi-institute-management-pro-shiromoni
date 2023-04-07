@@ -320,6 +320,35 @@ class WL_MIM_Menu {
 			$wl_admin_submenu = add_submenu_page('multi-institute-license', esc_html__('License', WL_MIM_DOMAIN), esc_html__('License', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'));
 			add_action('admin_print_styles-' . $wl_admin_submenu, array('WL_MIM_Menu', 'admin_menu_assets'));
 		}
+
+		// set session 
+		$current_user_id = get_current_user_id();
+		
+		if (current_user_can('administrator')) {
+			$role = 'admin'; 
+			$user_can = 1;
+			echo "<script>";
+			echo "sessionStorage.setItem('user_can_export', '".$user_can. "');";
+			echo "sessionStorage.setItem('role', '".$role. "');";
+			echo "sessionStorage.setItem('current_user_id', '".$current_user_id. "');";
+			echo "</script>";
+		} else {
+			$role = "staff";
+			$user_can = 0;
+			echo "<script>";
+			echo "sessionStorage.setItem('user_can_export', '".$user_can. "');";
+			echo "sessionStorage.setItem('role', '".$role. "');";
+			echo "sessionStorage.setItem('current_user_id', '".$current_user_id. "');";
+			echo "</script>";
+		}
+		if ( current_user_can( 'wl_min_manage_export_data' ) ) { 
+			$user_can = 1;
+			echo "<script>";
+			echo "sessionStorage.setItem('user_can_export', '".$user_can. "');";
+			echo "sessionStorage.setItem('role', '".$role. "');";
+			echo "sessionStorage.setItem('current_user_id', '".$current_user_id. "');";
+			echo "</script>";
+		}
 	}
 
 	public static function admin_menu() {

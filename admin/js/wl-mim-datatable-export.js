@@ -15,6 +15,21 @@
 
         /* Get data to display on table with export options */
         function initializeDatatable(table, action) {
+
+            var role = sessionStorage.getItem("role");
+            var user_can = sessionStorage.getItem("user_can_export");
+
+
+            if (user_can == 1 && role == 'staff') {
+                var epppp = 'lBfrtip';
+            } else {
+                epppp = 'lfrtip';
+            }
+            if (role == 'admin') {
+                var epppp = 'lBfrtip';
+            }
+
+
             var table = jQuery(table).DataTable({
                 aaSorting: [],
                 responsive: true,
@@ -26,7 +41,7 @@
                     "loadingRecords": "Loading..."
                 },
                 lengthChange: false,
-                dom: 'lBfrtip',
+                dom: epppp,
                 columnDefs: [
                     { orderable: false, targets: 0 }
                   ],
