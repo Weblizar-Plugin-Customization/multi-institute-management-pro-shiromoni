@@ -187,7 +187,7 @@ class WL_MIM_Invoice {
 		$student_id = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}wl_min_students WHERE `user_id`=$user_id;");
 		$student_id = $student_id->id;
 
-		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.student_id=$student_id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
+		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.student_id=$student_id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
 
 		if ( count( $data ) !== 0 ) {
 			foreach ( $data as $row ) {
@@ -197,7 +197,7 @@ class WL_MIM_Invoice {
 				$status_text     = ucwords( $row->status );
 				$status          = ( $row->status == 'paid' ) ? "<strong class='text-success'>$status_text</strong>" : "<strong class='text-danger'>$status_text</strong>";
 				$amount          = number_format( $row->payable_amount, 2, '.', '' );
-				$due_date_amount = number_format( $row->due_date_amount, 2, '.', '' );
+				$due_date_amount = number_format( intval($row->due_date_amount), 2, '.', '' );
 				$date            = date_format( date_create( $row->created_at ), "d-m-Y" );
 				$due_date        = date_format( date_create( $row->due_date ), "d-m-Y" );
 				$added_by        = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
