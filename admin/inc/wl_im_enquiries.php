@@ -103,6 +103,7 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                                     <th scope="col"><?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Reference', WL_MIM_DOMAIN ); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Business Manager', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Is Active', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Added By', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Date', WL_MIM_DOMAIN ); ?></th>

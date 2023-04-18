@@ -39,6 +39,7 @@ class WL_MIM_Enquiry {
 				$id         = $row->id;
 				$enquiry_id = WL_MIM_Helper::get_enquiry_id( $row->id );
 				$reference  = $row->reference ? $row->reference : '-';
+				$business_manager  = $row->business_manager ? $row->business_manager : '-';
 				$first_name = $row->first_name ? $row->first_name : '-';
 				$last_name  = $row->last_name ? $row->last_name : '-';
 				$phone      = $row->phone ? $row->phone : '-';
@@ -63,6 +64,7 @@ class WL_MIM_Enquiry {
 					esc_html( $phone ),
 					esc_html( $email ),
 					esc_html( $reference ),
+					esc_html( $business_manager ),
 					esc_html( $is_acitve ),
 					esc_html( $added_by ),
 					esc_html( $date ),
