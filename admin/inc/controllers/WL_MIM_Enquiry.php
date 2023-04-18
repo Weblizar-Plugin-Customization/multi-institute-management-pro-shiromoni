@@ -109,6 +109,7 @@ class WL_MIM_Enquiry {
 		$follow_up_date= ( isset( $_POST['follow_up_date'] ) && ! empty( $_POST['follow_up_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up_date'] ) ) ) : null;
 		$note          = isset( $_POST['note'] ) ? sanitize_textarea_field( $_POST['note'] ) : '';
 		$business_manager          = isset( $_POST['business_manager'] ) ? sanitize_textarea_field( $_POST['business_manager'] ) : '';
+		$class     = isset( $_POST['class'] ) ? sanitize_text_field( $_POST['class'] ) : '';
 
 		/* Validations */
 		$errors = array();
@@ -297,7 +298,8 @@ class WL_MIM_Enquiry {
 					'custom_fields' => $custom_fields,
 					'follow_up_date'=> $follow_up_date,
 					'note'          => $note,
-					'business_manager' => $business_manager
+					'business_manager' => $business_manager,
+					'class'         => $class
 				);
 
 				$data['created_at'] = current_time( 'Y-m-d H:i:s' );
@@ -429,6 +431,21 @@ class WL_MIM_Enquiry {
             </div>
 			<?php
 		} ?>
+
+		<!-- Create a select input with options 1 to 10 for class selection, with a default selected value based on $row->class -->
+
+		<div class="form-group">
+			<label for="wlim-enquiry-class-student" class="col-form-label">* <?php esc_html_e( "Select Class", WL_MIM_DOMAIN ); ?>:</label>
+			<select name="class" class="form-control selectpicker" id="wlim-enquiry-class-student">
+				<option value=""> -------- <?php esc_html_e( "Select a Class", WL_MIM_DOMAIN ); ?> --------
+				</option>
+				<?php for($i = 1; $i <= 10; $i++): ?>
+					<option value="<?php echo $i; ?>" <?php if($row->class == $i) echo 'selected'; ?>><?php esc_html_e( 'Class '.$i, WL_MIM_DOMAIN ); ?></option>
+				<?php endfor; ?>
+			</select>
+		</div>
+
+		
         <div class="row">
             <div class="col-sm-6 form-group">
                 <label for="wlim-enquiry-first_name_update" class="col-form-label">* <?php esc_html_e( 'First Name', WL_MIM_DOMAIN ); ?>:</label>

@@ -233,6 +233,13 @@ class WL_MIM_Database {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD reference text DEFAULT NULL" );
 		}
 
+		/* Add class column if not exists to enquiries table */
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_enquiries' AND COLUMN_NAME = 'class'" );
+
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD class text DEFAULT NULL" );
+		}
+
 		/* Create students table */
 		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_students (
 				id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

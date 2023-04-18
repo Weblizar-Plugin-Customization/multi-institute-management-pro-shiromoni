@@ -35,6 +35,8 @@ class WL_MIM_Enquiry_Front {
 		$message       = isset( $_POST['message'] ) ? sanitize_textarea_field( $_POST['message'] ) : '';
 		$custom_fields = ( isset( $_POST['custom_fields'] ) && is_array( $_POST['custom_fields'] ) ) ? $_POST['custom_fields'] : array();
 
+		$class     = isset( $_POST['class'] ) ? sanitize_text_field( $_POST['class'] ) : '';
+
 		/* Validations */
 		$errors = array();
 		if ( empty( $institute_id ) ) {
@@ -221,6 +223,7 @@ class WL_MIM_Enquiry_Front {
 					'message'       => $message,
 					'is_active'     => 1,
 					'institute_id'  => $institute_id,
+					'class'         => $class,
 					'custom_fields' => $custom_fields
 				);
 
