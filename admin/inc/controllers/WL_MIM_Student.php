@@ -249,7 +249,10 @@ class WL_MIM_Student
 		}
 
 		$duration_in_month = WL_MIM_Helper::get_course_months_count($course->duration, $course->duration_in);
-
+		if (empty($batch_id)) {
+			wp_send_json_error(esc_html__('Please select a batch', WL_MIM_DOMAIN));
+		}
+		
 		$count = $wpdb->get_var("SELECT COUNT(*) as count FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND is_active = 1 AND id = $batch_id AND course_id = $course_id AND institute_id = $institute_id");
 
 		if (!$count) {
@@ -339,6 +342,9 @@ class WL_MIM_Student
 		if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$errors['email'] = esc_html__('Please provide a valid email address.', WL_MIM_DOMAIN);
 		}
+
+		
+	
 
 		if (!empty($custom_fields)) {
 			if (!array_key_exists('name', $custom_fields) || !array_key_exists('value', $custom_fields)) {

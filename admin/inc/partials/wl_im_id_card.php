@@ -35,12 +35,13 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.
 	$duration_in = ( $duration < 2 ) ? esc_html__( substr( $duration_in, 0, - 1 ), WL_MIM_DOMAIN ) : esc_html__( $duration_in, 0, - 1, WL_MIM_DOMAIN );
 
     $name           = $row->first_name . " $row->last_name";
-	$mother_name    = $row->mother_name;
-	$course         = ( ! empty ( $course ) ) ? "{$course->course_name} ({$course->course_code})" : '-';
-	$duration       = "{$duration} {$duration_in}";
-	$admission_date = date_format( date_create( $row->created_at ), "d M, Y" );
-	$phone          = ( ! empty ( $row->phone ) ) ? $row->phone : '-';
-	$email          = ( ! empty ( $row->email ) ) ? $row->email : '-';
+    $mother_name    = $row->mother_name;
+    $course         = ( ! empty ( $course ) ) ? "{$course->course_name} ({$course->course_code})" : '-';
+    $duration       = "{$duration} {$duration_in}";
+    $admission_date = date_format( date_create( $row->created_at ), "d M, Y" );
+    $expire_at      = date_format( date_create( $row->expire_at ), "d M, Y" );
+    $phone          = ( ! empty ( $row->phone ) ) ? $row->phone : '-';
+    $email          = ( ! empty ( $row->email ) ) ? $row->email : '-';
     $date_of_birth  = ( ! empty ( $row->date_of_birth ) ) ? date_format( date_create( $row->date_of_birth ), "d M, Y" ) : '-';
 
 	$institute_advanced_logo    = wp_get_attachment_url( $general_institute['institute_logo'] );
@@ -153,6 +154,10 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.
                     <li class="list-group-item">
                         <span class="list-group-heading font-weight-bold"><?php esc_html_e( 'Admission Date', WL_MIM_DOMAIN ); ?>:&nbsp;</span>
                         <span class="list-group-value"><?php echo esc_html( $admission_date ); ?></span>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="list-group-heading font-weight-bold"><?php esc_html_e( 'Expired At', WL_MIM_DOMAIN ); ?>:&nbsp;</span>
+                        <span class="list-group-value"><?php echo esc_html( $expire_at ); ?></span>
                     </li>
                     <li class="list-group-item">
                         <span class="list-group-heading font-weight-bold"><?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:&nbsp;</span>

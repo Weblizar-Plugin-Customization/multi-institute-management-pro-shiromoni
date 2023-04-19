@@ -147,6 +147,7 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.
 	$course         = ( ! empty ( $course ) ) ? "{$course->course_name} ({$course->course_code})" : '-';
 	$duration       = "{$duration} {$duration_in}";
 	$admission_date = date_format( date_create( $row->created_at ), "d M, Y" );
+	$expire_at      = date_format( date_create( $row->expire_at ), "d M, Y" );
 	$phone          = ( ! empty ( $row->phone ) ) ? $row->phone : '-';
 	$email          = ( ! empty ( $row->email ) ) ? $row->email : '-';
 
@@ -258,6 +259,10 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.
 	                        <span class="list-group-heading font-weight-bold"><?php esc_html_e( 'Admission Date', WL_MIM_DOMAIN ); ?>:&nbsp;</span>
 	                        <span class="list-group-value"><?php echo esc_html( $admission_date ); ?></span>
 	                    </li>
+						<li class="list-group-item">
+							<span class="list-group-heading font-weight-bold"><?php esc_html_e( 'Expired At', WL_MIM_DOMAIN ); ?>:&nbsp;</span>
+							<span class="list-group-value"><?php echo esc_html( $expire_at ); ?></span>
+						</li>
 	                    <li class="list-group-item">
 	                        <span class="list-group-heading font-weight-bold"><?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:&nbsp;</span>
 	                        <span class="list-group-value"><?php echo esc_html( $phone ); ?></span>
