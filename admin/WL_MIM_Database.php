@@ -292,6 +292,12 @@ class WL_MIM_Database {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD enrollment_id varchar(255) DEFAULT NULL" );
 		}
 
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_students' AND COLUMN_NAME = 'expire_at'" );
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD class varchar(255) DEFAULT NULL" );
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD expire_at timestamp NULL DEFAULT NULL" );
+		}
+
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_students' AND COLUMN_NAME = 'total_course_fee'" );
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD total_course_fee varchar(255) DEFAULT NULL" );

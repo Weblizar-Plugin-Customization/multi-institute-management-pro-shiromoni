@@ -653,7 +653,7 @@ class WL_MIM_Enquiry {
 		$is_active       = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 0;
 		$custom_fields   = ( isset( $_POST['custom_fields'] ) && is_array( $_POST['custom_fields'] ) ) ? $_POST['custom_fields'] : array();
 		$follow_up_date  = ( isset( $_POST['follow_up_update_date'] ) && ! empty( $_POST['follow_up_update_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up_update_date'] ) ) ) : null;
-		
+		$class     = isset( $_POST['class'] ) ? sanitize_text_field( $_POST['class'] ) : '';
 		$note            = isset( $_POST['note'] ) ? sanitize_textarea_field( $_POST['note'] ) : '';
 
 		/* Validations */
@@ -821,6 +821,7 @@ class WL_MIM_Enquiry {
 					'updated_at'    => date( 'Y-m-d H:i:s' ),
 					'follow_up_date'=> $follow_up_date,
 					'note'          => $note,
+					'class'         => $class,
 				);
 
 				if ( ! empty( $id_proof ) ) {

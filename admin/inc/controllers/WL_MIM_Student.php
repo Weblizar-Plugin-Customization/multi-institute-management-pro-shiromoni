@@ -170,7 +170,7 @@ class WL_MIM_Student
 		$date_of_birth   = (isset($_POST['date_of_birth']) && !empty($_POST['date_of_birth'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['date_of_birth']))) : null;
 		$roll_number     = isset($_POST['roll_number']) ? sanitize_text_field($_POST['roll_number']) : '';
 		$enrollment_id   = isset($_POST['enrollment_id']) ? sanitize_text_field($_POST['enrollment_id']) : '';
-		$created_at      = (isset($_POST['created_at']) && !empty($_POST['created_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['created_at']))) : NULL;
+		
 		$id_proof        = (isset($_FILES['id_proof']) && is_array($_FILES['id_proof'])) ? $_FILES['id_proof'] : null;
 		$id_proof_in_db  = isset($_POST['id_proof_in_db']) ? intval(sanitize_text_field($_POST['id_proof_in_db'])) : null;
 		$father_name     = isset($_POST['father_name']) ? sanitize_text_field($_POST['father_name']) : '';
@@ -210,6 +210,9 @@ class WL_MIM_Student
 		$due_date        = (isset($_POST['due_date']) && is_array($_POST['due_date'])) ? $_POST['due_date'] : null;
 		$due_date_amount = (isset($_POST['due_date_amount']) && is_array($_POST['due_date_amount'])) ? $_POST['due_date_amount'] : null;
 
+		$created_at      = (isset($_POST['created_at']) && !empty($_POST['created_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['created_at']))) : NULL;
+		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
+		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
 		if (empty($invoice_title)) {
 			$errors['invoice_title'] = esc_html__('Please provide invoice_title.', WL_MIM_DOMAIN);
 		}
@@ -450,7 +453,9 @@ class WL_MIM_Student
 					'course_payable'    => $course_payable,
 					'installment_count' => $installment_count,
 
-					'created_at'    => $created_at
+					'created_at' => $created_at,
+					'expire_at'  => $expire_at,
+					'class'      => $class,
 				);
 
 				if ($general_enable_roll_number) {
@@ -1476,6 +1481,19 @@ class WL_MIM_Student
 			</div>
 		<?php
 			} ?>
+
+			<!-- Create a select input with options 1 to 10 for class selection -->
+			<div class="form-group">
+				<label for="wlim-enquiry-class-student" class="col-form-label"> <?php esc_html_e( "Select Class", WL_MIM_DOMAIN ); ?>:</label>
+				<select name="class" class="form-control " id="wlim-enquiry-class-student">
+					<option value=""> -------- <?php esc_html_e( "Select a Class", WL_MIM_DOMAIN ); ?> --------
+					</option>
+					<?php for($i = 1; $i <= 10; $i++): ?>
+						<option value="<?php echo $i; ?>" <?php if($row->class == $i) echo 'selected'; ?> ><?php esc_html_e( 'Class '.$i, WL_MIM_DOMAIN ); ?></option>
+					<?php endfor; ?>
+				</select>
+			</div>
+
 		<div class="row">
 			<div class="col-sm-6 form-group">
 				<label for="wlim-student-first_name_update" class="col-form-label">* <?php esc_html_e('First Name', WL_MIM_DOMAIN); ?>:</label>
@@ -1597,9 +1615,15 @@ class WL_MIM_Student
 		<?php
 		} ?>
 		
-		<div class="form-group">
-			<label for="wlim-student-created_at_update" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
-			<input name="created_at" type="text" class="form-control wlim-created_at_update" id="wlim-student-created_at_update" placeholder="<?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($data); ?>">
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label for="wlim-student-created_at_update" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
+				<input name="created_at" type="text" class="form-control wlim-created_at_update" id="wlim-student-created_at_update" placeholder="<?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($data); ?>">
+			</div>
+			<div class="form-group col-sm-6">
+				<label for="wlim-student-expired_at_update" class="col-form-label"><?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?>:</label>
+				<input name="expire_at" type="text" class="form-control wlim-created_at_update" id="wlim-student-expired_at_update" placeholder="<?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($data); ?>">
+			</div>
 		</div>
 		<?php if ($general_enable_roll_number) { ?>
 			<div class="form-group">
@@ -1710,6 +1734,8 @@ class WL_MIM_Student
 		$password         = isset($_POST['password']) ? $_POST['password'] : '';
 		$password_confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
 
+		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
+		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
 		$row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND id = $id AND institute_id = $institute_id");
 		if (!$row) {
 			die();
@@ -1968,6 +1994,8 @@ class WL_MIM_Student
 					'inactive_at'   => $inactive_at,
 					'custom_fields' => $custom_fields,
 					'created_at'    => $created_at,
+					'class'         => $class,
+					'expire_at'     => $expire_at,
 					'updated_at'    => date('Y-m-d H:i:s')
 				);
 
@@ -2393,6 +2421,18 @@ class WL_MIM_Student
 			</div>
 		<?php
 				} ?>
+
+		<!-- Create a select input with options 1 to 10 for class selection -->
+		<div class="form-group">
+			<label for="wlim-enquiry-class-student" class="col-form-label"> <?php esc_html_e( "Select Class", WL_MIM_DOMAIN ); ?>:</label>
+			<select name="class" class="form-control " id="wlim-enquiry-class-student">
+				<option value=""> -------- <?php esc_html_e( "Select a Class", WL_MIM_DOMAIN ); ?> --------
+				</option>
+				<?php for($i = 1; $i <= 10; $i++): ?>
+					<option value="<?php echo $i; ?>" <?php if($row->class == $i) echo 'selected'; ?>><?php esc_html_e( 'Class '.$i, WL_MIM_DOMAIN ); ?></option>
+				<?php endfor; ?>
+			</select>
+		</div>
 		<div id="wlim-add-student-course-batches"></div>
 		<div class="row">
 			<div class="col-sm-6 form-group">
@@ -2588,10 +2628,21 @@ class WL_MIM_Student
 			</div>
 		</div>
 		<hr>
-		<div class="form-group">
-			<label for="wlim-student-created_at" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
-			<input name="created_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-created_at" placeholder="<?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>">
+
+		
+
+		<div class="row">
+			<div class="form-group col-sm-6 ">
+				<label for="wlim-student-created_at" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
+				<input name="created_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-created_at" placeholder="<?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>">
+			</div>
+			
+			<div class="form-group col-sm-6">
+				<label for="wlim-student-expired_at" class="col-form-label"><?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>:</label>
+				<input name="expire_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-expired_at" placeholder="<?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>">
+			</div>
 		</div>
+
 		<?php if ($general_enable_roll_number) { ?>
 			<div class="form-group">
 				<label for="wlim-student-roll_number" class="col-form-label"><?php esc_html_e('Roll Number', WL_MIM_DOMAIN); ?>:</label>
@@ -3017,7 +3068,19 @@ class WL_MIM_Student
 	<?php
 		} ?>
 	<div id="wlim-add-student-course-batches"></div>
-	
+	<!-- Create a select input with options 1 to 10 for class selection, with a default selected value based on $row->class -->
+
+	<div class="form-group">
+		<label for="wlim-enquiry-class-student" class="col-form-label">* <?php esc_html_e( "Select Class", WL_MIM_DOMAIN ); ?>:</label>
+		<select name="class" class="form-control selectpicker" id="wlim-enquiry-class-student">
+			<option value=""> -------- <?php esc_html_e( "Select a Class", WL_MIM_DOMAIN ); ?> --------
+			</option>
+			<?php for($i = 1; $i <= 10; $i++): ?>
+				<option value="<?php echo $i; ?>" ><?php esc_html_e( 'Class '.$i, WL_MIM_DOMAIN ); ?></option>
+			<?php endfor; ?>
+		</select>
+	</div>
+
 	<div class="form-group">
 		<label for="wlim-student-enrollment_id" class="col-form-label"><?php esc_html_e('Enrollment ID', WL_MIM_DOMAIN); ?>:</label>
 		<input name="enrollment_id" type="text" class="form-control" id="wlim-student-enrollment_id" placeholder="<?php esc_html_e('Enrollment ID', WL_MIM_DOMAIN); ?>">
@@ -3201,10 +3264,18 @@ class WL_MIM_Student
 	</div>
 
 	<hr>
-	<div class="form-group">
-		<label for="wlim-student-created_at" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
-		<input name="created_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-created_at" placeholder="<?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>">
+	<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="wlim-student-created_at" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
+			<input name="created_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-created_at" placeholder="<?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>">
+		</div>
+
+		<div class="form-group col-sm-6">
+				<label for="wlim-student-expired_at" class="col-form-label"><?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>:</label>
+				<input name="expire_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-expired_at" placeholder="<?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>">
+		</div>
 	</div>
+
 	<?php if ($general_enable_roll_number) { ?>
 		<div class="form-group">
 			<label for="wlim-student-roll_number" class="col-form-label"><?php esc_html_e('Roll Number', WL_MIM_DOMAIN); ?>:</label>
