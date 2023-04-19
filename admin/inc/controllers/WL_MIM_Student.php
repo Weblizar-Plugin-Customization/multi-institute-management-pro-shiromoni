@@ -82,7 +82,9 @@ class WL_MIM_Student
 				$last_name     = $row->last_name ? $row->last_name : '-';
 				$qualification     = $row->qualification ? $row->qualification : '-';
 				$registration_date     = $row->created_at ? date_format(date_create($row->created_at), 'd-m-Y') : '-';
-				$father_name     = $row->father_name ? $row->father_name : '-';
+				$expire_at     = $row->created_at ? date_format(date_create($row->expire_at), 'd-m-Y') : '-';
+				$father_name   = $row->father_name ? $row->father_name : '-';
+				$class         = $row->class ? $row->class : '-';
 				// $fees          = unserialize($row->fees);
 				// $fees_payable  = WL_MIM_Helper::get_fees_total($fees['payable']);
 				// $fees_paid     = WL_MIM_Helper::get_fees_total($fees['paid']);
@@ -133,7 +135,9 @@ class WL_MIM_Student
 					esc_html($phone),
 					esc_html($email),
 					esc_html($qualification),
+					esc_html($class),
 					esc_html($registration_date),
+					esc_html($expire_at),
 					esc_html($father_name),
 					// esc_html($date_of_birth),
 					esc_html($is_acitve),
@@ -2438,6 +2442,10 @@ class WL_MIM_Student
 					<option value="<?php echo $i; ?>" <?php if($row->class == $i) echo 'selected'; ?>><?php esc_html_e( 'Class '.$i, WL_MIM_DOMAIN ); ?></option>
 				<?php endfor; ?>
 			</select>
+		</div>
+		<div class="form-group">
+			<label for="wlim-enquiry-note" class="col-form-label"><?php esc_html_e( 'Business manager', WL_MIM_DOMAIN ); ?>:</label>
+			<input name="business_manager" type="text" class="form-control" id="wlim-enquiry-business_manager" placeholder="<?php esc_html_e( "Business manager", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr($row->business_manager); ?>">
 		</div>
 		<div id="wlim-add-student-course-batches"></div>
 		<div class="row">

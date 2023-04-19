@@ -656,6 +656,8 @@ class WL_MIM_Enquiry {
 		$class     = isset( $_POST['class'] ) ? sanitize_text_field( $_POST['class'] ) : '';
 		$note            = isset( $_POST['note'] ) ? sanitize_textarea_field( $_POST['note'] ) : '';
 
+		$business_manager          = isset( $_POST['business_manager'] ) ? sanitize_textarea_field( $_POST['business_manager'] ) : '';
+
 		/* Validations */
 		$errors = array();
 		if ( empty( $course_id ) ) {
@@ -822,6 +824,7 @@ class WL_MIM_Enquiry {
 					'follow_up_date'=> $follow_up_date,
 					'note'          => $note,
 					'class'         => $class,
+					'business_manager'      => $business_manager,
 				);
 
 				if ( ! empty( $id_proof ) ) {
