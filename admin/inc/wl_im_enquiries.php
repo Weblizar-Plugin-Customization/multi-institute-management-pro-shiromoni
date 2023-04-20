@@ -294,19 +294,6 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                             <label for="wlim-enquiry-message" class="col-form-label"><?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?>:</label>
                             <textarea name="message" class="form-control" rows="3" id="wlim-enquiry-message" placeholder="<?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>"></textarea>
                         </div>
-
-                       <!-- Create a select input with options 1 to 10 for class selection -->
-                        <div class="form-group">
-                            <label for="wlim-enquiry-class-student" class="col-form-label">* <?php esc_html_e( "Select Class", WL_MIM_DOMAIN ); ?>:</label>
-                            <select name="class" class="form-control selectpicker" id="wlim-enquiry-class-student">
-                                <option value=""> -------- <?php esc_html_e( "Select a Class", WL_MIM_DOMAIN ); ?> --------
-                                </option>
-                                <?php for($i = 1; $i <= 10; $i++): ?>
-                                    <option value="<?php echo $i; ?>"><?php esc_html_e( 'Class '.$i, WL_MIM_DOMAIN ); ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-
                         
                         <div class="row">
                             <div class="col-md-6">
