@@ -471,6 +471,7 @@ class WL_MIM_Student
 					'created_at' => $created_at,
 					'expire_at'  => $expire_at,
 					'class'      => $class,
+					'business_manger'      => $business_manger,
 				);
 
 				if ($general_enable_roll_number) {
@@ -1508,6 +1509,12 @@ class WL_MIM_Student
 					<?php endfor; ?>
 				</select>
 			</div>
+			<div class="row">
+			<div class="col-sm-6 form-group">
+			<label for="wlim-enquiry-note" class="col-form-label"><?php esc_html_e( 'Business manager', WL_MIM_DOMAIN ); ?>:</label>
+			<input name="business_manager" type="text" class="form-control" id="wlim-enquiry-business_manager" placeholder="<?php esc_html_e( "Business manager", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->business_manager ); ?>">
+			</div>
+		</div>
 
 		<div class="row">
 			<div class="col-sm-6 form-group">
@@ -1751,6 +1758,7 @@ class WL_MIM_Student
 
 		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
+		$business_manager = isset($_POST['business_manager']) ? sanitize_text_field($_POST['business_manager']) : '';
 		$row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND id = $id AND institute_id = $institute_id");
 		if (!$row) {
 			die();
@@ -2010,6 +2018,7 @@ class WL_MIM_Student
 					'custom_fields' => $custom_fields,
 					'created_at'    => $created_at,
 					'class'         => $class,
+					'business_manager'         => $business_manager,
 					'expire_at'     => $expire_at,
 					'updated_at'    => date('Y-m-d H:i:s')
 				);
