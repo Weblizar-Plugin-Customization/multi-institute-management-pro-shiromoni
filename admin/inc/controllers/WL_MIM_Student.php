@@ -219,7 +219,7 @@ class WL_MIM_Student
 		$created_at      = (isset($_POST['created_at']) && !empty($_POST['created_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['created_at']))) : NULL;
 		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
-		$business_manger = isset($_POST['business_manger']) ? sanitize_text_field($_POST['business_manger']) : '';
+		$business_manager = isset($_POST['business_manager']) ? sanitize_text_field($_POST['business_manager']) : '';
 
 
 		if (empty($invoice_title)) {
@@ -471,7 +471,7 @@ class WL_MIM_Student
 					'created_at' => $created_at,
 					'expire_at'  => $expire_at,
 					'class'      => $class,
-					'business_manger'      => $business_manger,
+					'business_manager'      => $business_manager,
 				);
 
 				if ($general_enable_roll_number) {
@@ -3109,11 +3109,16 @@ class WL_MIM_Student
 		</select>
 	</div>
 
-	<div class="form-group">
-		<label for="wlim-student-enrollment_id" class="col-form-label"><?php esc_html_e('Enrollment ID', WL_MIM_DOMAIN); ?>:</label>
-		<input name="enrollment_id" type="text" class="form-control" id="wlim-student-enrollment_id" placeholder="<?php esc_html_e('Enrollment ID', WL_MIM_DOMAIN); ?>">
+	<div class="row">
+		<div class="col-sm-6 form-group">
+			<label for="wlim-student-enrollment_id" class="col-form-label"><?php esc_html_e('Enrollment ID', WL_MIM_DOMAIN); ?>:</label>
+			<input name="enrollment_id" type="text" class="form-control" id="wlim-student-enrollment_id" placeholder="<?php esc_html_e('Enrollment ID', WL_MIM_DOMAIN); ?>">
+			</div>
+		<div class="col-sm-6 form-group">
+			<label for="wlim-enquiry-note" class="col-form-label"><?php esc_html_e( 'Business manager', WL_MIM_DOMAIN ); ?>:</label>
+			<input name="business_manager" type="text" class="form-control" id="wlim-enquiry-business_manager" placeholder="<?php esc_html_e( "Business manager", WL_MIM_DOMAIN ); ?>">
+			</div>
 	</div>
-
 	<div class="row">
 		<div class="col-sm-6 form-group">
 			<label for="wlim-student-first_name" class="col-form-label">* <?php esc_html_e('First Name', WL_MIM_DOMAIN); ?>:</label>
