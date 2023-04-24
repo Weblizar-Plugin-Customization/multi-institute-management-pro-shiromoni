@@ -179,6 +179,7 @@ if (isset($_GET['batch_id'])) {
                                     <th scope="col"><?php esc_html_e('Last Name', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Batch', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e('Business Manager', WL_MIM_DOMAIN); ?></th>
                                     <!-- <th scope="col"><?php esc_html_e('Duration', WL_MIM_DOMAIN); ?></th> -->
                                     <!-- <th scope="col"><?php esc_html_e('Status', WL_MIM_DOMAIN); ?></th> -->
                                     <!-- <th scope="col"><?php esc_html_e('Total Fees Payable', WL_MIM_DOMAIN); ?></th> -->
@@ -189,7 +190,7 @@ if (isset($_GET['batch_id'])) {
                                     <th scope="col"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Class', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Father Name', WL_MIM_DOMAIN); ?></th>
                                     <!-- <th scope="col"><?php esc_html_e('Date of Birth', WL_MIM_DOMAIN); ?></th> -->
                                     <th scope="col"><?php esc_html_e('Is Active', WL_MIM_DOMAIN); ?></th>

@@ -85,6 +85,7 @@ class WL_MIM_Student
 				$expire_at     = $row->created_at ? date_format(date_create($row->expire_at), 'd-m-Y') : '-';
 				$father_name   = $row->father_name ? $row->father_name : '-';
 				$class         = $row->class ? $row->class : '-';
+				$business_manager         = $row->business_manager ? $row->business_manager : '-';
 				// $fees          = unserialize($row->fees);
 				// $fees_payable  = WL_MIM_Helper::get_fees_total($fees['payable']);
 				// $fees_paid     = WL_MIM_Helper::get_fees_total($fees['paid']);
@@ -127,6 +128,7 @@ class WL_MIM_Student
 					esc_html($last_name),
 					esc_html($course),
 					$batch,
+					$business_manager,
 					// esc_html($duration),
 					// $batch_status,
 					// esc_html($fees_payable),
@@ -217,6 +219,9 @@ class WL_MIM_Student
 		$created_at      = (isset($_POST['created_at']) && !empty($_POST['created_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['created_at']))) : NULL;
 		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
+		$business_manger = isset($_POST['business_manger']) ? sanitize_text_field($_POST['business_manger']) : '';
+
+
 		if (empty($invoice_title)) {
 			$errors['invoice_title'] = esc_html__('Please provide invoice_title.', WL_MIM_DOMAIN);
 		}
@@ -2652,8 +2657,8 @@ class WL_MIM_Student
 			</div>
 			
 			<div class="form-group col-sm-6">
-				<label for="wlim-student-expired_at" class="col-form-label"><?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>:</label>
-				<input name="expire_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-expired_at" placeholder="<?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>">
+				<label for="wlim-student-expired_at" class="col-form-label"><?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?>:</label>
+				<input name="expire_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-expired_at" placeholder="<?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?>">
 			</div>
 		</div>
 
@@ -3285,8 +3290,8 @@ class WL_MIM_Student
 		</div>
 
 		<div class="form-group col-sm-6">
-				<label for="wlim-student-expired_at" class="col-form-label"><?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>:</label>
-				<input name="expire_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-expired_at" placeholder="<?php esc_html_e('Expiry Date', WL_MIM_DOMAIN); ?>">
+				<label for="wlim-student-expired_at" class="col-form-label"><?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?>:</label>
+				<input name="expire_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-expired_at" placeholder="<?php esc_html_e(' Registration Expiry Date', WL_MIM_DOMAIN); ?>">
 		</div>
 	</div>
 
