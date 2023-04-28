@@ -89,7 +89,7 @@ if (empty($general_institute['institute_name'])) {
                                     <th scope="col"><?php esc_html_e('Payment Method', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Payment ID', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Date', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e('Added By', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e('Collected By', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Edit', WL_MIM_DOMAIN); ?></th>
                                 </tr>
                             </thead>
