@@ -2679,7 +2679,7 @@ class WL_MIM_Student
 		<?php } ?>
 		<hr>
 		<div class="form-check pl-0">
-			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active" checked>
+			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active">
 			<label class="form-check-label" for="wlim-student-is_active">
 				<?php esc_html_e('Is Active?', WL_MIM_DOMAIN); ?>
 			</label>
