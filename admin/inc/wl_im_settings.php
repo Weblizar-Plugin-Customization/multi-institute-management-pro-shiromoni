@@ -88,6 +88,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                 <a class="list-group-item list-group-item-action active" id="list-general-list" data-toggle="list" href="#list-general" role="tab" aria-controls="general"><?php esc_html_e( 'General', WL_MIM_DOMAIN ); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-payment-list" data-toggle="list" href="#list-payment" role="tab" aria-controls="payment"><?php esc_html_e( 'Payment', WL_MIM_DOMAIN ); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-email-list" data-toggle="list" href="#list-email" role="tab" aria-controls="email"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?></a>
+                <a class="list-group-item list-group-item-action" id="list-email-template" data-toggle="list" href="#list-email" role="tab" aria-controls="email"><?php esc_html_e( 'Email template', WL_MIM_DOMAIN ); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-sms-list" data-toggle="list" href="#list-sms" role="tab" aria-controls="sms"><?php esc_html_e( 'SMS', WL_MIM_DOMAIN ); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-custom-fields-list" data-toggle="list" href="#list-custom-fields" role="tab" aria-controls="custom-fields"><?php esc_html_e( 'Response Codes', WL_MIM_DOMAIN ); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-admit-card-list" data-toggle="list" href="#list-admit-card" role="tab" aria-controls="admit-card"><?php esc_html_e( 'Admit Card', WL_MIM_DOMAIN ); ?></a>
@@ -469,6 +470,16 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <input type="hidden" name="action" value="wl-mim-save-email-settings">
 
                         <div class="row">
+
+                        <div class="form-group col-sm-12">
+                                <label for="wlim-setting-email_carrier" class="col-form-label">
+                                    <strong><?php esc_html_e( 'Email Carrier', WL_MIM_DOMAIN ); ?>:</strong>
+                                </label>
+                                <select class="form-control" name="email_carrier" id="wlim-setting-email_carrier">
+									<option value="wp_mail">WP MAIL</option>
+									<option value="smtp">SMTP</option>
+                                </select>
+                            </div>
 
                             <div class="form-group col-sm-12">
                                 <label for="wlim-setting-email_host" class="col-form-label">

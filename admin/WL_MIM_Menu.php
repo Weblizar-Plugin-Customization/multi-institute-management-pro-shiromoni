@@ -194,11 +194,11 @@ class WL_MIM_Menu {
 				// add_action('admin_print_styles-' . $report, array('WL_MIM_Menu', 'report_assets'));
 
 				/* Notifications submenu */
-				// $notifications = add_submenu_page('multi-institute-management', esc_html__('Notifications', WL_MIM_DOMAIN), esc_html__('Notifications', WL_MIM_DOMAIN), 'wl_min_manage_notifications', 'multi-institute-management-notifications', array(
-				// 	'WL_MIM_Menu',
-				// 	'notifications'
-				// ));
-				// add_action('admin_print_styles-' . $notifications, array('WL_MIM_Menu', 'notifications_assets'));
+				$notifications = add_submenu_page('multi-institute-management', esc_html__('Notifications', WL_MIM_DOMAIN), esc_html__('Notifications', WL_MIM_DOMAIN), 'wl_min_manage_notifications', 'multi-institute-management-notifications', array(
+					'WL_MIM_Menu',
+					'notifications'
+				));
+				add_action('admin_print_styles-' . $notifications, array('WL_MIM_Menu', 'notifications_assets'));
 
 				/* Noticeboard submenu */
 				$noticeboard = add_submenu_page('multi-institute-management', esc_html__('Noticeboard', WL_MIM_DOMAIN), esc_html__('Noticeboard', WL_MIM_DOMAIN), 'wl_min_manage_noticeboard', 'multi-institute-management-noticeboard', array(

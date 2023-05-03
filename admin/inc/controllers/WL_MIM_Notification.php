@@ -383,7 +383,7 @@ class WL_MIM_Notification {
 	}
 
 	/* Send Batch Notification */
-	private static function send_batch_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  ) {
+	private static function send_batch_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments = null, $sms_notification = null, $sms_body = null, $template_id = null   ) {
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
 
@@ -415,7 +415,7 @@ class WL_MIM_Notification {
 		}
 		/* End validations */
 
-		self::submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body );
+		self::submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body,  $template_id );
 	}
 
 	/* Send Course Notification */
