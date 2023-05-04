@@ -943,6 +943,7 @@
         saveWithFiles('.save-general-settings-submit', '#wlim-general-settings-form', null, [], false);
         saveWithFiles('.save-payment-settings-submit', '#wlim-payment-settings-form', null, [], false);
         saveWithFiles('.save-email-settings-submit', '#wlim-email-settings-form', null, [], false);
+        saveWithFiles('.save-template-settings-submit', '#wlim-email-template-form', null, [], false);
         saveWithFiles('.save-sms-settings-submit', '#wlim-sms-settings-form', null, [], false);
         saveWithFiles('.save-admit-card-settings-submit', '#wlim-admit-card-settings-form', null, [], false);
         saveWithFiles('.save-id-card-settings-submit', '#wlim-id-card-settings-form', null, [], false);

@@ -255,6 +255,38 @@ class WL_MIM_SettingHelper {
 		);
 	}
 
+	public static function get_template_settings($institute_id) {
+		global $wpdb;
+
+		$et_inquiry_register_subject   = '';
+		$et_inquiry_register_body      = '';
+		$et_inquiry_processing_subject = '';
+		$et_inquiry_processing_body    = '';
+		$et_inquiry_approved_subject   = '';
+		$et_inquiry_approved_body      = '';
+
+		$email            = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'email_template'");
+		
+		if ($email) {
+			$email            = unserialize($email->mim_value);
+			$et_inquiry_register_subject   = isset($email['et_inquiry_register_subject']) ? $email['et_inquiry_register_subject'] : '';
+			$et_inquiry_register_body      = isset($email['et_inquiry_register_body']) ? $email['et_inquiry_register_body'] : '';
+			$et_inquiry_processing_subject = isset($email['et_inquiry_processing_subject']) ? $email['et_inquiry_processing_subject'] : '';
+			$et_inquiry_processing_body    = isset($email['et_inquiry_processing_body']) ? $email['et_inquiry_processing_body'] : '';
+			$et_inquiry_approved_subject   = isset($email['et_inquiry_approved_subject']) ? $email['et_inquiry_approved_subject'] : '';
+			$et_inquiry_approved_body      = isset($email['et_inquiry_approved_body']) ? $email['et_inquiry_approved_body'] : '';
+		}
+
+		return array(
+			'et_inquiry_register_subject'   => $et_inquiry_register_subject,
+			'et_inquiry_register_body'      => $et_inquiry_register_body,
+			'et_inquiry_processing_subject' => $et_inquiry_processing_subject,
+			'et_inquiry_processing_body'    => $et_inquiry_processing_body,
+			'et_inquiry_approved_subject'   => $et_inquiry_approved_subject,
+			'et_inquiry_approved_body'      => $et_inquiry_approved_body,
+		);
+	}
+
 	/* Payment settings */
 	public static function get_payment_settings($institute_id) {
 		global $wpdb;

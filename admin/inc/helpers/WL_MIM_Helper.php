@@ -456,6 +456,17 @@ class WL_MIM_Helper {
 		);
 	}
 
+	/* Get email templates */
+	public static function get_email_templates() {
+		return array(
+			'enquiry_received'          => esc_html__('Enquiry received confirmation to inquisitor', WL_MIM_DOMAIN),
+			'enquiry_received_to_admin' => esc_html__('Enquiry received confirmation to admin', WL_MIM_DOMAIN),
+			'student_registered'        => esc_html__('Student registered confirmation to student', WL_MIM_DOMAIN),
+			'fees_submitted'            => esc_html__('Fees submitted confirmation to student', WL_MIM_DOMAIN),
+			'student_birthday'          => esc_html__('Birthday message to student', WL_MIM_DOMAIN),
+		);
+	}
+
 	/* Get valid enquiry action data */
 	public static function get_enquiry_action_data() {
 		return array('delete_enquiry', 'mark_enquiry_inactive');

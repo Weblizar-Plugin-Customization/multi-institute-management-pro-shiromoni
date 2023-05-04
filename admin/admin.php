@@ -35,6 +35,7 @@ add_action( 'wp_ajax_wl-mim-save-payment-settings', array( 'WL_MIM_Setting', 'sa
 
 /* Action for email setttings */
 add_action( 'wp_ajax_wl-mim-save-email-settings', array( 'WL_MIM_Setting', 'save_email_settings' ) );
+add_action( 'wp_ajax_wl-mim-save-email-template', array( 'WL_MIM_Setting', 'save_email_template' ) );
 
 /* Action for sms setttings */
 add_action( 'wp_ajax_wl-mim-save-sms-settings', array( 'WL_MIM_Setting', 'save_sms_settings' ) );

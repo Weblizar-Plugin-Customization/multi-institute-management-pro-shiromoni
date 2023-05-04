@@ -278,6 +278,67 @@ class WL_MIM_Setting {
 		wp_send_json_error($errors);
 	}
 
+	public static function save_email_template() {
+		if (!wp_verify_nonce($_REQUEST['save-email-template'], 'save-email-template')) {
+			die();
+		}
+		global $wpdb;
+		$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+		/* Email settings */
+		$et_inquiry_register_subject   = isset($_POST['et_inquiry_register_subject']) ? sanitize_text_field($_POST['et_inquiry_register_subject']) : '';
+		$et_inquiry_register_body      = isset($_POST['et_inquiry_register_body']) ? sanitize_text_field($_POST['et_inquiry_register_body']) : '';
+		$et_inquiry_processing_subject = isset($_POST['et_inquiry_processing_subject']) ? sanitize_text_field($_POST['et_inquiry_processing_subject']) : '';
+		$et_inquiry_processing_body    = isset($_POST['et_inquiry_processing_body']) ? sanitize_text_field($_POST['et_inquiry_processing_body']) : '';
+		$et_inquiry_approved_subject   = isset($_POST['et_inquiry_approved_subject']) ? sanitize_text_field($_POST['et_inquiry_approved_subject']) : '';
+		$et_inquiry_approved_body      = isset($_POST['et_inquiry_approved_body']) ? sanitize_text_field($_POST['et_inquiry_approved_body']) : '';
+
+		/* Validations */
+		$errors = array();
+
+		/* End validations */
+
+		if (count($errors) < 1) {
+			try {
+				$wpdb->query('BEGIN;');
+
+				/* Email settings */
+				$template = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'email_template'");
+
+				$template_data = array(
+					'et_inquiry_register_subject'   => $et_inquiry_register_subject,
+					'et_inquiry_register_body'      => $et_inquiry_register_body,
+					'et_inquiry_processing_subject' => $et_inquiry_processing_subject,
+					'et_inquiry_processing_body'    => $et_inquiry_processing_body,
+					'et_inquiry_approved_subject'   => $et_inquiry_approved_subject,
+					'et_inquiry_approved_body'      => $et_inquiry_approved_body
+				);
+
+				if (!$template) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'email_template',
+						'mim_value'    => serialize($template_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($template_data)
+					), array(
+						'id'           => $template->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				$wpdb->query('COMMIT;');
+				wp_send_json_success(array('message' => esc_html__('Email settings updated successfully.', WL_MIM_DOMAIN)));
+			} catch (Exception $exception) {
+				$wpdb->query('ROLLBACK;');
+				wp_send_json_error($exception->getMessage());
+			}
+		}
+		wp_send_json_error($errors);
+	}
+
 	/* Save sms setttings */
 	public static function save_sms_settings() {
 		self::check_permission();
