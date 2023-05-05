@@ -228,6 +228,7 @@ class WL_MIM_SettingHelper {
 	/* Email settings */
 	public static function get_email_settings($institute_id) {
 		global $wpdb;
+		$email_carrier       = '';
 		$email_host       = '';
 		$email_username   = '';
 		$email_password   = '';
@@ -237,6 +238,7 @@ class WL_MIM_SettingHelper {
 		$email            = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'email'");
 		if ($email) {
 			$email            = unserialize($email->mim_value);
+			$email_carrier       = isset($email['email_carrier']) ? $email['email_carrier'] : '';
 			$email_host       = isset($email['email_host']) ? $email['email_host'] : '';
 			$email_username   = isset($email['email_username']) ? $email['email_username'] : '';
 			$email_password   = isset($email['email_password']) ? $email['email_password'] : '';
@@ -246,6 +248,7 @@ class WL_MIM_SettingHelper {
 		}
 
 		return array(
+			'email_carrier'       => $email_carrier,
 			'email_host'       => $email_host,
 			'email_username'   => $email_username,
 			'email_password'   => $email_password,

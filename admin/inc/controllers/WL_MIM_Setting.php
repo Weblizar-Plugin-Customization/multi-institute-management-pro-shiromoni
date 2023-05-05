@@ -222,6 +222,7 @@ class WL_MIM_Setting {
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
 
 		/* Email settings */
+		$email_carrier       = isset($_POST['email_carrier']) ? sanitize_text_field($_POST['email_carrier']) : '';
 		$email_host       = isset($_POST['email_host']) ? sanitize_text_field($_POST['email_host']) : '';
 		$email_username   = isset($_POST['email_username']) ? sanitize_text_field($_POST['email_username']) : '';
 		$email_password   = isset($_POST['email_password']) ? sanitize_text_field($_POST['email_password']) : '';
@@ -245,6 +246,7 @@ class WL_MIM_Setting {
 				$email = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'email'");
 
 				$email_data = array(
+					'email_carrier'       => $email_carrier,
 					'email_host'       => $email_host,
 					'email_username'   => $email_username,
 					'email_password'   => $email_password,

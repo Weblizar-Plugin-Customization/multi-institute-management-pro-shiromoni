@@ -478,8 +478,8 @@ if (empty($general_institute['institute_name'])) {
                                     <strong><?php esc_html_e('Email Carrier', WL_MIM_DOMAIN); ?>:</strong>
                                 </label>
                                 <select class="form-control" name="email_carrier" id="wlim-setting-email_carrier">
-                                    <option value="wp_mail">WP MAIL</option>
-                                    <option value="smtp">SMTP</option>
+                                    <option value="wp_mail" <?php $email['email_carrier'] == 'wp_mail' ? esc_html_e('selected') : ''; ?>  >WP MAIL</option>
+                                    <option value="smtp"  <?php $email['email_carrier'] == 'smtp' ? esc_html_e('selected') : ''; ?>>SMTP</option>
                                 </select>
                             </div>
 
@@ -549,7 +549,6 @@ if (empty($general_institute['institute_name'])) {
                                             <strong>[STUDENT_NAME]</strong> - <?php esc_html_e("to replace with student name", WL_MIM_DOMAIN); ?>
                                         </li>
                                         <li class="list-group-item">
-                                            .
                                             <strong>[STUDENT_EMAIL]</strong> - <?php esc_html_e("to replace with student email", WL_MIM_DOMAIN); ?>
                                         </li>
                                         <li class="list-group-item">
