@@ -368,15 +368,15 @@ class WL_MIM_Notification {
 		if ( $notification_for == 'batch' ) {
 			self::send_batch_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id );
 		} elseif ( $notification_for == 'course' ) {
-			self::send_course_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  );
+			self::send_course_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id = null );
 		} elseif ( $notification_for == 'pending-fees' ) {
-			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  );
+			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id = null   );
 		} elseif ( $notification_for == 'active-students' ) {
-			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  );
+			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id = null  );
 		} elseif ( $notification_for == 'inactive-students' ) {
-			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  );
+			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id = null  );
 		} elseif ( $notification_for == 'individual-students' ) {
-			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  );
+			self::send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id = null  );
 		} else {
 			wp_send_json_error( esc_html__( 'Invalid notification.', WL_MIM_DOMAIN ) );
 		}
@@ -419,7 +419,7 @@ class WL_MIM_Notification {
 	}
 
 	/* Send Course Notification */
-	private static function send_course_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body ) {
+	private static function send_course_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id ) {
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
 
@@ -451,7 +451,7 @@ class WL_MIM_Notification {
 		}
 		/* End validations */
 
-		self::submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body );
+		self::submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body , $template_id);
 	}
 
 	/* Send Students Notification */

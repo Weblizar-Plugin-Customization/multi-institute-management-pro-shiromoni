@@ -474,16 +474,6 @@ if (empty($general_institute['institute_name'])) {
                         <div class="row">
 
                             <div class="form-group col-sm-12">
-                                <label for="wlim-setting-email_carrier" class="col-form-label">
-                                    <strong><?php esc_html_e('Email Carrier', WL_MIM_DOMAIN); ?>:</strong>
-                                </label>
-                                <select class="form-control" name="email_carrier" id="wlim-setting-email_carrier">
-                                    <option value="wp_mail" <?php $email['email_carrier'] == 'wp_mail' ? esc_html_e('selected') : ''; ?>  >WP MAIL</option>
-                                    <option value="smtp"  <?php $email['email_carrier'] == 'smtp' ? esc_html_e('selected') : ''; ?>>SMTP</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group col-sm-12">
                                 <label for="wlim-setting-email_host" class="col-form-label">
                                     <?php esc_html_e('Host', WL_MIM_DOMAIN); ?>:
                                 </label>
