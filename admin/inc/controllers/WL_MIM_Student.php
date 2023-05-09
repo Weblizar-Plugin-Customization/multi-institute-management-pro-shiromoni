@@ -251,7 +251,7 @@ class WL_MIM_Student
 			$errors['last_name'] = esc_html__('Maximum length cannot exceed 255 characters.', WL_MIM_DOMAIN);
 		}
 
-		$course = $wpdb->get_row("SELECT duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE is_deleted = 0 AND is_active = 1 AND id = $course_id AND institute_id = $institute_id");
+		$course = $wpdb->get_row("SELECT course_code, course_name, duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE is_deleted = 0 AND is_active = 1 AND id = $course_id AND institute_id = $institute_id");
 
 		if (!$course) {
 			$errors['course'] = esc_html__('Please select a valid course.', WL_MIM_DOMAIN);
@@ -263,6 +263,9 @@ class WL_MIM_Student
 		}
 		
 		$count = $wpdb->get_var("SELECT COUNT(*) as count FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND is_active = 1 AND id = $batch_id AND course_id = $course_id AND institute_id = $institute_id");
+
+		// get batch details
+		$batch = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_batches WHERE id = $batch_id");
 
 		if (!$count) {
 			$errors['batch'] = esc_html__('Please select a valid batch.', WL_MIM_DOMAIN);
@@ -615,6 +618,23 @@ class WL_MIM_Student
 
 				if (!empty($signature) && !empty($signature_in_db)) {
 					wp_delete_attachment($signature_in_db, true);
+				}
+
+				// Send email to student
+				$template = WL_MIM_SettingHelper::get_template_settings($institute_id);
+				if ($template['et_inquiry_processing_subject']) {
+
+						$subject = $template['et_inquiry_processing_subject'];
+						$body    = $template['et_inquiry_processing_body'];
+
+						$body = str_replace('[COURSE_NAME]', $course->course_name, $body);
+						$body = str_replace('[STUDENT_NAME]', $first_name." ".$last_name, $body);
+						$body = str_replace('[STUDENT_EMAIL]', $email, $body);
+						$body = str_replace('[STUDENT_batch]', $batch->batch_name, $body);
+						$body = str_replace('[REGISTRATION_DATE]', $created_at, $body);
+						$body = str_replace('[EXPIRATION_DATE]', $expire_at, $body);
+
+						WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
 				}
 
 				/* Get SMS template */
@@ -1797,7 +1817,7 @@ class WL_MIM_Student
 			$errors['last_name'] = esc_html__('Maximum length cannot exceed 255 characters.', WL_MIM_DOMAIN);
 		}
 
-		$course = $wpdb->get_row("SELECT duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE is_deleted = 0 AND is_active = 1 AND id = $course_id AND institute_id = $institute_id");
+		$course = $wpdb->get_row("SELECT course_name, course_code, duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE is_deleted = 0 AND is_active = 1 AND id = $course_id AND institute_id = $institute_id");
 
 		if (!$course) {
 			$errors['course'] = esc_html__('Please select a valid course.', WL_MIM_DOMAIN);
@@ -1806,6 +1826,8 @@ class WL_MIM_Student
 		$duration_in_month = WL_MIM_Helper::get_course_months_count($course->duration, $course->duration_in);
 
 		$count = $wpdb->get_var("SELECT COUNT(*) as count FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND is_active = 1 AND id = $batch_id AND course_id = $course_id AND institute_id = $institute_id");
+
+		$batch = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND is_active = 1 AND id = $batch_id AND course_id = $course_id AND institute_id = $institute_id");
 
 		if (!$count) {
 			$errors['batch'] = esc_html__('Please select a valid batch.', WL_MIM_DOMAIN);
@@ -2117,6 +2139,24 @@ class WL_MIM_Student
 				));
 				if ($success === false) {
 					throw new Exception(esc_html__('An unexpected error occurred.', WL_MIM_DOMAIN));
+				}
+
+				// Send email to student
+				if ($is_active) {
+					$template = WL_MIM_SettingHelper::get_template_settings($institute_id);
+					if ($template['et_inquiry_approved_subject']) {
+
+							$subject = $template['et_inquiry_approved_subject'];
+							$body    = $template['et_inquiry_approved_body'];
+
+							$body = str_replace('[COURSE_NAME]', $course->course_name, $body);
+							$body = str_replace('[STUDENT_NAME]', $first_name." ".$last_name, $body);
+							$body = str_replace('[STUDENT_EMAIL]', $email, $body);
+							$body = str_replace('[STUDENT_batch]', $batch->batch_name, $body);
+							$body = str_replace('[REGISTRATION_DATE]', $created_at, $body);
+							$body = str_replace('[EXPIRATION_DATE]', $expire_at, $body);
+							WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
+					}
 				}
 
 				$wpdb->query('COMMIT;');

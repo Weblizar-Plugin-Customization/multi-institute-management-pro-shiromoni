@@ -530,25 +530,19 @@ if (empty($general_institute['institute_name'])) {
                         <div class="row">
 
                         <div class="alert alert-info mt-2">
-                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <strong>[COURSE_NAME]</strong> - <?php esc_html_e("to replace with course name", WL_MIM_DOMAIN); ?>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>[STUDENT_NAME]</strong> - <?php esc_html_e("to replace with student name", WL_MIM_DOMAIN); ?>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>[STUDENT_EMAIL]</strong> - <?php esc_html_e("to replace with student email", WL_MIM_DOMAIN); ?>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>[COURSE_CODE]</strong> - <?php esc_html_e("to replace with course code", WL_MIM_DOMAIN); ?>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>[BATCH]</strong> - <?php esc_html_e("to replace with batch", WL_MIM_DOMAIN); ?>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <strong>[COURSE_NAME]</strong> - <?php esc_html_e("to replace with course name", WL_MIM_DOMAIN); ?>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>[STUDENT_NAME]</strong> - <?php esc_html_e("to replace with student name", WL_MIM_DOMAIN); ?>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>[STUDENT_EMAIL]</strong> - <?php esc_html_e("to replace with student email", WL_MIM_DOMAIN); ?>
+                                </li>
+                            </ul>
+                        </div>
 
                             <div class="col-12 bg-primary text-white p-2">
                                 <div class="h5 "><?php esc_html_e('Inquiry Received', WL_MIM_DOMAIN); ?></div>
@@ -567,6 +561,30 @@ if (empty($general_institute['institute_name'])) {
                             <!-- Processing -->
                             <div class="p-2"></div>
 
+                            <div class="alert alert-info mt-2">
+                                <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>[COURSE_NAME]</strong> - <?php esc_html_e("to replace with course name", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[STUDENT_NAME]</strong> - <?php esc_html_e("to replace with student name", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[STUDENT_EMAIL]</strong> - <?php esc_html_e("to replace with student email", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[STUDENT_BATCH]</strong> - <?php esc_html_e("to replace with student Batch", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[REGISTRATION_DATE]</strong> - <?php esc_html_e("to replace with student Registration date", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[EXPIRATION_DATE]</strong> - <?php esc_html_e("to replace with student expiration date", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <div class="col-12 bg-primary text-white p-2">
                                 <div class="h5 "><?php esc_html_e('Inquiry to Admission (Processing)', WL_MIM_DOMAIN); ?></div>
                             </div>
@@ -584,6 +602,30 @@ if (empty($general_institute['institute_name'])) {
                             <!-- Approved -->
                             <div class="p-2"></div>
 
+                            <div class="alert alert-info mt-2">
+                                <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <strong>[COURSE_NAME]</strong> - <?php esc_html_e("to replace with course name", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[STUDENT_NAME]</strong> - <?php esc_html_e("to replace with student name", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[STUDENT_EMAIL]</strong> - <?php esc_html_e("to replace with student email", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[STUDENT_BATCH]</strong> - <?php esc_html_e("to replace with student Batch", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[REGISTRATION_DATE]</strong> - <?php esc_html_e("to replace with student Registration date", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>[EXPIRATION_DATE]</strong> - <?php esc_html_e("to replace with student expiration date", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                </ul>
+                            </div>
+                            
                             <div class="col-12 bg-primary text-white p-2">
                                 <div class="h5 "><?php esc_html_e(' Admission (approved)', WL_MIM_DOMAIN); ?></div>
                             </div>

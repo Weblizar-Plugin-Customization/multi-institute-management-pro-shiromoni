@@ -236,6 +236,20 @@ class WL_MIM_Enquiry_Front {
 
 				$wpdb->query( 'COMMIT;' );
 
+				// Send email to student
+				$template = WL_MIM_SettingHelper::get_template_settings($institute_id);
+				if ($template['et_inquiry_register_subject']) {
+
+						$subject = $template['et_inquiry_register_subject'];
+						$body    = $template['et_inquiry_register_body'];
+
+						$body = str_replace('[COURSE_NAME]', $course[0]->course_name, $body);
+						$body = str_replace('[STUDENT_NAME]', $first_name." ".$last_name, $body);
+						$body = str_replace('[STUDENT_EMAIL]', $email, $body);
+
+						WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
+				}
+
 				/* Get SMS template */
 				$sms_template_enquiry_received          = WL_MIM_SettingHelper::get_sms_template_enquiry_received( $institute_id );
 				$sms_template_enquiry_received_to_admin = WL_MIM_SettingHelper::get_sms_template_enquiry_received_to_admin( $institute_id );
