@@ -156,8 +156,7 @@ class WL_MIM_Student
 	}
 
 	/* Add new student */
-	public static function add_student()
-	{
+	public static function add_student() {
 		self::check_permission();
 		if (!wp_verify_nonce($_POST['add-student'], 'add-student')) {
 			die();
@@ -199,7 +198,6 @@ class WL_MIM_Student
 		$enquiry_action  = isset($_POST['enquiry_action']) ? sanitize_text_field($_POST['enquiry_action']) : '';
 		$amount          = (isset($_POST['amount']) && is_array($_POST['amount'])) ? $_POST['amount'] : null;
 		$period          = (isset($_POST['period']) && is_array($_POST['period'])) ? $_POST['period'] : null;
-		$custom_fields   = (isset($_POST['custom_fields']) && is_array($_POST['custom_fields'])) ? $_POST['custom_fields'] : array();
 
 		$allow_login      = isset($_POST['allow_login']) ? boolval(sanitize_text_field($_POST['allow_login'])) : 0;
 		$username         = isset($_POST['username']) ? sanitize_text_field($_POST['username']) : '';
@@ -220,6 +218,7 @@ class WL_MIM_Student
 		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
 		$business_manager = isset($_POST['business_manager']) ? sanitize_text_field($_POST['business_manager']) : '';
+		$student_status = isset($_POST['student_status']) ? sanitize_text_field($_POST['student_status']) : '';
 
 
 		if (empty($invoice_title)) {
@@ -355,32 +354,6 @@ class WL_MIM_Student
 			$errors['email'] = esc_html__('Please provide a valid email address.', WL_MIM_DOMAIN);
 		}
 
-		
-	
-
-		if (!empty($custom_fields)) {
-			if (!array_key_exists('name', $custom_fields) || !array_key_exists('value', $custom_fields)) {
-				wp_send_json_error(esc_html__('Invalid field.', WL_MIM_DOMAIN));
-			} elseif (!is_array($custom_fields['name']) || !is_array($custom_fields['value'])) {
-				wp_send_json_error(esc_html__('Invalid field.', WL_MIM_DOMAIN));
-			} elseif (count($custom_fields['name']) != count($custom_fields['value'])) {
-				wp_send_json_error(esc_html__('Invalid field.', WL_MIM_DOMAIN));
-			} else {
-				$custom_fields_data     = WL_MIM_Helper::get_active_custom_fields_institute($institute_id);
-				$custom_field_name_data = array();
-				foreach ($custom_fields_data as $custom_field_data) {
-					array_push($custom_field_name_data, $custom_field_data->field_name);
-				}
-				foreach ($custom_fields['name'] as $key => $field_name) {
-					$custom_fields['name'][$key]  = sanitize_text_field($field_name);
-					$custom_fields['value'][$key] = sanitize_text_field($custom_fields['value'][$key]);
-				}
-				if (!array_intersect($custom_fields['name'], $custom_field_name_data) == $custom_fields['name']) {
-					wp_send_json_error(esc_html__('Invalid field.', WL_MIM_DOMAIN));
-				}
-			}
-		}
-
 		if ($general_enable_roll_number) {
 			if (!empty($roll_number)) {
 				$count = $wpdb->get_var("SELECT COUNT(*) as count FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND roll_number = '$roll_number' AND institute_id = $institute_id");
@@ -436,11 +409,8 @@ class WL_MIM_Student
 
 				$inactive_at = null;
 				if (!$is_active) {
-					$inactive_at = date('Y-m-d H:i:s');
+					$inactive_at = null;
 				}
-
-				$custom_fields = serialize($custom_fields);
-
 				$data = array(
 					'course_id'     => $course_id,
 					'enrollment_id'     => $enrollment_id,
@@ -459,12 +429,10 @@ class WL_MIM_Student
 					'phone'         => $phone,
 					'qualification' => $qualification,
 					'email'         => $email,
-					// 'fees'          => $fees,
 					'is_active'     => $is_active,
 					'inactive_at'   => $inactive_at,
 					'added_by'      => get_current_user_id(),
 					'institute_id'  => $institute_id,
-					'custom_fields' => $custom_fields,
 
 					'total_course_fee'  => $total_course_fee,
 					'course_discount'   => $course_discount,
@@ -475,6 +443,7 @@ class WL_MIM_Student
 					'expire_at'  => $expire_at,
 					'class'      => $class,
 					'business_manager'      => $business_manager,
+					'student_status'        => $student_status,
 				);
 
 				if ($general_enable_roll_number) {
@@ -546,7 +515,6 @@ class WL_MIM_Student
 							'payable_amount' => $payable_amount[$key],
 							'due_date_amount'=> $due_date_amount[$key],
 							'student_id'     => $student_id,
-							'created_at'     => $created_at,
 							'due_date'       => date("Y-m-d", strtotime($due_date[$key])),
 							'invoice_date'   => date( 'Y-m-d' ),
 							'added_by'       => get_current_user_id(),
@@ -561,24 +529,6 @@ class WL_MIM_Student
 				if (!$success) {
 					throw new Exception(esc_html__('An unexpected error occurred.', WL_MIM_DOMAIN));
 				}
-				$student_id = $wpdb->insert_id;
-
-				// if (WL_MIM_Helper::get_fees_total($amount['paid']) > 0) {
-				// 	unset($amount['payable']);
-				// 	$data = array(
-				// 		'fees'         => serialize($amount),
-				// 		'student_id'   => $student_id,
-				// 		'added_by'     => get_current_user_id(),
-				// 		'institute_id' => $institute_id
-				// 	);
-
-				// 	$data['created_at'] = current_time('Y-m-d H:i:s');
-
-				// 	$success = $wpdb->insert("{$wpdb->prefix}wl_min_installments", $data);
-				// 	if (!$success) {
-				// 		throw new Exception(esc_html__('An unexpected error occurred.', WL_MIM_DOMAIN));
-				// 	}
-				// }
 
 				if ($valid_enquiry_action) {
 					if ($enquiry_action == WL_MIM_Helper::get_enquiry_action_data()[1]) {
@@ -661,7 +611,7 @@ class WL_MIM_Student
 		}
 		wp_send_json_error($errors);
 	}
-
+	
 	/* Bulk Import new students */
 	public static function import_students()
 	{
@@ -1681,6 +1631,13 @@ class WL_MIM_Student
 			</label>
 		</div>
 		<hr>
+		<div class="form-group">
+			<label for="wlim-enquiry-student-status" class="col-form-label"> <?php esc_html_e( "Status", WL_MIM_DOMAIN ); ?>:</label>
+			<select name="student_status" class="form-control " id="wlim-enquiry-student-status">
+				<option value="processing" <?php echo ($row->student_status == "processing") ? esc_html_e("selected") : "";  ?>>Processing</option>
+				<option value="approved" <?php echo ($row->student_status == "approved") ? esc_html_e("selected") : "";   ?>>Approved</option>
+			</select>
+		</div>
 		<div class="form-check pl-0">
 			<input name="allow_login" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-allow_login_update" <?php echo boolval($row->allow_login) ? "checked" : ""; ?>>
 			<label class="form-check-label" for="wlim-student-allow_login_update">
@@ -1779,6 +1736,7 @@ class WL_MIM_Student
 		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
 		$business_manager = isset($_POST['business_manager']) ? sanitize_text_field($_POST['business_manager']) : '';
+		$student_status = isset($_POST['student_status']) ? sanitize_text_field($_POST['student_status']) : '';
 		$row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND id = $id AND institute_id = $institute_id");
 		if (!$row) {
 			die();
@@ -2040,9 +1998,10 @@ class WL_MIM_Student
 					'custom_fields' => $custom_fields,
 					'created_at'    => $created_at,
 					'class'         => $class,
-					'business_manager'         => $business_manager,
-					'expire_at'     => $expire_at,
-					'updated_at'    => date('Y-m-d H:i:s')
+					'business_manager' => $business_manager,
+					'student_status'   => $student_status,
+					'expire_at'        => $expire_at,
+					'updated_at'       => date('Y-m-d H:i:s')
 				);
 
 				if ($general_enable_roll_number) {
@@ -2719,12 +2678,19 @@ class WL_MIM_Student
 		<?php } ?>
 		<hr>
 		<div class="form-check pl-0">
-			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active">
+			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active" checked>
 			<label class="form-check-label" for="wlim-student-is_active">
 				<?php esc_html_e('Is Active?', WL_MIM_DOMAIN); ?>
 			</label>
 		</div>
 		<hr>
+		<div class="form-group">
+			<label for="wlim-enquiry-student-status" class="col-form-label"> <?php esc_html_e( "Status", WL_MIM_DOMAIN ); ?>:</label>
+			<select name="student_status" class="form-control " id="wlim-enquiry-student-status">
+				<option value="processing">Processing</option>
+				<option value="approved">Approved</option>
+			</select>
+		</div>
 		<div class="form-check pl-0">
 			<input name="allow_login" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-allow_login" checked>
 			<label class="form-check-label" for="wlim-student-allow_login">
@@ -2841,8 +2807,9 @@ class WL_MIM_Student
 						</tbody>
 					</table>
 				</div>
-			</div>
-			
+		</div>
+		<div id="wlim-add-student-fetch-installment">
+		</div>
 			
 		<!-- <div class="fee_types_box">
 			<table class="table table-bordered">
