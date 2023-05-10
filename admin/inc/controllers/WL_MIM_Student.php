@@ -607,7 +607,7 @@ class WL_MIM_Student
 
 						WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
 				}
-				var_dump($body); die;
+				// var_dump($body); die;
 				$wpdb->query('COMMIT;');
 				/* Get SMS template */
 				$sms_template_student_registered = WL_MIM_SettingHelper::get_sms_template_student_registered($institute_id);
