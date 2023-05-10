@@ -508,24 +508,42 @@ class WL_MIM_Student
 
 				$success = $wpdb->insert("{$wpdb->prefix}wl_min_students", $data);
 				$student_id = $wpdb->insert_id;
-				if($invoice_title){
-					foreach( $invoice_title as $key => $value ){
+				$fees = array(); // Initialize the $fees array
+
+				if ($invoice_title) {
+					foreach ($invoice_title as $key => $value) {
 						$invoice_data = array(
 							'invoice_title'  => $invoice_title[$key],
 							'payable_amount' => $payable_amount[$key],
-							'due_date_amount'=> $due_date_amount[$key],
+							'due_date_amount' => $due_date_amount[$key],
 							'student_id'     => $student_id,
 							'due_date'       => date("Y-m-d", strtotime($due_date[$key])),
-							'invoice_date'   => date( 'Y-m-d' ),
+							'invoice_date'   => date('Y-m-d'),
 							'added_by'       => get_current_user_id(),
 							'institute_id'   => $institute_id
 						);
 
-						$invoice_data['created_at'] = current_time( 'Y-m-d H:i:s' );
-						$success = $wpdb->insert( "{$wpdb->prefix}wl_min_invoices", $invoice_data );
+						$invoice_data['created_at'] = current_time('Y-m-d H:i:s');
+						$success = $wpdb->insert("{$wpdb->prefix}wl_min_invoices", $invoice_data);
+
+						// Add the $invoice_data to the $fees array
+						$fees[] = $invoice_data;
 					}
-					
 				}
+
+				// installment table
+				$table = '<table>';
+				$table .= '<tr><th>Invoice Title</th><th>Payable Amount</th><th>Due Date</th><th>Due Date Amount</th></tr>';
+				foreach ($fees as $fee) {
+					$table .= '<tr>';
+					$table .= '<td>' . $fee['invoice_title'] . '</td>';
+					$table .= '<td>' . $fee['payable_amount'] . '</td>';
+					$table .= '<td>' . $fee['due_date'] . '</td>';
+					$table .= '<td>' . $fee['due_date_amount'] . '</td>';
+					$table .= '</tr>';
+				}
+				$table .= '</table>';
+
 				if (!$success) {
 					throw new Exception(esc_html__('An unexpected error occurred.', WL_MIM_DOMAIN));
 				}
@@ -556,8 +574,6 @@ class WL_MIM_Student
 					}
 				}
 
-				$wpdb->query('COMMIT;');
-
 				if (!empty($id_proof) && !empty($id_proof_in_db)) {
 					wp_delete_attachment($id_proof_in_db, true);
 				}
@@ -576,17 +592,23 @@ class WL_MIM_Student
 
 						$subject = $template['et_inquiry_processing_subject'];
 						$body    = $template['et_inquiry_processing_body'];
-
+						
 						$body = str_replace('[COURSE_NAME]', $course->course_name, $body);
 						$body = str_replace('[STUDENT_NAME]', $first_name." ".$last_name, $body);
 						$body = str_replace('[STUDENT_EMAIL]', $email, $body);
-						$body = str_replace('[STUDENT_batch]', $batch->batch_name, $body);
+						$body = str_replace('[STUDENT_BATCH]', $batch->batch_name, $body);
 						$body = str_replace('[REGISTRATION_DATE]', $created_at, $body);
 						$body = str_replace('[EXPIRATION_DATE]', $expire_at, $body);
+						$body = str_replace('[TOTAL_COURSE_FEE]', $total_course_fee, $body);
+						$body = str_replace('[COURSE_DISCOUNT]', $course_discount, $body);
+						$body = str_replace('[COURSE_PAYABLE]', $course_payable, $body);
+						$body = str_replace('[INSTALLMENT_COUNT]', $installment_count, $body);
+						$body = str_replace('[INSTALLMENTS]', $table, $body);
 
 						WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
 				}
-
+				var_dump($body); die;
+				$wpdb->query('COMMIT;');
 				/* Get SMS template */
 				$sms_template_student_registered = WL_MIM_SettingHelper::get_sms_template_student_registered($institute_id);
 
@@ -2099,9 +2121,9 @@ class WL_MIM_Student
 				if ($success === false) {
 					throw new Exception(esc_html__('An unexpected error occurred.', WL_MIM_DOMAIN));
 				}
-
+				$wpdb->query('COMMIT;');
 				// Send email to student
-				if ($is_active) {
+				if ($student_status == 'approved') {
 					$template = WL_MIM_SettingHelper::get_template_settings($institute_id);
 					if ($template['et_inquiry_approved_subject']) {
 
@@ -2111,14 +2133,12 @@ class WL_MIM_Student
 							$body = str_replace('[COURSE_NAME]', $course->course_name, $body);
 							$body = str_replace('[STUDENT_NAME]', $first_name." ".$last_name, $body);
 							$body = str_replace('[STUDENT_EMAIL]', $email, $body);
-							$body = str_replace('[STUDENT_batch]', $batch->batch_name, $body);
+							$body = str_replace('[STUDENT_BATCH]', $batch->batch_name, $body);
 							$body = str_replace('[REGISTRATION_DATE]', $created_at, $body);
 							$body = str_replace('[EXPIRATION_DATE]', $expire_at, $body);
 							WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
 					}
 				}
-
-				$wpdb->query('COMMIT;');
 
 				if (!empty($id_proof) && !empty($id_proof_in_db)) {
 					wp_delete_attachment($id_proof_in_db, true);

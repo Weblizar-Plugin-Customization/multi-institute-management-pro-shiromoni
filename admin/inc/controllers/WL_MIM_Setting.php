@@ -288,12 +288,12 @@ class WL_MIM_Setting {
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
 
 		/* Email settings */
-		$et_inquiry_register_subject   = isset($_POST['et_inquiry_register_subject']) ? sanitize_text_field($_POST['et_inquiry_register_subject']) : '';
-		$et_inquiry_register_body      = isset($_POST['et_inquiry_register_body']) ? sanitize_text_field($_POST['et_inquiry_register_body']) : '';
-		$et_inquiry_processing_subject = isset($_POST['et_inquiry_processing_subject']) ? sanitize_text_field($_POST['et_inquiry_processing_subject']) : '';
-		$et_inquiry_processing_body    = isset($_POST['et_inquiry_processing_body']) ? sanitize_text_field($_POST['et_inquiry_processing_body']) : '';
-		$et_inquiry_approved_subject   = isset($_POST['et_inquiry_approved_subject']) ? sanitize_text_field($_POST['et_inquiry_approved_subject']) : '';
-		$et_inquiry_approved_body      = isset($_POST['et_inquiry_approved_body']) ? sanitize_text_field($_POST['et_inquiry_approved_body']) : '';
+		$et_inquiry_register_subject   = isset($_POST['et_inquiry_register_subject']) ? wp_kses_post($_POST['et_inquiry_register_subject']) : '';
+		$et_inquiry_register_body      = isset($_POST['et_inquiry_register_body']) ? wp_kses_post($_POST['et_inquiry_register_body']) : '';
+		$et_inquiry_processing_subject = isset($_POST['et_inquiry_processing_subject']) ? wp_kses_post($_POST['et_inquiry_processing_subject']) : '';
+		$et_inquiry_processing_body    = isset($_POST['et_inquiry_processing_body']) ? wp_kses_post($_POST['et_inquiry_processing_body']) : '';
+		$et_inquiry_approved_subject   = isset($_POST['et_inquiry_approved_subject']) ? wp_kses_post($_POST['et_inquiry_approved_subject']) : '';
+		$et_inquiry_approved_body      = isset($_POST['et_inquiry_approved_body']) ? wp_kses_post($_POST['et_inquiry_approved_body']) : '';
 
 		/* Validations */
 		$errors = array();

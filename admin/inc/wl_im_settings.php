@@ -582,6 +582,9 @@ if (empty($general_institute['institute_name'])) {
                                     <li class="list-group-item">
                                         <strong>[EXPIRATION_DATE]</strong> - <?php esc_html_e("to replace with student expiration date", WL_MIM_DOMAIN); ?>
                                     </li>
+                                    <li class="list-group-item">
+                                        <strong>[INSTALLMENTS]</strong> - [TOTAL_COURSE_FEE] - [COURSE_DISCOUNT] - [COURSE_PAYABLE] - [INSTALLMENT_COUNT] <?php esc_html_e("to replace with student fees", WL_MIM_DOMAIN); ?>
+                                    </li>
                                 </ul>
                             </div>
 
