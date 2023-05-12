@@ -142,9 +142,9 @@ class WL_MIM_Payment {
                 $currency          = $payment['payment_currency'];
 
                 $html = <<<EOT
-<button class='mt-2 float-left btn btn-info' onclick='location.reload()'>$back_button</button>
-<button class='mt-2 float-right btn btn-success' id='rzp-button1'>$pay_with_razorpay</button>
-EOT;
+						<button class='mt-2 float-left btn btn-info' onclick='location.reload()'>$back_button</button>
+						<button class='mt-2 float-right btn btn-success' id='rzp-button1'>$pay_with_razorpay</button>
+						EOT;
                 $json = json_encode(array(
                     'payment_method'  => esc_attr($payment_method),
                     'razorpay_key'    => esc_attr($razorpay_key),
@@ -161,7 +161,33 @@ EOT;
                     'invoice_id'      => json_encode($invoice_id),
                 ));
                 wp_send_json_success(array( 'html' => $html, 'json' => $json ));
-            } else {
+            } elseif ( $payment_method == 'stripe' && WL_MIM_PaymentHelper::stripe_enabled_institute( $institute_id ) ) {
+				$currency_symbol = WL_MIM_PaymentHelper::get_currency_symbol_institute( $institute_id );
+				$pay_with_stripe = esc_html__( 'Pay Amount', WL_MIM_DOMAIN ) . ' ' . $currency_symbol . $amount_total . ' ' . esc_html__( 'with Stripe', WL_MIM_DOMAIN );
+				$security        = wp_create_nonce( 'pay-stripe' );
+				$back_button     = esc_html__( 'Go Back', WL_MIM_DOMAIN );
+				$stripe_key      = $payment_stripe['publishable_key'];
+				$currency        = $payment['payment_currency'];
+				$amount_to_pay   = "<div class='mb-2'><span class='font-weight-bold'>" . esc_html__( 'Amount to Pay', WL_MIM_DOMAIN ) . ":</span>&nbsp;<strong>$currency_symbol$amount_total</strong></div>";
+				$html            = <<<EOT
+<button class='mt-2 float-left btn btn-info' onclick='location.reload()'>$back_button</button>
+<button class='mt-2 float-right btn btn-success' id='stripe-button'>$pay_with_stripe</button>
+EOT;
+				$json            = json_encode( array(
+					'payment_method'  => esc_attr( $payment_method ),
+					'stripe_key'      => esc_attr( $stripe_key ),
+					'institute_logo'  => esc_attr( $institute_advanced_logo ),
+					'security'        => esc_attr( $security ),
+					'amount_paid'     => json_encode( [$amount_total] ),
+					'name'            => esc_attr( $institute_advanced_name ),
+					'description'     => esc_attr__( 'Pending Fees', WL_MIM_DOMAIN ),
+					'currency'        => esc_attr( $currency ),
+					'amount_in_cents' => esc_attr( $amount_in_cents ),
+					'invoice_id'       => esc_attr( $invoice_id )
+				) );
+				wp_send_json_success( array( 'html' => $html, 'json' => $json ) );
+
+			} else {
 				wp_send_json_error( esc_html__( 'Please select a valid payment method.', WL_MIM_DOMAIN ) );
 			}
 		}
@@ -662,36 +688,30 @@ EOT;
 			}
 
 			$student_id = $student->id;
+			$amount_paid = $_POST['fee_1'];
+			$invoice_id = $_POST['stripeInvoiceId'];
+			// $fees = unserialize( $student->fees );
 
-			$amount_paid = array();
-			$i           = 1;
-			while ( $_POST["fee_$i"] ) {
-				$amount_paid[ $i - 1 ] = $_POST["fee_$i"];
-				$i ++;
-			}
+			// $installment['type'] = $fees['type'];
 
-			$fees = unserialize( $student->fees );
+			// $i = 0;
+			// foreach ( $fees['paid'] as $key => $value ) {
+			// 	$pending_amount = $fees['payable'][ $key ] - $value;
+			// 	if ( $pending_amount > 0 ) {
+			// 		$installment['paid'][ $key ] = $amount_paid[ $i ];
+			// 		$fees['paid'][ $key ]        += $amount_paid[ $i ];
+			// 		if ( $fees['payable'][ $key ] < $fees['paid'][ $key ] ) {
+			// 			wp_send_json_error( esc_html__( "Total amount exceeded payable amount for " . $fees['type'][ $key ] . ".", WL_MIM_DOMAIN ) );
+			// 		}
+			// 		$i ++;
+			// 		$fees['paid'][ $key ]        = number_format( max( floatval( $fees['paid'][ $key ] ), 0 ), 2, '.', '' );
+			// 		$installment['paid'][ $key ] = number_format( max( floatval( $installment['paid'][ $key ] ), 0 ), 2, '.', '' );
+			// 	} else {
+			// 		$installment['paid'][ $key ] = number_format( 0, 2, '.', '' );
+			// 	}
+			// }
 
-			$installment['type'] = $fees['type'];
-
-			$i = 0;
-			foreach ( $fees['paid'] as $key => $value ) {
-				$pending_amount = $fees['payable'][ $key ] - $value;
-				if ( $pending_amount > 0 ) {
-					$installment['paid'][ $key ] = $amount_paid[ $i ];
-					$fees['paid'][ $key ]        += $amount_paid[ $i ];
-					if ( $fees['payable'][ $key ] < $fees['paid'][ $key ] ) {
-						wp_send_json_error( esc_html__( "Total amount exceeded payable amount for " . $fees['type'][ $key ] . ".", WL_MIM_DOMAIN ) );
-					}
-					$i ++;
-					$fees['paid'][ $key ]        = number_format( max( floatval( $fees['paid'][ $key ] ), 0 ), 2, '.', '' );
-					$installment['paid'][ $key ] = number_format( max( floatval( $installment['paid'][ $key ] ), 0 ), 2, '.', '' );
-				} else {
-					$installment['paid'][ $key ] = number_format( 0, 2, '.', '' );
-				}
-			}
-
-			$amount_total          = WL_MIM_Helper::get_fees_total( $installment['paid'] );
+			$amount_total          = ( $amount_paid );
 			$amount_total_in_cents = $amount_total * 100;
 
 			$secret_key = $payment_stripe['secret_key'];
@@ -703,30 +723,31 @@ EOT;
 				'description' => $description,
 				'source'      => $stripe_token
 			) );
-
+			// var_dump($stripe_token); die;
 			if ( ! ( $charge && $charge->captured && ( $charge->amount == $amount_total_in_cents ) ) ) {
 				wp_send_json_error( esc_html__( 'Unable to capture the payment.', WL_MIM_DOMAIN ) );
 			}
 
 			/* SMS text */
-			$installment_count = 0;
-			$fees_data         = '';
-			foreach ( $installment['type'] as $inst_key => $inst_type ) {
-				if ( $installment['paid'][ $inst_key ] > 0 ) {
-					$installment_count ++;
-					$fees_data .= $inst_type . ": {$installment['paid'][$inst_key]} ";
-				}
-			}
+			// $installment_count = 0;
+			// $fees_data         = '';
+			// foreach ( $installment['type'] as $inst_key => $inst_type ) {
+			// 	if ( $installment['paid'][ $inst_key ] > 0 ) {
+			// 		$installment_count ++;
+			// 		$fees_data .= $inst_type . ": {$installment['paid'][$inst_key]} ";
+			// 	}
+			// }
 
 			try {
 				$wpdb->query( 'BEGIN;' );
 
-				$fees        = serialize( $fees );
-				$installment = serialize( $installment );
+				// $fees        = serialize( $fees );
+				// $installment = serialize( $installment );
 
 				$data = array(
-					'fees'           => $installment,
+					'paid_amount'    => $amount_paid,
 					'student_id'     => $student_id,
+					'invoice_id'     => $invoice_id,					
 					'payment_method' => WL_MIM_Helper::get_payment_methods()['stripe'],
 					'payment_id'     => $charge->id,
 					'added_by'       => get_current_user_id(),
@@ -736,27 +757,25 @@ EOT;
 				$data['created_at'] = current_time( 'Y-m-d H:i:s' );
 
 				$success = $wpdb->insert( "{$wpdb->prefix}wl_min_installments", $data );
+
+				if ($success) {
+					$invoice_data = array(
+						'status'       => 'paid',
+					);
+					$success = $wpdb->update( "{$wpdb->prefix}wl_min_invoices", $invoice_data, array( 'id' => $invoice_id ) );
+				}
+
 				if ( ! $success ) {
 					throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
 				}
 
-				$data = array(
-					'fees'       => $fees,
-					'updated_at' => date( 'Y-m-d H:i:s' )
-				);
-
-				$success = $wpdb->update( "{$wpdb->prefix}wl_min_students", $data, array(
-					'is_deleted'   => 0,
-					'id'           => $student_id,
-					'institute_id' => $institute_id
-				) );
 				if ( $success === false ) {
 					throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
 				}
 
 				$wpdb->query( 'COMMIT;' );
 
-				if ( $installment_count > 0 ) {
+				if ( $success > 0 ) {
 					/* Get SMS template */
 					$sms_template_fees_submitted = WL_MIM_SettingHelper::get_sms_template_fees_submitted( $institute_id );
 
@@ -765,7 +784,7 @@ EOT;
 
 					if ( $sms_template_fees_submitted['enable'] ) {
 						$sms_message = $sms_template_fees_submitted['message'];
-						$sms_message = str_replace( '[FEES]', $fees_data, $sms_message );
+						$sms_message = str_replace( '[FEES]', $amount_paid, $sms_message );
 						$sms_message = str_replace( '[DATE]', date_format( new DateTime( $data['updated_at'] ), "d-m-Y" ), $sms_message );
 						/* Send SMS */
 						WL_MIM_SMSHelper::send_sms( $sms, $institute_id, $sms_message, $student->phone );

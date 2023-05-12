@@ -2412,7 +2412,7 @@
                                     security: data.security,
                                     stripeToken: stripeToken,
                                     stripeEmail: stripeEmail,
-                                    // data.amount_paid
+                                    stripeInvoiceId: data.invoice_id,
                                 };
                                 jQuery.each(amount_paid, function (key, value) {
                                     stripeData['fee_' + (key + 1)] = value;
