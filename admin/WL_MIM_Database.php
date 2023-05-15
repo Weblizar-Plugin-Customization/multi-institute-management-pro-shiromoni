@@ -232,6 +232,12 @@ class WL_MIM_Database {
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD reference text DEFAULT NULL" );
 		}
+		
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_enquiries' AND COLUMN_NAME = 'phone2'" );
+
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD phone2 text DEFAULT NULL" );
+		}
 
 		/* Add class column if not exists to enquiries table */
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_enquiries' AND COLUMN_NAME = 'class'" );

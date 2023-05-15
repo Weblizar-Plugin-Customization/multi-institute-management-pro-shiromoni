@@ -178,6 +178,9 @@ if ( isset( $attr['id'] ) ) {
                             <div class="col-sm-6 form-group">
                                 <label for="wlim-enquiry-phone" class="col-form-label">* <?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:</label>
                                 <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>">
+                            </div><div class="col-sm-6 form-group">
+                                <label for="wlim-enquiry-phone" class="col-form-label"><?php esc_html_e( 'Second Phone', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>">
                             </div>
                             <div class="col-sm-6 form-group">
                                 <label for="wlim-enquiry-email" class="col-form-label"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>:</label>

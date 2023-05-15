@@ -102,6 +102,7 @@ class WL_MIM_Enquiry {
 		$state         = isset( $_POST['state'] ) ? sanitize_text_field( $_POST['state'] ) : '';
 		$nationality   = isset( $_POST['nationality'] ) ? sanitize_text_field( $_POST['nationality'] ) : '';
 		$phone         = isset( $_POST['phone'] ) ? sanitize_text_field( $_POST['phone'] ) : '';
+		$phone2         = isset( $_POST['phone2'] ) ? sanitize_text_field( $_POST['phone2'] ) : '';
 		$qualification = isset( $_POST['qualification'] ) ? sanitize_text_field( $_POST['qualification'] ) : '';
 		$email         = isset( $_POST['email'] ) ? sanitize_text_field( $_POST['email'] ) : '';
 		$photo         = ( isset( $_FILES['photo'] ) && is_array( $_FILES['photo'] ) ) ? $_FILES['photo'] : null;
@@ -290,6 +291,7 @@ class WL_MIM_Enquiry {
 					'state'         => $state,
 					'nationality'   => $nationality,
 					'phone'         => $phone,
+					'phone2'        => $phone2,
 					'qualification' => $qualification,
 					'email'         => $email,
 					'photo_id'      => $photo,
@@ -514,6 +516,10 @@ class WL_MIM_Enquiry {
             <div class="col-sm-6 form-group">
                 <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:</label>
                 <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->phone ); ?>">
+            </div>
+			 <div class="col-sm-6 form-group">
+                <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Second Phone', WL_MIM_DOMAIN ); ?>:</label>
+                <input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Second Phone", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->phone2 ); ?>">
             </div>
             <div class="col-sm-6 form-group">
                 <label for="wlim-enquiry-email_update" class="col-form-label"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>:</label>

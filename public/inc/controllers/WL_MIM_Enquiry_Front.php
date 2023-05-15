@@ -28,6 +28,7 @@ class WL_MIM_Enquiry_Front {
 		$state         = isset( $_POST['state'] ) ? sanitize_text_field( $_POST['state'] ) : '';
 		$nationality   = isset( $_POST['nationality'] ) ? sanitize_text_field( $_POST['nationality'] ) : '';
 		$phone         = isset( $_POST['phone'] ) ? sanitize_text_field( $_POST['phone'] ) : '';
+		$phone2         = isset( $_POST['phone2'] ) ? sanitize_text_field( $_POST['phone2'] ) : '';
 		$qualification = isset( $_POST['qualification'] ) ? sanitize_text_field( $_POST['qualification'] ) : '';
 		$email         = isset( $_POST['email'] ) ? sanitize_text_field( $_POST['email'] ) : '';
 		$photo         = ( isset( $_FILES['photo'] ) && is_array( $_FILES['photo'] ) ) ? $_FILES['photo'] : null;
@@ -216,6 +217,7 @@ class WL_MIM_Enquiry_Front {
 					'state'         => $state,
 					'nationality'   => $nationality,
 					'phone'         => $phone,
+					'phone2'         => $phone2,
 					'qualification' => $qualification,
 					'email'         => $email,
 					'photo_id'      => $photo,
