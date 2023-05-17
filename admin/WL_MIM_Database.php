@@ -237,6 +237,7 @@ class WL_MIM_Database {
 
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD phone2 text DEFAULT NULL" );
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD business_manager text DEFAULT NULL" );
 		}
 
 		/* Add class column if not exists to enquiries table */
