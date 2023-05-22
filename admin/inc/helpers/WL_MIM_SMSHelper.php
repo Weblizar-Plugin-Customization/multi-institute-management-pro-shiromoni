@@ -49,63 +49,85 @@ class WL_MIM_SMSHelper {
 		$encryption = $smtp['email_encryption'];
 		$port       = $smtp['email_port'];
 		$name		= $smtp['email_from'];
-		global $wp_version;
 
+		global $wp_version;
 		require_once(ABSPATH . WPINC . '/PHPMailer/PHPMailer.php');
 		require_once(ABSPATH . WPINC . '/PHPMailer/SMTP.php');
 		require_once(ABSPATH . WPINC . '/PHPMailer/Exception.php');
 		$mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
-		try {
-			$mail->CharSet  = 'UTF-8';
-			$mail->Encoding = 'base64';
+		// try {
+		// 	$mail->CharSet  = 'UTF-8';
+		// 	$mail->Encoding = 'base64';
 
-			if ($host && $port) {
-				$mail->IsSMTP();
-				$mail->Host = $host;
-				if (!empty($username) && !empty($password)) {
-					$mail->SMTPAuth = true;
-					$mail->Password = $password;
-				} else {
-					$mail->SMTPAuth = false;
-				}
-				if (!empty($encryption)) {
-					$mail->SMTPSecure = $encryption;
-				} else {
-					$mail->SMTPSecure = NULL;
-				}
-				$mail->Port = $port;
+		// 	if ($host && $port) {
+		// 		$mail->IsSMTP();
+		// 		$mail->Host = $host;
+		// 		if (!empty($username) && !empty($password)) {
+		// 			$mail->SMTPAuth = true;
+		// 			$mail->Password = $password;
+		// 		} else {
+		// 			$mail->SMTPAuth = false;
+		// 		}
+		// 		if (!empty($encryption)) {
+		// 			$mail->SMTPSecure = $encryption;
+		// 		} else {
+		// 			$mail->SMTPSecure = NULL;
+		// 		}
+		// 		$mail->Port = $port;
+		// 	}
+
+		// 	$mail->Username = $username;
+
+		// 	$mail->setFrom($mail->Username, $from_name);
+
+		// 	$mail->Subject = html_entity_decode($subject);
+		// 	$mail->Body    = $body;
+
+		// 	$result = print_r($attachments, true);
+		// 	// error_log( $result );
+		// 	if ($attachments) {
+		// 		$mail->addStringAttachment($attachments, 'invoice.pdf', 'base64', 'application/pdf');
+		// 	}
+
+		// 	$mail->IsHTML(true);
+
+		// 	if (is_array($email)) {
+		// 		foreach ($email as $key => $value) {
+		// 			$mail->AddAddress($value, $name[$key]);
+		// 		}
+		// 	} else {
+		// 		$mail->AddAddress($email, $name);
+		// 	}
+
+		// $status = $mail->Send();
+		// catch (Exception $e) {
+		// }
+
+		// wp-mail 
+		$body =  '<pre>'. $body .'<pre/>';
+		$attachments = [];
+		if ( is_array( $email ) ) {
+			foreach ( $email as $key => $value ) {
+				$email[ $key ]	= $name[ $key ] . ' <' . $value . '>';
 			}
-
-			$mail->Username = $username;
-
-			$mail->setFrom($mail->Username, $from_name);
-
-			$mail->Subject = html_entity_decode($subject);
-			$mail->Body    = $body;
-
-			$result = print_r($attachments, true);
-			// error_log( $result );
-			if ($attachments) {
-				$mail->addStringAttachment($attachments, 'invoice.pdf', 'base64', 'application/pdf');
+		} else {
+			if ( ! empty( $name ) ) {
+				$email = "$name <$email>";
 			}
-
-			$mail->IsHTML(true);
-
-			if (is_array($email)) {
-				foreach ($email as $key => $value) {
-					$mail->AddAddress($value, $name[$key]);
-				}
-			} else {
-				$mail->AddAddress($email, $name);
-			}
-
-			$status = $mail->Send();
-			return $status;
-		} catch (Exception $e) {
 		}
 
-		return false;
+			$headers = array();
+			array_push( $headers, 'Content-Type: text/html; charset=UTF-8' );
+			if ( ! empty( $from_name ) ) {
+				array_push( $headers, "From: $from_name <$from_name>" );
+			}
+			$result = print_r( $email, true );
+			error_log( $result );
+
+			$status = wp_mail( $email, html_entity_decode( $subject ), $body, $headers, array(), $attachments );
+			return $status;
+		
 	}
 
 	/* Send SMS using SMSStriker */

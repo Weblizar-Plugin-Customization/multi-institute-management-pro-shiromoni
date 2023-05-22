@@ -271,6 +271,7 @@ class WL_MIM_SettingHelper {
 		$email            = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'email_template'");
 		
 		if ($email) {
+			// var_dump($email); die;
 			$email            = unserialize($email->mim_value);
 			$et_inquiry_register_subject   = isset($email['et_inquiry_register_subject']) ? $email['et_inquiry_register_subject'] : '';
 			$et_inquiry_register_body      = isset($email['et_inquiry_register_body']) ? $email['et_inquiry_register_body'] : '';
