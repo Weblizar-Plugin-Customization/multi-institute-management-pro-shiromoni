@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d41220c79f5d3a843bd7f01fa7584746",
+    "content-hash": "a988134b7b19a2e5877f40789557a659",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -780,29 +780,30 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.43.1",
+            "version": "v10.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "42fcdaf99c44bb26937223f8eae1f263491d5ab8"
+                "reference": "4ad20dd0a95b2761aecea3d2b2354cc3a99abf9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/42fcdaf99c44bb26937223f8eae1f263491d5ab8",
-                "reference": "42fcdaf99c44bb26937223f8eae1f263491d5ab8",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/4ad20dd0a95b2761aecea3d2b2354cc3a99abf9b",
+                "reference": "4ad20dd0a95b2761aecea3d2b2354cc3a99abf9b",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": ">=5.4.0"
+                "php": ">=5.6.0"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "1.*",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~2.0",
-                "symfony/process": "~2.8"
+                "friendsofphp/php-cs-fixer": "3.5.0",
+                "php-coveralls/php-coveralls": "^2.5",
+                "phpstan/phpstan": "^1.2",
+                "phpunit/phpunit": "^5.7 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -834,9 +835,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/master"
+                "source": "https://github.com/stripe/stripe-php/tree/v10.13.0"
             },
-            "time": "2019-08-29T16:56:12+00:00"
+            "time": "2023-05-11T19:07:49+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -1170,5 +1171,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }

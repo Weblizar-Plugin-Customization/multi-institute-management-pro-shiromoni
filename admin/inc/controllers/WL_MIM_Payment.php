@@ -715,6 +715,7 @@ EOT;
 			$amount_total_in_cents = $amount_total * 100;
 
 			$secret_key = $payment_stripe['secret_key'];
+			header('Content-Type: application/json');
 
 			\Stripe\Stripe::setApiKey( $secret_key );
 			$charge = \Stripe\Charge::create( array(
