@@ -246,11 +246,11 @@ if (empty($general_institute['institute_name'])) {
                                     <?php esc_html_e('Payment Methods', WL_MIM_DOMAIN); ?>:
                                 </label>
                                 <select name="payment_method" class="form-control" id="wlim-setting-payment_method" x-on:change="payment_method = $event.target.value">
-                                    <option value="paypal"><?php esc_html_e("PayPal", WL_MIM_DOMAIN); ?></option>
+                                    <!-- <option value="paypal"><?php esc_html_e("PayPal", WL_MIM_DOMAIN); ?></option> -->
                                     <option value="razorpay"><?php esc_html_e("Razorpay", WL_MIM_DOMAIN); ?></option>
                                     <option value="stripe"><?php esc_html_e("Stripe", WL_MIM_DOMAIN); ?></option>
-                                    <option value="paystack"><?php esc_html_e("Paystack", WL_MIM_DOMAIN); ?></option>
-                                    <option value="instamojo"><?php esc_html_e("Instamojo", WL_MIM_DOMAIN); ?></option>
+                                    <!-- <option value="paystack"><?php esc_html_e("Paystack", WL_MIM_DOMAIN); ?></option> -->
+                                    <!-- <option value="instamojo"><?php esc_html_e("Instamojo", WL_MIM_DOMAIN); ?></option> -->
                                 </select>
                             </div>
                         </div>
