@@ -718,16 +718,34 @@ EOT;
 			header('Content-Type: application/json');
 
 			\Stripe\Stripe::setApiKey( $secret_key );
-			$charge = \Stripe\PaymentIntent::create( array(
+			$paymentIntent = \Stripe\PaymentIntent::create( array(
 				'amount'      => $amount_total_in_cents,
 				'currency'    => $currency,
 				'description' => $description,
-				'source'      => $stripe_token
+				// 'source'      => $stripe_token,
+				// 'card[token]'=> $stripe_token,
+				'payment_method_types'=> [
+					'card'
+				],
+				'shipping' => [
+                    'name' => $student->first_name . ' ' . $student->last_name,
+                    'address' => [
+                        'line1' => $student->address ,
+                        'postal_code' => $student->zip,
+                    ]
+                ],
+				
 			) );
+
+
+	 
+
+			$result = print_r( $paymentIntent, true );
+			error_log( $result );
 			// var_dump($stripe_token); die;
-			if ( ! ( $charge && $charge->captured && ( $charge->amount == $amount_total_in_cents ) ) ) {
-				wp_send_json_error( esc_html__( 'Unable to capture the payment.', WL_MIM_DOMAIN ) );
-			}
+			// if ( ! ( $paymentIntent && $paymentIntent->captured && ( $paymentIntent->amount == $amount_total_in_cents ) ) ) {
+			// 	wp_send_json_error( esc_html__( 'Unable to capture the payment.', WL_MIM_DOMAIN ) );
+			// }
 
 			/* SMS text */
 			// $installment_count = 0;
@@ -750,7 +768,7 @@ EOT;
 					'student_id'     => $student_id,
 					'invoice_id'     => $invoice_id,					
 					'payment_method' => WL_MIM_Helper::get_payment_methods()['stripe'],
-					'payment_id'     => $charge->id,
+					'payment_id'     => $paymentIntent->id,
 					'added_by'       => get_current_user_id(),
 					'institute_id'   => $institute_id
 				);

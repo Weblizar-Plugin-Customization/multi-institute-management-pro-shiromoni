@@ -46,7 +46,7 @@ if ( isset( $attr['id'] ) ) {
                     <form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" id="wlim-add-enquiry-form" enctype="multipart/form-data">
 						<?php $nonce = wp_create_nonce( 'add-enquiry' ); ?>
                         <input type="hidden" name="add-enquiry" value="<?php echo esc_attr( $nonce ); ?>">
-                        <input type="hidden" name="action" value="wl-mim-add-enquiry">
+                        <input type="hidden" name="action" value="wl-mim-add-enquiry-front">
 						<?php if ( ! $institute ) { ?>
                             <div class="form-group">
                                 <label for="wlim-enquiry-institute" class="col-form-label">* <?php esc_html_e( "Select Institute", WL_MIM_DOMAIN ); ?>:</label>

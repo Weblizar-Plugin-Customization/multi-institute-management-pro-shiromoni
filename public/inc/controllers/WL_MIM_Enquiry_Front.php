@@ -45,6 +45,10 @@ class WL_MIM_Enquiry_Front {
 			wp_send_json_error( $errors );
 		}
 
+		if ( current_user_can('administrator') ) {
+			$errors['category'] = esc_html__( 'Please Logout First', WL_MIM_DOMAIN );
+		}
+
 		if ( empty( $course_id ) ) {
 			$errors['course'] = esc_html__( 'Please select a course.', WL_MIM_DOMAIN );
 			wp_send_json_error( $errors );

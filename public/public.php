@@ -72,8 +72,8 @@ add_action( 'wp_ajax_nopriv_wl-mim-fetch-institute-custom-fields', array(
 ) );
 
 /* Actions to add enquiry */
-add_action( 'wp_ajax_wl-mim-add-enquiry', array( 'WL_MIM_Enquiry_Front', 'add_enquiry' ) );
-add_action( 'wp_ajax_nopriv_wl-mim-add-enquiry', array( 'WL_MIM_Enquiry_Front', 'add_enquiry' ) );
+add_action( 'wp_ajax_wl-mim-add-enquiry-front', array( 'WL_MIM_Enquiry_Front', 'add_enquiry' ) );
+add_action( 'wp_ajax_nopriv_wl-mim-add-enquiry-front', array( 'WL_MIM_Enquiry_Front', 'add_enquiry' ) );
 
 /* Actions to fetch institute exams */
 add_action( 'wp_ajax_wl-mim-fetch-institute-exams', array( 'WL_MIM_Result_Front', 'fetch_institute_exams' ) );
