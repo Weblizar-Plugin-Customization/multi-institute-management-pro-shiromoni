@@ -718,7 +718,7 @@ EOT;
 			header('Content-Type: application/json');
 
 			\Stripe\Stripe::setApiKey( $secret_key );
-			$charge = \Stripe\Charge::create( array(
+			$charge = \Stripe\PaymentIntent::create( array(
 				'amount'      => $amount_total_in_cents,
 				'currency'    => $currency,
 				'description' => $description,
