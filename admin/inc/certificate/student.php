@@ -17,7 +17,6 @@ if (!$certificate_student) {
 $user_id = $certificate_student->student_record_id;
 
 require_once WL_MIM_PLUGIN_DIR_PATH . "admin/inc/helpers/certificate_student.php";
-// $student = WLSM_M_Staff_General::fetch_student( $school_id, $session_id, $student_id );
 $student = WL_MIM_StudentHelper::fetch_student($institute_id, $user_id);
 
 ?>

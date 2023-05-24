@@ -2196,6 +2196,11 @@ SHIROMANI INSTITUTE PVT LTD </pre>";
 					'id'           => $id,
 					'institute_id' => $institute_id
 				));
+
+				$student = $wpdb->get_row( "SELECT mb.user_login FROM {$wpdb->prefix}wl_min_students as s 
+				JOIN {$wpdb->prefix}users as mb ON mb.id = s.user_id
+				WHERE s.id = $id" );
+
 				if ($success === false) {
 					throw new Exception(esc_html__('An unexpected error occurred.', WL_MIM_DOMAIN));
 				}
@@ -2212,6 +2217,7 @@ SHIROMANI INSTITUTE PVT LTD </pre>";
 							$body = str_replace('[STUDENT_NAME]', $first_name." ".$last_name, $body);
 							$body = str_replace('[STUDENT_EMAIL]', $email, $body);
 							$body = str_replace('[STUDENT_BATCH]', $batch->batch_name, $body);
+							$body = str_replace('[STUDENT_USERNAME]', $student->user_login, $body);
 							$body = str_replace('[REGISTRATION_DATE]', $created_at, $body);
 							$body = str_replace('[EXPIRATION_DATE]', $expire_at, $body);
 							// add string to $body 

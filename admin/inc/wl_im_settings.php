@@ -621,6 +621,9 @@ if (empty($general_institute['institute_name'])) {
                                         <strong>[STUDENT_BATCH]</strong> - <?php esc_html_e("to replace with student Batch", WL_MIM_DOMAIN); ?>
                                     </li>
                                     <li class="list-group-item">
+                                        <strong>[STUDENT_USERNAME]</strong> - <?php esc_html_e("to replace with student username", WL_MIM_DOMAIN); ?>
+                                    </li>
+                                    <li class="list-group-item">
                                         <strong>[REGISTRATION_DATE]</strong> - <?php esc_html_e("to replace with student Registration date", WL_MIM_DOMAIN); ?>
                                     </li>
                                     <li class="list-group-item">
