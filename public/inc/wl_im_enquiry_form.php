@@ -166,12 +166,12 @@ if ( isset( $attr['id'] ) ) {
                         </div>
                         <div class="row">
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-state" class="col-form-label"><?php esc_html_e( 'State', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="state" type="text" class="form-control" id="wlim-enquiry-state" placeholder="<?php esc_html_e( "State", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-state" class="col-form-label">* <?php esc_html_e( 'State', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="state" type="text" class="form-control" id="wlim-enquiry-state" placeholder="<?php esc_html_e( "State", WL_MIM_DOMAIN ); ?>" required>
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-nationality" class="col-form-label"><?php esc_html_e( 'Nationality', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="nationality" type="text" class="form-control" id="wlim-enquiry-nationality" placeholder="<?php esc_html_e( "Nationality", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-nationality" class="col-form-label">* <?php esc_html_e( 'Nationality', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="nationality" type="text" class="form-control" id="wlim-enquiry-nationality" placeholder="<?php esc_html_e( "Nationality", WL_MIM_DOMAIN ); ?>" required>
                             </div>
                         </div>
                         <div class="row">
