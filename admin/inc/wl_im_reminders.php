@@ -155,7 +155,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 	                	</div>
 						<div class="from-group">
 							<label for="wlim-reminder-title" class="col-form-label"><?php esc_html_e( "Title", WL_MIM_DOMAIN ); ?>:</label>
-							<input name="title" type="text" class="form-control" id="wlim-reminder-title" placeholder="<?php _e( "Reminder Title", WL_MIM_DOMAIN ); ?>">
+							<input name="title" type="text" class="form-control" id="wlim-reminder-title" placeholder="<?php _e( "Title", WL_MIM_DOMAIN ); ?>">
 						</div>
 						<div class="from-group">
 							<label for="wlim-message" class="col-form-label"><?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>:</label>

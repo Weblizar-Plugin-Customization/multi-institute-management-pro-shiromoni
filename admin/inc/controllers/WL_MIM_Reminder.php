@@ -187,7 +187,7 @@ class WL_MIM_Reminder {
 
 					<div class="from-group">
 						<label for="wlim-reminder-title" class="col-form-label"><?php esc_html_e( "Title", WL_MIM_DOMAIN ); ?>:</label>
-						<input name="title" type="text" class="form-control" id="wlim-reminder-title" placeholder="<?php _e( "Reminder Title", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr($row->title);?>">
+						<input name="title" type="text" class="form-control" id="wlim-reminder-title" placeholder="<?php _e( "Title", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr($row->title);?>">
 					</div>
 					<div class="from-group">
 						<label for="wlim-message" class="col-form-label"><?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>:</label>
