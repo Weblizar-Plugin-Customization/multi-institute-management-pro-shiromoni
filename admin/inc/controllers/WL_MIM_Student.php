@@ -604,6 +604,9 @@ class WL_MIM_Student
 						$body = str_replace('[COURSE_PAYABLE]', $course_payable, $body);
 						$body = str_replace('[INSTALLMENT_COUNT]', $installment_count, $body);
 						$body = str_replace('[INSTALLMENTS]', $table, $body);
+						$body = str_replace('[STUDENT_USERNAME]', $username, $body);
+						$body = str_replace('[STUDENT_PASSWORD]', $password, $body);
+						$body = str_replace('[ENROLLMENT_NUMBER]', $enrollment_id, $body);
 
 						$body .= "<pre>
 LINK:- HTTPS://SHIROMANIINSTITUTE.IN/ 
