@@ -103,7 +103,7 @@ if ( isset( $attr['id'] ) ) {
 
                             <!-- Create a select input with options 1 to 10 for class selection -->
                         <div class="form-group">
-                            <label for="wlim-enquiry-class-student" class="col-form-label"> <?php esc_html_e( "Select Class", WL_MIM_DOMAIN ); ?>:</label>
+                            <label for="wlim-enquiry-class-student" class="col-form-label"> *<?php esc_html_e( "Select Class", WL_MIM_DOMAIN ); ?>:</label>
                             <select name="class" class="form-control selectpicker" id="wlim-enquiry-class-student">
                                 <option value=""> -------- <?php esc_html_e( "Select a Class", WL_MIM_DOMAIN ); ?> --------
                                 </option>
@@ -119,8 +119,8 @@ if ( isset( $attr['id'] ) ) {
                                 <input name="first_name" type="text" class="form-control" id="wlim-enquiry-first_name" placeholder="<?php esc_html_e( "First Name", WL_MIM_DOMAIN ); ?>">
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-last_name" class="col-form-label"><?php esc_html_e( 'Last Name', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="last_name" type="text" class="form-control" id="wlim-enquiry-last_name" placeholder="<?php esc_html_e( "Last Name", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-last_name" class="col-form-label">* <?php esc_html_e( 'Last Name', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="last_name" type="text" class="form-control" id="wlim-enquiry-last_name" placeholder="<?php esc_html_e( "Last Name", WL_MIM_DOMAIN ); ?>" required>
                             </div>
                         </div>
                         <div class="row">
@@ -140,27 +140,27 @@ if ( isset( $attr['id'] ) ) {
                         </div>
                         <div class="row">
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-father_name" class="col-form-label"><?php esc_html_e( "Father's Name", WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="father_name" type="text" class="form-control" id="wlim-enquiry-father_name" placeholder="<?php esc_html_e( "Father's Name", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-father_name" class="col-form-label">* <?php esc_html_e( "Father's Name", WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="father_name" type="text" class="form-control" id="wlim-enquiry-father_name" placeholder="<?php esc_html_e( "Father's Name", WL_MIM_DOMAIN ); ?>" required>
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-mother_name" class="col-form-label"><?php esc_html_e( "Mother's Name", WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="mother_name" type="text" class="form-control" id="wlim-enquiry-mother_name" placeholder="<?php esc_html_e( "Mother's Name", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-mother_name" class="col-form-label">* <?php esc_html_e( "Mother's Name", WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="mother_name" type="text" class="form-control" id="wlim-enquiry-mother_name" placeholder="<?php esc_html_e( "Mother's Name", WL_MIM_DOMAIN ); ?>" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-address" class="col-form-label"><?php esc_html_e( 'Address', WL_MIM_DOMAIN ); ?>:</label>
-                                <textarea name="address" class="form-control" rows="4" id="wlim-enquiry-address" placeholder="<?php esc_html_e( "Address", WL_MIM_DOMAIN ); ?>"></textarea>
+                                <label for="wlim-enquiry-address" class="col-form-label">* <?php esc_html_e( 'Address', WL_MIM_DOMAIN ); ?>:</label>
+                                <textarea name="address" class="form-control" rows="4" id="wlim-enquiry-address" placeholder="<?php esc_html_e( "Address", WL_MIM_DOMAIN ); ?>" required></textarea>
                             </div>
                             <div class="col-sm-6 form-group">
                                 <div>
-                                    <label for="wlim-enquiry-city" class="col-form-label"><?php esc_html_e( 'City', WL_MIM_DOMAIN ); ?>:</label>
-                                    <input name="city" type="text" class="form-control" id="wlim-enquiry-city" placeholder="<?php esc_html_e( "City", WL_MIM_DOMAIN ); ?>">
+                                    <label for="wlim-enquiry-city" class="col-form-label">* <?php esc_html_e( 'City', WL_MIM_DOMAIN ); ?>:</label>
+                                    <input name="city" type="text" class="form-control" id="wlim-enquiry-city" placeholder="<?php esc_html_e( "City", WL_MIM_DOMAIN ); ?>" required>
                                 </div>
                                 <div>
-                                    <label for="wlim-enquiry-zip" class="col-form-label"><?php esc_html_e( 'Zip Code', WL_MIM_DOMAIN ); ?>:</label>
-                                    <input name="zip" type="text" class="form-control" id="wlim-enquiry-zip" placeholder="<?php esc_html_e( "Zip Code", WL_MIM_DOMAIN ); ?>">
+                                    <label for="wlim-enquiry-zip" class="col-form-label">* <?php esc_html_e( 'Zip Code', WL_MIM_DOMAIN ); ?>:</label>
+                                    <input name="zip" type="text" class="form-control" id="wlim-enquiry-zip" placeholder="<?php esc_html_e( "Zip Code", WL_MIM_DOMAIN ); ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -176,15 +176,15 @@ if ( isset( $attr['id'] ) ) {
                         </div>
                         <div class="row">
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-phone" class="col-form-label">* <?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-phone" class="col-form-label">* <?php esc_html_e( 'Father\'s Phone', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>" required>
                             </div><div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-phone" class="col-form-label"><?php esc_html_e( 'Second Phone', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-phone" class="col-form-label">* <?php esc_html_e( 'Mother\'s Phone', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>" required>
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-email" class="col-form-label"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="email" type="text" class="form-control" id="wlim-enquiry-email" placeholder="<?php esc_html_e( "Email", WL_MIM_DOMAIN ); ?>">
+                                <label for="wlim-enquiry-email" class="col-form-label">* <?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="email" type="text" class="form-control" id="wlim-enquiry-email" placeholder="<?php esc_html_e( "Email", WL_MIM_DOMAIN ); ?>" required>
                             </div>
                         </div>
                         <div class="row">
@@ -193,18 +193,18 @@ if ( isset( $attr['id'] ) ) {
                                 <input name="qualification" type="text" class="form-control" id="wlim-enquiry-qualification" placeholder="<?php esc_html_e( "Qualification", WL_MIM_DOMAIN ); ?>">
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-id_proof" class="col-form-label"><?php esc_html_e( 'ID Proof', WL_MIM_DOMAIN ); ?>:</label><br>
-                                <input name="id_proof" type="file" id="wlim-enquiry-id_proof">
+                                <label for="wlim-enquiry-id_proof" class="col-form-label">* <?php esc_html_e( 'ID Proof', WL_MIM_DOMAIN ); ?>:</label><br>
+                                <input name="id_proof" type="file" id="wlim-enquiry-id_proof" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-photo" class="col-form-label"><?php esc_html_e( 'Choose Photo', WL_MIM_DOMAIN ); ?>:</label><br>
-                                <input name="photo" type="file" id="wlim-enquiry-photo">
+                                <label for="wlim-enquiry-photo" class="col-form-label"> * <?php esc_html_e( 'Choose Photo', WL_MIM_DOMAIN ); ?>:</label><br>
+                                <input name="photo" type="file" id="wlim-enquiry-photo" required>
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-signature" class="col-form-label"><?php esc_html_e( 'Choose Signature', WL_MIM_DOMAIN ); ?>:</label><br>
-                                <input name="signature" type="file" id="wlim-enquiry-signature">
+                                <label for="wlim-enquiry-signature" class="col-form-label">* <?php esc_html_e( 'Choose Signature', WL_MIM_DOMAIN ); ?>:</label><br>
+                                <input name="signature" type="file" id="wlim-enquiry-signature" required>
                             </div>
                         </div><div class="row">
                             <div class="col-sm-6 form-group">
