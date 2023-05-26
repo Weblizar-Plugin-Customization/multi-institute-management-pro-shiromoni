@@ -88,10 +88,10 @@ if ( empty( $general_institute['institute_name'] ) ) {
                                 <input type="checkbox" name="email_notification" class="form-check-input mt-1" id="wlim-email-notification">
                                 <label class="form-check-label mb-1 ml-4" for="wlim-email-notification"><?php esc_html_e( 'Email Notification', WL_MIM_DOMAIN ); ?></label>
                             </div>
-                            <div class="form-check mb-3">
+                            <!-- <div class="form-check mb-3">
                                 <input type="checkbox" name="sms_notification" class="form-check-input mt-1" id="wlim-sms-notification">
                                 <label class="form-check-label mb-1 ml-4" for="wlim-sms-notification"><?php esc_html_e( 'SMS Notification', WL_MIM_DOMAIN ); ?></label>
-                            </div>
+                            </div> -->
                             <div class="card col wlim-email-template">
                                 <div class="card-header"><?php esc_html_e( 'Email Template', WL_MIM_DOMAIN ); ?></div>
                                 <div class="card-body">

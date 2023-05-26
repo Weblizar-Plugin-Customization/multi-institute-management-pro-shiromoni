@@ -476,24 +476,96 @@ class WL_MIM_Notification {
 		self::submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  );
 	}
 
+	// private static function submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  ) {
+	// 	$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+	// 	if ( count( $errors ) < 1 ) {
+	// 		try {
+	// 			if ( $email_notification ) {
+	// 				/* Send email notification */
+	// 				$mail = self::initialize_email( $institute_id );
+	// 				$mail->setFrom( $mail->Username, $email_from );
+	// 				$mail->Subject = $email_subject;
+	// 				$mail->Body    = $email_body;
+	// 				$mail->IsHTML( true );
+	// 				if ( isset( $attachments["tmp_name"] ) && is_array( $attachments ) ) {
+	// 					foreach ( $attachments["tmp_name"] as $key => $attachment ) {
+	// 						$mail->addAttachment( $attachment, sanitize_file_name( $attachments["name"][ $key ] ) );
+	// 					}
+	// 				}
+
+	// 				foreach ( $data as $row ) {
+	// 					$email      = $row->email ? $row->email : null;
+	// 					$first_name = $row->first_name ? $row->first_name : null;
+	// 					$last_name  = $row->last_name ? $row->last_name : null;
+	// 					$name       = $first_name;
+	// 					if ( $last_name ) {
+	// 						$name .= " $last_name";
+	// 					}
+
+	// 					if ( $email ) {
+	// 						$mail->AddAddress( $email, $name );
+	// 					}
+	// 				}
+	// 				$email_notification_sent = $mail->Send();
+	// 			}
+
+	// 			$sms_notification_sent = false;
+	// 			if ( $sms_notification && $sms_body ) {
+	// 				$phone_numbers = array();
+	// 				foreach ( $data as $row ) {
+	// 					$phone = $row->phone ? $row->phone : null;
+	// 					if ( ! empty( $phone ) ) {
+	// 						array_push( $phone_numbers, $phone );
+	// 					}
+	// 				}
+
+	// 				/* Get SMS settings */
+	// 				$sms = WL_MIM_SettingHelper::get_sms_settings( $institute_id );
+
+	// 				/* Send SMS */
+	// 				$sms_notification_sent = WL_MIM_SMSHelper::send_sms( $sms, $institute_id, $sms_body, $phone_numbers, $template_id  );
+	// 			}
+
+	// 			if ( $email_notification_sent && $sms_notification_sent ) {
+	// 				$message = esc_html__( 'Email and SMS notification sent successfully.', WL_MIM_DOMAIN );
+	// 			} elseif ( $email_notification_sent ) {
+	// 				$message = esc_html__( 'Email notification sent successfully.', WL_MIM_DOMAIN );
+	// 			} elseif ( $sms_notification_sent ) {
+	// 				$message = esc_html__( 'SMS notification sent successfully.', WL_MIM_DOMAIN );
+	// 			} else {
+	// 				$message = esc_html__( 'Unable to send notification.', WL_MIM_DOMAIN );
+	// 				wp_send_json_error( $message );
+	// 			}
+	// 			wp_send_json_success( array( 'message' => $message ) );
+	// 		} catch ( Exception $exception ) {
+	// 			wp_send_json_error( $exception->getMessage() );
+	// 		}
+	// 	} else {
+	// 		wp_send_json_error( $errors );
+	// 	}
+	// }
+
 	private static function submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  ) {
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
-
+	
 		if ( count( $errors ) < 1 ) {
 			try {
 				if ( $email_notification ) {
 					/* Send email notification */
-					$mail = self::initialize_email( $institute_id );
-					$mail->setFrom( $mail->Username, $email_from );
-					$mail->Subject = $email_subject;
-					$mail->Body    = $email_body;
-					$mail->IsHTML( true );
+					$headers = array();
+					$headers[] = 'Content-Type: text/html; charset=UTF-8';
+					if ( ! empty( $email_from ) ) {
+						$headers[] = "From: $email_from";
+					}
+					
+					$attachments = array();
 					if ( isset( $attachments["tmp_name"] ) && is_array( $attachments ) ) {
 						foreach ( $attachments["tmp_name"] as $key => $attachment ) {
-							$mail->addAttachment( $attachment, sanitize_file_name( $attachments["name"][ $key ] ) );
+							$attachments[] = $attachment;
 						}
 					}
-
+					$email_notification_sent = false;
 					foreach ( $data as $row ) {
 						$email      = $row->email ? $row->email : null;
 						$first_name = $row->first_name ? $row->first_name : null;
@@ -502,14 +574,14 @@ class WL_MIM_Notification {
 						if ( $last_name ) {
 							$name .= " $last_name";
 						}
-
+	
 						if ( $email ) {
-							$mail->AddAddress( $email, $name );
+							wp_mail( $email, $email_subject, $email_body, $headers, array(), $attachments );
+							$email_notification_sent = true;
 						}
 					}
-					$email_notification_sent = $mail->Send();
 				}
-
+	
 				$sms_notification_sent = false;
 				if ( $sms_notification && $sms_body ) {
 					$phone_numbers = array();
@@ -519,14 +591,14 @@ class WL_MIM_Notification {
 							array_push( $phone_numbers, $phone );
 						}
 					}
-
+	
 					/* Get SMS settings */
 					$sms = WL_MIM_SettingHelper::get_sms_settings( $institute_id );
-
+	
 					/* Send SMS */
 					$sms_notification_sent = WL_MIM_SMSHelper::send_sms( $sms, $institute_id, $sms_body, $phone_numbers, $template_id  );
 				}
-
+	
 				if ( $email_notification_sent && $sms_notification_sent ) {
 					$message = esc_html__( 'Email and SMS notification sent successfully.', WL_MIM_DOMAIN );
 				} elseif ( $email_notification_sent ) {
@@ -545,6 +617,7 @@ class WL_MIM_Notification {
 			wp_send_json_error( $errors );
 		}
 	}
+	
 
 	private static function initialize_email( $institute_id ) {
 		$email = WL_MIM_SettingHelper::get_email_settings( $institute_id );
