@@ -534,14 +534,19 @@ class WL_MIM_Student
 				}
 
 				// installment table
-				$table = '<table>';
-				$table .= '<tr><th>Invoice Title</th><th>Payable Amount</th><th>Due Date</th><th>Due Date Amount</th></tr>';
+				$table = '<table cellspacing="0" style="border: 2px solid #000000;">';
+				$table .= '<tr style="border: 1px solid #000000;">
+							<th style="border: 1px solid #000000;">Invoice Title</th>
+							<th style="border: 1px solid #000000;">Payable Amount</th>
+							<th style="border: 1px solid #000000;">Due Date</th>
+							<th style="border: 1px solid #000000;">Due Date Amount</th>
+						</tr>';
 				foreach ($fees as $fee) {
-					$table .= '<tr>';
-					$table .= '<td>' . $fee['invoice_title'] . '</td>';
-					$table .= '<td>' . $fee['payable_amount'] . '</td>';
-					$table .= '<td>' . $fee['due_date'] . '</td>';
-					$table .= '<td>' . $fee['due_date_amount'] . '</td>';
+					$table .= '<tr style="border: 1px solid #000000;">';
+					$table .= '<td style="border: 1px solid #000000;">' . $fee['invoice_title'] . '</td>';
+					$table .= '<td style="border: 1px solid #000000;">' . $fee['payable_amount'] . '</td>';
+					$table .= '<td style="border: 1px solid #000000;">' . $fee['due_date'] . '</td>';
+					$table .= '<td style="border: 1px solid #000000;">' . $fee['due_date_amount'] . '</td>';
 					$table .= '</tr>';
 				}
 				$table .= '</table>';

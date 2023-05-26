@@ -105,7 +105,7 @@ class WL_MIM_SMSHelper {
 		// }
 
 		// wp-mail 
-		$body =  '<pre>'. $body .'<pre/>';
+		$body =  '<pre style="font-size: 18px;">'. $body .'<pre/>';
 		$attachments = [];
 		if ( is_array( $email ) ) {
 			foreach ( $email as $key => $value ) {
