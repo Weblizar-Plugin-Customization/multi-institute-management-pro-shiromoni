@@ -11,18 +11,18 @@ class WL_MIM_Reminder {
 		$institute_id              = WL_MIM_Helper::get_current_institute_id();
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
-		$start_date  = ( isset( $_REQUEST['start_date'] ) && ! empty( $_REQUEST['start_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['start_date'] ) ) ) : NULL;
-		$end_date  = ( isset( $_REQUEST['end_date'] ) && ! empty( $_REQUEST['end_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['end_date'] ) ) ) : NULL;
-		$student_id  =  isset( $_GET['student_id'] ) ? sanitize_text_field( $_GET['student_id'] ) : NULL;
+		$start_date = isset( $_REQUEST['start_date'] ) && ! empty( $_REQUEST['start_date'] ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['start_date'] ) ) ) : null;
+		$end_date   = isset( $_REQUEST['end_date'] ) && ! empty( $_REQUEST['end_date'] )  ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['end_date'] ) ) ) : null;
+		$student_id = isset( $_GET['student_id'] ) ? sanitize_text_field( $_GET['student_id'] ) : null;
 
-		if ($start_date && $end_date) {
+		if ( $start_date && $end_date) {
 			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.follow_up BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY r.id DESC" );
 			
 		} else {
 			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id ORDER BY r.id DESC" );
 		}
 
-		if ($student_id === null ) {
+		if ($student_id ) {
 			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone, r.student_id FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.student_id = $student_id ORDER BY r.id DESC" );
 		}
 
