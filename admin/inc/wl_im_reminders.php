@@ -98,7 +98,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 							<thead>
 								<tr>
 						        	<th scope="col"><?php esc_html_e( 'ID', WL_MIM_DOMAIN ); ?></th>
-						        	<th scope="col"><?php esc_html_e( 'Title', WL_MIM_DOMAIN ); ?></th>
+						        	<!-- <th scope="col"><?php esc_html_e( 'Title', WL_MIM_DOMAIN ); ?></th> -->
 						        	<th scope="col"><?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Follow Up Date', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Status', WL_MIM_DOMAIN ); ?></th>
@@ -153,10 +153,10 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 	                        } ?>
 	                        </select>
 	                	</div>
-						<div class="from-group">
+						<!-- <div class="from-group">
 							<label for="wlim-reminder-title" class="col-form-label"><?php esc_html_e( "Title", WL_MIM_DOMAIN ); ?>:</label>
 							<input name="title" type="text" class="form-control" id="wlim-reminder-title" placeholder="<?php _e( "Title", WL_MIM_DOMAIN ); ?>">
-						</div>
+						</div> -->
 						<div class="from-group">
 							<label for="wlim-message" class="col-form-label"><?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>:</label>
 							<textarea name="message" class="form-control" id="wlim-message" cols="30" rows="5"></textarea>

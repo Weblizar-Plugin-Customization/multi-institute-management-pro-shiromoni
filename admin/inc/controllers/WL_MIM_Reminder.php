@@ -51,7 +51,7 @@ class WL_MIM_Reminder {
 
 				$results["data"][] = array(
 					esc_html( '' ),
-					esc_html( $title ),
+					// esc_html( $title ),
 					esc_html( ($message) ),
 					esc_html( $follow_up ),
 					esc_html( $status ),
@@ -82,13 +82,13 @@ class WL_MIM_Reminder {
 		$follow_up  = ( isset( $_POST['follow_up'] ) && ! empty( $_POST['follow_up'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up'] ) ) ) : NULL;
 
 		$errors = array();
-		if ( empty( $title ) ) {
-			$errors['title'] = esc_html__( 'Please provide a unique reminder title.', WL_MIM_DOMAIN );
-		}
+		// if ( empty( $title ) ) {
+		// 	$errors['title'] = esc_html__( 'Please provide a unique reminder title.', WL_MIM_DOMAIN );
+		// }
 
-		if ( strlen( $title ) > 191 ) {
-			$errors['title'] = esc_html__( 'Maximum length cannot exceed 191 characters.', WL_MIM_DOMAIN );
-		}
+		// if ( strlen( $title ) > 191 ) {
+		// 	$errors['title'] = esc_html__( 'Maximum length cannot exceed 191 characters.', WL_MIM_DOMAIN );
+		// }
 
 		if (!$reminder_id) {
 			$student = $wpdb->get_row( "SELECT fees, course_id FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND is_active = 1 AND id = $student_id AND institute_id = $institute_id" );
@@ -185,10 +185,10 @@ class WL_MIM_Reminder {
 		  				</div>
 					</div>
 
-					<div class="from-group">
+					<!-- <div class="from-group">
 						<label for="wlim-reminder-title" class="col-form-label"><?php esc_html_e( "Title", WL_MIM_DOMAIN ); ?>:</label>
 						<input name="title" type="text" class="form-control" id="wlim-reminder-title" placeholder="<?php _e( "Title", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr($row->title);?>">
-					</div>
+					</div> -->
 					<div class="from-group">
 						<label for="wlim-message" class="col-form-label"><?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>:</label>
 						<textarea name="message" class="form-control" id="wlim-message" cols="30" rows="5"><?php echo esc_html($row->message);?></textarea>
