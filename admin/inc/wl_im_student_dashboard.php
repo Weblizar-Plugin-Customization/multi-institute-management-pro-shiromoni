@@ -313,7 +313,9 @@ WHERE sr.ID = ' . absint( $id )
 												foreach ( $invoices as $invoice ) {
 													$invoice_number = WL_MIM_Helper::get_invoice( $invoice->id );
 													$invoice_title  = $invoice->invoice_title; ?>
-												<option value="<?php echo esc_attr( $invoice->id ); ?>"><?php echo esc_html( $invoice_title . " ( " . $invoice_number . " )" ); ?></option>
+													<?php if ($invoice->status !== 'paid'): ?>
+														<option value="<?php echo esc_attr( $invoice->id ); ?>"><?php echo esc_html( $invoice_title . " ( " . $invoice_number . " )" ); ?></option>
+													<?php endif ?>
 												<?php
 												} ?>
 											</select>
