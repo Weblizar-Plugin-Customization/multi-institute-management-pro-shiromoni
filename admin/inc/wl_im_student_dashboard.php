@@ -160,12 +160,10 @@ WHERE sr.ID = ' . absint( $id )
 						</ul>
 					</div>
 					<div class="card col-sm-6 col-xs-12">
-						<div class="card-header">
+						<div class="">
 							<!-- card header content -->
-							<div class="row">
-								<div class="col-xs-12">
-									<div class="wlim-student-heading"><?php esc_html_e( 'Pay Fees', WL_MIM_DOMAIN ); ?></div>
-								</div>
+							<div class="card-header wlim-noticboard-background">
+								<h5 class="text-white border-light"><?php esc_html_e( 'Pay Fees', WL_MIM_DOMAIN ); ?></h5>
 							</div>
 							<!-- end - card header content -->
 						</div>
