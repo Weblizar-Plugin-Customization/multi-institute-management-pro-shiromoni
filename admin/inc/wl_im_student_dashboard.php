@@ -54,6 +54,17 @@ WHERE sr.ID = ' . absint( $id )
 );
 
 ?>
+<style>
+	body{
+		font-size: 18px !important;
+	}
+	#adminmenu .wp-submenu a{
+		font-size: 18px !important;
+	}#adminmenu .wp-menu-name{
+		font-size: 18px !important;
+	}
+
+</style>
 
 <div class="container-fluid wl_im_container">
 	<!-- row 1 -->
@@ -89,7 +100,7 @@ WHERE sr.ID = ' . absint( $id )
 			<div class="card-body">
 				<!-- card body content -->
 				<div class="row">
-				<div class="card col-sm-6 col-xs-12">
+					<div class="card col-sm-6 col-xs-12">
 						<div class="card-header wlim-noticboard-background">
 							<h5 class="text-white border-light"><?php esc_html_e( 'Your Details', WL_MIM_DOMAIN ); ?></h5>
 						</div>
@@ -149,56 +160,188 @@ WHERE sr.ID = ' . absint( $id )
 						</ul>
 					</div>
 					<div class="card col-sm-6 col-xs-12">
-						<div class="card-header wlim-noticboard-background">
-							<h5 class="text-white border-light"><?php esc_html_e( 'Noticeboard', WL_MIM_DOMAIN ); ?></h5>
+						<div class="card-header">
+							<!-- card header content -->
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="wlim-student-heading"><?php esc_html_e( 'Pay Fees', WL_MIM_DOMAIN ); ?></div>
+								</div>
+							</div>
+							<!-- end - card header content -->
 						</div>
 						<div class="card-body">
 							<?php
-							if ( count( $notices ) > 0 ) {
+							if ( isset( $_SESSION['payment'] ) && ! empty( $_SESSION['payment'] ) ) {
+								extract( $_SESSION );
 								?>
-								<div class="wlim-noticeboard-section">
-									<ul class="wlim-noticeboard">
-										<?php
-										foreach ( $notices as $key => $notice ) {
-											if ( $notice->link_to == 'url' ) {
-												$link_to = $notice->url;
-											} elseif ( $notice->link_to == 'attachment' ) {
-												$link_to = wp_get_attachment_url( $notice->attachment );
-											} else {
-												$link_to = '#';
-											}
-											?>
-											<li class="mb-3">
-												<span class="wlim-noticeboard-notice font-weight-bold">&#9656; </span>
-												<a class="wlim-noticeboard-notice" target="_blank" href="<?php echo esc_url( $link_to ); ?>"><?php echo stripcslashes( $notice->title ); ?>
-													(<?php echo date_format( date_create( $notice->created_at ), 'd M, Y' ); ?>
-													)</a>
-												<?php
-												if ( $key < 3 ) {
-													?>
-													<img class="ml-1" src="<?php echo WL_MIM_PLUGIN_URL . 'assets/images/newicon.gif'; ?>">
-													<?php
-												}
-												?>
-											</li>
-											<?php
-										}
-										?>
-									</ul>
-								</div>
-								<div class="mt-4 mr-3 float-right">
-									<a class="wlim-view-all-notice text-dark font-weight-bold" href="<?php menu_page_url( 'multi-institute-management-student-noticeboard' ); ?>"><?php esc_html_e( 'View all', WL_MIM_DOMAIN ); ?></a>
+								<div class="alert <?php echo $payment['type'] === 'success' ? ' alert-success' : ' alert-danger'; ?>" role="alert">
+									<span class="wlim-student-fee-status"><i class="fa fa-clock-o"></i> <?php esc_html_e( $payment['message'] . ' for amount ', WL_MIM_DOMAIN ); ?></span><strong class="wlim-student-fee-amount"><?php echo WL_MIM_PaymentHelper::get_currency_symbol_institute( $institute_id ) . $payment['amount']; ?></strong>
 								</div>
 								<?php
+							}
+							if ( isset( $_SESSION['payment'] ) ) {
+								unset( $_SESSION['payment'] );
+							};
+							?>
+							<!-- card body content -->
+							<?php
+							if ( $pending_fees > 0 ) {
+								?>
+								<!-- <div class="alert alert-info" role="alert">
+						<span class="wlim-student-fee-status"><i class="fa fa-clock-o"></i> <?php esc_html_e( 'You have pending fee: ', WL_MIM_DOMAIN ); ?></span><strong class="wlim-student-fee-amount"><?php echo WL_MIM_PaymentHelper::get_currency_symbol_institute( $institute_id ) . $pending_fees; ?></strong>
+					</div> -->
+								<?php
+								if ( ! WL_MIM_PaymentHelper::payment_methods_unavailable_institute( $institute_id ) ) {
+									?>
+									<div class="row">
+										<div class="col-md-6 wlim-pay-fees-now">
+											<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" id="wlim-pay-fees">
+												<?php $nonce = wp_create_nonce( 'pay-fees' ); ?>
+												<input type="hidden" name="pay-fees" value="<?php echo esc_attr( $nonce ); ?>">
+												<input type="hidden" name="action" value="wl-mim-pay-fees">
+												<input type="hidden" name="current_page_url" value="<?php menu_page_url( 'multi-institute-management-student-dashboard' ); ?>">
+
+												<label class="col-form-label mb-2">
+													<strong class="text-dark"><?php esc_html_e( 'Fee Payment', WL_MIM_DOMAIN ); ?>:</strong>
+												</label>
+												<!-- <div class="form-group">
+										<label class="radio-inline mr-3">
+											<input checked type="radio" name="fee_payment" value="total_pending_fee" id="wlim-payment-total-pending-fee"><?php esc_html_e( 'Pay Total Pending Fee', WL_MIM_DOMAIN ); ?>
+											-
+											<strong><?php echo WL_MIM_PaymentHelper::get_currency_symbol_institute( $institute_id ) . $pending_fees; ?></strong>
+										</label>
+									</div> -->
+												<div class="form-group">
+													<label class="radio-inline mr-3">
+														<input type="radio" name="fee_payment" value="individual_fee" id="wlim-payment-individual-fee"><?php esc_html_e( 'Show Installments', WL_MIM_DOMAIN ); ?>
+													</label>
+												</div>
+												<div class="fee_types_box wlim-payment-individual-fee">
+													<table class="table table-bordered">
+														<thead>
+															<tr>
+																<th><?php esc_html_e( 'Installment', WL_MIM_DOMAIN ); ?></th>
+																<th><?php esc_html_e( 'Amount Pending', WL_MIM_DOMAIN ); ?></th>
+																<th><?php esc_html_e( 'Status', WL_MIM_DOMAIN ); ?></th>
+															</tr>
+														</thead>
+														<tbody class="fee_types_rows fee_types_table">
+															<?php
+															$invoices = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.student_id=$student_id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
+
+															?>
+															<?php
+															foreach ( $invoices as $invoice ) {
+
+																?>
+																<tr>
+																	<td>
+																		<span class="text-dark"><?php echo esc_html( $invoice->invoice_title ); ?></span>
+																	</td>
+																	<td>
+																		<span class="text-dark"><?php echo number_format( $invoice->payable_amount, 2, '.', '' ); ?></span>
+																	</td>
+																	<td>
+																		<span class="text-dark"><?php echo ucwords( $invoice->status ); ?></span>
+																	</td>
+																</tr>
+																<?php
+															}
+															?>
+														</tbody>
+														<tfoot>
+															<tr>
+																<!-- <th><span><?php esc_html_e( 'Total', WL_MIM_DOMAIN ); ?></span></th> -->
+																<!-- <th><span><?php echo esc_html( $pending_fees ); ?></span></th> -->
+															</tr>
+														</tfoot>
+													</table>
+
+													<div class="form-group pt-3">
+														<label for="wlim-invoice-id" class="col-form-label"><?php esc_html_e( 'Select Installment', WL_MIM_DOMAIN ); ?>:</label>
+														<select name="invoice_id" class="form-control selectpicker" id="wlim-invoice-id" data-student_id="<?php echo esc_attr( $student->id ); ?>" data-live-search="true">
+															<option value="">-------- <?php esc_html_e( 'Select Installment', WL_MIM_DOMAIN ); ?> --------</option>
+															<?php
+															foreach ( $invoices as $invoice ) {
+																$invoice_number = WL_MIM_Helper::get_invoice( $invoice->id );
+																$invoice_title  = $invoice->invoice_title;
+																?>
+																<?php if ( $invoice->status !== 'paid' ) : ?>
+																	<option value="<?php echo esc_attr( $invoice->id ); ?>"><?php echo esc_html( $invoice_title . ' ( ' . $invoice_number . ' )' ); ?></option>
+																<?php endif ?>
+																<?php
+															}
+															?>
+														</select>
+													</div>
+
+												</div>
+												<div class="form-group">
+													<label class="col-form-label">
+														<strong class="text-dark"><?php esc_html_e( 'Payment Method', WL_MIM_DOMAIN ); ?>:</strong>
+													</label>
+													<br>
+													<div class="row mt-2">
+														<div class="col-sm-12">
+															<?php
+															if ( WL_MIM_PaymentHelper::razorpay_enabled_institute( $institute_id ) ) {
+																?>
+																<label class="radio-inline mr-3">
+																	<input checked type="radio" name="payment_method" class="mr-2" value="razorpay" id="wlim-payment-razorpay"><?php esc_html_e( 'Razorpay', WL_MIM_DOMAIN ); ?>
+																</label>
+																<?php
+															}
+															if ( WL_MIM_PaymentHelper::instamojo_enabled_institute( $institute_id ) ) {
+																?>
+																<label class="radio-inline mr-3">
+																	<input checked type="radio" name="payment_method" class="mr-2" value="instamojo" id="wlim-payment-instamojo"><?php esc_html_e( 'Instamojo', WL_MIM_DOMAIN ); ?>
+																</label>
+																<?php
+															}
+															if ( WL_MIM_PaymentHelper::paystack_enabled_institute( $institute_id ) ) {
+																?>
+																<label class="radio-inline mr-3">
+																	<input checked type="radio" name="payment_method" class="mr-2" value="paystack" id="wlim-payment-paystack"><?php esc_html_e( 'Paystack', WL_MIM_DOMAIN ); ?>
+																</label>
+																<?php
+															}
+															if ( WL_MIM_PaymentHelper::stripe_enabled_institute( $institute_id ) ) {
+																?>
+																<label class="radio-inline mr-3">
+																	<input checked type="radio" name="payment_method" class="mr-2" value="stripe" id="wlim-payment-stripe"><?php esc_html_e( 'Stripe', WL_MIM_DOMAIN ); ?>
+																</label>
+																<?php
+															}
+															if ( WL_MIM_PaymentHelper::paypal_enabled_institute( $institute_id ) ) {
+																?>
+																<label class="radio-inline mr-3">
+																	<input checked type="radio" name="payment_method" class="mr-2" value="paypal" id="wlim-payment-paypal"><?php esc_html_e( 'Paypal', WL_MIM_DOMAIN ); ?>
+																</label>
+																<?php
+															}
+															?>
+														</div>
+													</div>
+												</div>
+												<button type="submit" class="mt-2 float-right btn btn-primary pay-fees-submit"><?php esc_html_e( 'Pay Now', WL_MIM_DOMAIN ); ?></button>
+											</form>
+										</div>
+									</div>
+									<?php
+								}
 							} else {
 								?>
-								<span class="text-dark"><?php esc_html_e( 'There is no notice.', WL_MIM_DOMAIN ); ?></span>
+								<div class="alert alert-success" role="alert">
+									<span class="wlim-student-fee-status"><i class="fa fa-check"></i> <?php esc_html_e( 'No pending fees.', WL_MIM_DOMAIN ); ?></span>
+								</div>
 								<?php
 							}
 							?>
+							<!-- end - card body content -->
 						</div>
 					</div>
-					
+
+
 				</div>
 				<!-- end - card body content -->
 			</div>
@@ -209,182 +352,53 @@ WHERE sr.ID = ' . absint( $id )
 	<!-- row 3 -->
 	<div class="row">
 		<div class="card col">
-			<div class="card-header">
-				<!-- card header content -->
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="wlim-student-heading"><?php esc_html_e( 'Pay Fees', WL_MIM_DOMAIN ); ?></div>
-					</div>
-				</div>
-				<!-- end - card header content -->
+			<div class="card-header wlim-noticboard-background">
+				<h5 class="text-white border-light"><?php esc_html_e( 'Noticeboard', WL_MIM_DOMAIN ); ?></h5>
 			</div>
 			<div class="card-body">
 				<?php
-				if ( isset( $_SESSION['payment'] ) && ! empty( $_SESSION['payment'] ) ) {
-					extract( $_SESSION );
+				if ( count( $notices ) > 0 ) {
 					?>
-					<div class="alert <?php echo $payment['type'] === 'success' ? ' alert-success' : ' alert-danger'; ?>" role="alert">
-						<span class="wlim-student-fee-status"><i class="fa fa-clock-o"></i> <?php esc_html_e( $payment['message'] . ' for amount ', WL_MIM_DOMAIN ); ?></span><strong class="wlim-student-fee-amount"><?php echo WL_MIM_PaymentHelper::get_currency_symbol_institute( $institute_id ) . $payment['amount']; ?></strong>
+					<div class="wlim-noticeboard-section">
+						<ul class="wlim-noticeboard">
+							<?php
+							foreach ( $notices as $key => $notice ) {
+								if ( $notice->link_to == 'url' ) {
+									$link_to = $notice->url;
+								} elseif ( $notice->link_to == 'attachment' ) {
+									$link_to = wp_get_attachment_url( $notice->attachment );
+								} else {
+									$link_to = '#';
+								}
+								?>
+								<li class="mb-3">
+									<span class="wlim-noticeboard-notice font-weight-bold">&#9656; </span>
+									<a class="wlim-noticeboard-notice" target="_blank" href="<?php echo esc_url( $link_to ); ?>"><?php echo stripcslashes( $notice->title ); ?>
+										(<?php echo date_format( date_create( $notice->created_at ), 'd M, Y' ); ?>
+										)</a>
+									<?php
+									if ( $key < 3 ) {
+										?>
+										<img class="ml-1" src="<?php echo WL_MIM_PLUGIN_URL . 'assets/images/newicon.gif'; ?>">
+										<?php
+									}
+									?>
+								</li>
+								<?php
+							}
+							?>
+						</ul>
+					</div>
+					<div class="mt-4 mr-3 float-right">
+						<a class="wlim-view-all-notice text-dark font-weight-bold" href="<?php menu_page_url( 'multi-institute-management-student-noticeboard' ); ?>"><?php esc_html_e( 'View all', WL_MIM_DOMAIN ); ?></a>
 					</div>
 					<?php
-				}
-				if ( isset( $_SESSION['payment'] ) ) {
-					unset( $_SESSION['payment'] );
-				};
-				?>
-				<!-- card body content -->
-				<?php
-				if ( $pending_fees > 0 ) {
-					?>
-					<!-- <div class="alert alert-info" role="alert">
-						<span class="wlim-student-fee-status"><i class="fa fa-clock-o"></i> <?php esc_html_e( 'You have pending fee: ', WL_MIM_DOMAIN ); ?></span><strong class="wlim-student-fee-amount"><?php echo WL_MIM_PaymentHelper::get_currency_symbol_institute( $institute_id ) . $pending_fees; ?></strong>
-					</div> -->
-					<?php
-					if ( ! WL_MIM_PaymentHelper::payment_methods_unavailable_institute( $institute_id ) ) {
-						?>
-						<div class="row">
-							<div class="col-md-6 wlim-pay-fees-now">
-								<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post" id="wlim-pay-fees">
-									<?php $nonce = wp_create_nonce( 'pay-fees' ); ?>
-									<input type="hidden" name="pay-fees" value="<?php echo esc_attr( $nonce ); ?>">
-									<input type="hidden" name="action" value="wl-mim-pay-fees">
-									<input type="hidden" name="current_page_url" value="<?php menu_page_url( 'multi-institute-management-student-dashboard' ); ?>">
-
-									<label class="col-form-label mb-2">
-										<strong class="text-dark"><?php esc_html_e( 'Fee Payment', WL_MIM_DOMAIN ); ?>:</strong>
-									</label>
-									<!-- <div class="form-group">
-										<label class="radio-inline mr-3">
-											<input checked type="radio" name="fee_payment" value="total_pending_fee" id="wlim-payment-total-pending-fee"><?php esc_html_e( 'Pay Total Pending Fee', WL_MIM_DOMAIN ); ?>
-											-
-											<strong><?php echo WL_MIM_PaymentHelper::get_currency_symbol_institute( $institute_id ) . $pending_fees; ?></strong>
-										</label>
-									</div> -->
-									<div class="form-group">
-										<label class="radio-inline mr-3">
-											<input type="radio" name="fee_payment" value="individual_fee" id="wlim-payment-individual-fee"><?php esc_html_e( 'Show Installments', WL_MIM_DOMAIN ); ?>
-										</label>
-									</div>
-									<div class="fee_types_box wlim-payment-individual-fee">
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th><?php esc_html_e( 'Installment', WL_MIM_DOMAIN ); ?></th>
-													<th><?php esc_html_e( 'Amount Pending', WL_MIM_DOMAIN ); ?></th>
-													<th><?php esc_html_e( 'Status', WL_MIM_DOMAIN ); ?></th>
-												</tr>
-											</thead>
-											<tbody class="fee_types_rows fee_types_table">
-												<?php
-												$invoices = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.student_id=$student_id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
-												
-												?>
-												<?php
-												foreach ( $invoices as $invoice ) {
-
-													?>
-														<tr>
-															<td>
-																<span class="text-dark"><?php echo esc_html( $invoice->invoice_title ); ?></span>
-															</td>
-															<td>
-																<span class="text-dark"><?php echo number_format( $invoice->payable_amount, 2, '.', '' ); ?></span>
-															</td>
-															<td>
-															<span class="text-dark"><?php echo ucwords( $invoice->status ); ?></span>
-															</td>
-														</tr>
-														<?php
-												}
-												?>
-											</tbody>
-											<tfoot>
-												<tr>
-													<!-- <th><span><?php esc_html_e( 'Total', WL_MIM_DOMAIN ); ?></span></th> -->
-													<!-- <th><span><?php echo esc_html( $pending_fees ); ?></span></th> -->
-												</tr>
-											</tfoot>
-										</table>
-
-										<div class="form-group pt-3">
-											<label for="wlim-invoice-id" class="col-form-label"><?php esc_html_e( "Select Installment", WL_MIM_DOMAIN ); ?>:</label>
-											<select name="invoice_id" class="form-control selectpicker" id="wlim-invoice-id" data-student_id="<?php echo esc_attr( $student->id ); ?>" data-live-search="true">
-												<option value="">-------- <?php esc_html_e( "Select Installment", WL_MIM_DOMAIN ); ?> --------</option>
-											<?php
-												foreach ( $invoices as $invoice ) {
-													$invoice_number = WL_MIM_Helper::get_invoice( $invoice->id );
-													$invoice_title  = $invoice->invoice_title; ?>
-													<?php if ($invoice->status !== 'paid'): ?>
-														<option value="<?php echo esc_attr( $invoice->id ); ?>"><?php echo esc_html( $invoice_title . " ( " . $invoice_number . " )" ); ?></option>
-													<?php endif ?>
-												<?php
-												} ?>
-											</select>
-										</div>
-
-									</div>
-									<div class="form-group">
-										<label class="col-form-label">
-											<strong class="text-dark"><?php esc_html_e( 'Payment Method', WL_MIM_DOMAIN ); ?>:</strong>
-										</label>
-										<br>
-										<div class="row mt-2">
-											<div class="col-sm-12">
-												<?php
-												if ( WL_MIM_PaymentHelper::razorpay_enabled_institute( $institute_id ) ) {
-													?>
-													<label class="radio-inline mr-3">
-														<input checked type="radio" name="payment_method" class="mr-2" value="razorpay" id="wlim-payment-razorpay"><?php esc_html_e( 'Razorpay', WL_MIM_DOMAIN ); ?>
-													</label>
-													<?php
-												}
-												if ( WL_MIM_PaymentHelper::instamojo_enabled_institute( $institute_id ) ) {
-													?>
-													<label class="radio-inline mr-3">
-														<input checked type="radio" name="payment_method" class="mr-2" value="instamojo" id="wlim-payment-instamojo"><?php esc_html_e( 'Instamojo', WL_MIM_DOMAIN ); ?>
-													</label>
-													<?php
-												}
-												if ( WL_MIM_PaymentHelper::paystack_enabled_institute( $institute_id ) ) {
-													?>
-													<label class="radio-inline mr-3">
-														<input checked type="radio" name="payment_method" class="mr-2" value="paystack" id="wlim-payment-paystack"><?php esc_html_e( 'Paystack', WL_MIM_DOMAIN ); ?>
-													</label>
-													<?php
-												}
-												if ( WL_MIM_PaymentHelper::stripe_enabled_institute( $institute_id ) ) {
-													?>
-													<label class="radio-inline mr-3">
-														<input checked type="radio" name="payment_method" class="mr-2" value="stripe" id="wlim-payment-stripe"><?php esc_html_e( 'Stripe', WL_MIM_DOMAIN ); ?>
-													</label>
-													<?php
-												}
-												if ( WL_MIM_PaymentHelper::paypal_enabled_institute( $institute_id ) ) {
-													?>
-													<label class="radio-inline mr-3">
-														<input checked type="radio" name="payment_method" class="mr-2" value="paypal" id="wlim-payment-paypal"><?php esc_html_e( 'Paypal', WL_MIM_DOMAIN ); ?>
-													</label>
-													<?php
-												}
-												?>
-											</div>
-										</div>
-									</div>
-									<button type="submit" class="mt-2 float-right btn btn-primary pay-fees-submit"><?php esc_html_e( 'Pay Now', WL_MIM_DOMAIN ); ?></button>
-								</form>
-							</div>
-						</div>
-						<?php
-					}
 				} else {
 					?>
-					<div class="alert alert-success" role="alert">
-						<span class="wlim-student-fee-status"><i class="fa fa-check"></i> <?php esc_html_e( 'No pending fees.', WL_MIM_DOMAIN ); ?></span>
-					</div>
+					<span class="text-dark"><?php esc_html_e( 'There is no notice.', WL_MIM_DOMAIN ); ?></span>
 					<?php
 				}
 				?>
-				<!-- end - card body content -->
 			</div>
 		</div>
 	</div>
