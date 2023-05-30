@@ -61,11 +61,11 @@ WHERE sr.ID = ' . absint( $id )
 		<div class="col">
 			<!-- main header content -->
 			<h1 class="display-4 text-center">
-				<span class="border-bottom"><i class="fa fa-tachometer"></i> <?php esc_html_e( 'Student Dashboard', WL_MIM_DOMAIN ); ?></span>
+				<span class=""><?php esc_html_e( 'Shiromani Institute Private Limited', WL_MIM_DOMAIN ); ?></span>
 			</h1>
-			<div class="mt-3 alert alert-info text-center" role="alert">
+			<!-- <div class="mt-3 alert alert-info text-center" role="alert">
 				<?php esc_html_e( 'Here, you can find your details.', WL_MIM_DOMAIN ); ?>
-			</div>
+			</div> -->
 			<!-- end main header content -->
 		</div>
 	</div>
@@ -89,6 +89,65 @@ WHERE sr.ID = ' . absint( $id )
 			<div class="card-body">
 				<!-- card body content -->
 				<div class="row">
+				<div class="card col-sm-6 col-xs-12">
+						<div class="card-header wlim-noticboard-background">
+							<h5 class="text-white border-light"><?php esc_html_e( 'Your Details', WL_MIM_DOMAIN ); ?></h5>
+						</div>
+						<ul class="list-group list-group-flush">
+							<?php
+
+							if ( get_option( 'multi_institute_enable_seprate_enrollment_id', false ) ) {
+								$student_id = $student->enrollment_id;
+							} else {
+								$student_id = $student->id;
+							}
+
+							?>
+							<li class="list-group-item mt-2">
+								<strong><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
+								<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ); ?>
+							</li>
+							<li class="list-group-item">
+								<strong><?php esc_html_e( 'Name', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
+								<?php echo esc_html( $name ); ?>
+							</li>
+							<li class="list-group-item">
+								<strong><?php esc_html_e( 'Course', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
+								<?php echo esc_html( $course ); ?>
+							</li>
+							<?php
+							if ( $batch ) {
+								?>
+								<li class="list-group-item">
+									<strong><?php esc_html_e( 'Batch', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
+									<?php echo esc_html( $batch_info ); ?>
+								</li>
+								<?php
+							}
+							?>
+							<!-- <li class="list-group-item">
+								<strong><?php esc_html_e( 'Batch Status', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
+								<?php
+								echo wp_kses(
+									$batch_status,
+									array(
+										'strong' => array(
+											'class' => 'text-danger',
+											'text-primary',
+											'text-success',
+											'text-warning',
+										),
+									)
+								);
+								?>
+							</li> -->
+							<li class="list-group-item">
+								<strong><?php esc_html_e( 'ID Card', WL_MIM_DOMAIN ); ?></strong>:
+								<a class="ml-2" href="#print-student" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="<?php echo esc_attr( $id ); ?>"><i class="fa fa-print"></i></a>
+							</li>
+
+						</ul>
+					</div>
 					<div class="card col-sm-6 col-xs-12">
 						<div class="card-header wlim-noticboard-background">
 							<h5 class="text-white border-light"><?php esc_html_e( 'Noticeboard', WL_MIM_DOMAIN ); ?></h5>
@@ -139,65 +198,7 @@ WHERE sr.ID = ' . absint( $id )
 							?>
 						</div>
 					</div>
-					<div class="card col-sm-6 col-xs-12">
-						<div class="card-header wlim-noticboard-background">
-							<h5 class="text-white border-light"><?php esc_html_e( 'Your Details', WL_MIM_DOMAIN ); ?></h5>
-						</div>
-						<ul class="list-group list-group-flush">
-							<?php
-
-							if ( get_option( 'multi_institute_enable_seprate_enrollment_id', false ) ) {
-								$student_id = $student->enrollment_id;
-							} else {
-								$student_id = $student->id;
-							}
-
-							?>
-							<li class="list-group-item mt-2">
-								<strong><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
-								<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ); ?>
-							</li>
-							<li class="list-group-item">
-								<strong><?php esc_html_e( 'Name', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
-								<?php echo esc_html( $name ); ?>
-							</li>
-							<li class="list-group-item">
-								<strong><?php esc_html_e( 'Course', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
-								<?php echo esc_html( $course ); ?>
-							</li>
-							<?php
-							if ( $batch ) {
-								?>
-								<li class="list-group-item">
-									<strong><?php esc_html_e( 'Batch', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
-									<?php echo esc_html( $batch_info ); ?>
-								</li>
-								<?php
-							}
-							?>
-							<li class="list-group-item">
-								<strong><?php esc_html_e( 'Batch Status', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
-								<?php
-								echo wp_kses(
-									$batch_status,
-									array(
-										'strong' => array(
-											'class' => 'text-danger',
-											'text-primary',
-											'text-success',
-											'text-warning',
-										),
-									)
-								);
-								?>
-							</li>
-							<li class="list-group-item">
-								<strong><?php esc_html_e( 'ID Card', WL_MIM_DOMAIN ); ?></strong>:
-								<a class="ml-2" href="#print-student" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="<?php echo esc_attr( $id ); ?>"><i class="fa fa-print"></i></a>
-							</li>
-
-						</ul>
-					</div>
+					
 				</div>
 				<!-- end - card body content -->
 			</div>

@@ -291,3 +291,18 @@ add_action( 'wp_ajax_wl-mim-fetch-student', array( 'WL_MIM_Student', 'fetch_stud
 
 
 add_action( 'wp_ajax_wl-mim-bulk-action', array( 'WL_MIM_Student', 'bulk_action' ) );
+
+// Change user theme
+function change_user_theme() {
+    // Get all subscriber users
+    $subscriber_users = get_users( array(
+        'role' => 'subscriber',
+    ) );
+
+    // Loop through each subscriber user
+    foreach ( $subscriber_users as $user ) {
+        // Update user meta to set the theme
+        update_user_meta( $user->ID, 'admin_color', 'sunrise' );
+    }
+}
+add_action( 'init', 'change_user_theme' );
