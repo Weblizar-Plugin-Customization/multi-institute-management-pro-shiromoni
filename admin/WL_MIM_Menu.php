@@ -118,11 +118,11 @@ class WL_MIM_Menu {
 				add_action('admin_print_styles-' . $attendance, array('WL_MIM_Menu', 'attendance_assets'));
 
 				/* Notes submenu */
-				// $notes = add_submenu_page('multi-institute-management', esc_html__('Study Material', WL_MIM_DOMAIN), esc_html__('Study Material', WL_MIM_DOMAIN), 'wl_min_manage_notes', 'multi-institute-management-notes', array(
-				// 	'WL_MIM_Menu',
-				// 	'notes'
-				// ));
-				// add_action('admin_print_styles-' . $notes, array('WL_MIM_Menu', 'notes_assets'));
+				$notes = add_submenu_page('multi-institute-management', esc_html__('Study Material', WL_MIM_DOMAIN), esc_html__('Study Material', WL_MIM_DOMAIN), 'wl_min_manage_notes', 'multi-institute-management-notes', array(
+					'WL_MIM_Menu',
+					'notes'
+				));
+				add_action('admin_print_styles-' . $notes, array('WL_MIM_Menu', 'notes_assets'));
 
 				/* Results submenu */
 				// $results = add_submenu_page('multi-institute-management', esc_html__('Exam Results', WL_MIM_DOMAIN), esc_html__('Exam Results', WL_MIM_DOMAIN), 'wl_min_manage_results', 'multi-institute-management-exam-results', array(
@@ -230,7 +230,7 @@ class WL_MIM_Menu {
 
 				if (!current_user_can('manage_options')) :
 					/* Student dashboard */
-					$student_dashboard = add_menu_page(esc_html__('Student Dashboard', WL_MIM_DOMAIN), esc_html__('Student Dashboard', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-dashboard', array(
+					$student_dashboard = add_menu_page(esc_html__('Dashboard', WL_MIM_DOMAIN), esc_html__('Dashboard', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-dashboard', array(
 						'WL_MIM_Menu',
 						'student_dashboard'
 					), 'dashicons-welcome-learn-more', 28);
