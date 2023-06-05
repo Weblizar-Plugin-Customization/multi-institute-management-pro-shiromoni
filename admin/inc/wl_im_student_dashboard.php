@@ -107,11 +107,9 @@ WHERE sr.ID = ' . absint( $id )
 						<ul class="list-group list-group-flush">
 							<?php
 
-							if ( get_option( 'multi_institute_enable_seprate_enrollment_id', false ) ) {
-								$student_id = $student->enrollment_id;
-							} else {
-								$student_id = $student->id;
-							}
+							
+							$student_id = $student->enrollment_id;
+							
 
 							?>
 							<li class="list-group-item mt-2">
