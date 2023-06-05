@@ -260,14 +260,14 @@ class WL_MIM_Menu {
 					// ));
 
 					/* Student notes submenu */
-					// $student_notes_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Study Material', WL_MIM_DOMAIN), esc_html__('Study Material', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-notes', array(
-					// 	'WL_MIM_Menu',
-					// 	'student_notes'
-					// ));
-					// add_action('admin_print_styles-' . $student_notes_submenu, array(
-					// 	'WL_MIM_Menu',
-					// 	'student_notes_assets'
-					// ));
+					$student_notes_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Study Material', WL_MIM_DOMAIN), esc_html__('Study Material', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-notes', array(
+						'WL_MIM_Menu',
+						'student_notes'
+					));
+					add_action('admin_print_styles-' . $student_notes_submenu, array(
+						'WL_MIM_Menu',
+						'student_notes_assets'
+					));
 
 					/* Student attendance submenu */
 					$student_attendance_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Attendance', WL_MIM_DOMAIN), esc_html__('Attendance', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-attendance', array(
