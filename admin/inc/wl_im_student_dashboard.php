@@ -106,15 +106,17 @@ WHERE sr.ID = ' . absint( $id )
 						</div>
 						<ul class="list-group list-group-flush">
 							<?php
-
+					
+							if (get_option( 'multi_institute_enable_seprate_enrollment_id', $institute_id )) {
+								$student_id = $row->enrollment_id;
+							} else {
+								$student_id = $row->id;
+							}
 							
-							$student_id = $student->enrollment_id;
-							
-
 							?>
 							<li class="list-group-item mt-2">
 								<strong><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
-								<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ); ?>
+								<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student->enrollment_id, $general_enrollment_prefix ); ?>
 							</li>
 							<li class="list-group-item">
 								<strong><?php esc_html_e( 'Name', WL_MIM_DOMAIN ); ?></strong>:&nbsp;
