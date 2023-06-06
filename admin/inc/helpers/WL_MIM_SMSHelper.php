@@ -235,7 +235,7 @@ class WL_MIM_SMSHelper {
 					"number"   => $number,
 					"senderid" => $sender_id,
 					"channel"  => $channel,
-					"DCS"      => '08',
+					"DCS"      => 0,
 					"flashsms" => 0,
 					"text"     => $message,
 					"route"    => $route,
