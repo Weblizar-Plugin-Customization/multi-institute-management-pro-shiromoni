@@ -108,9 +108,9 @@ WHERE sr.ID = ' . absint( $id )
 							<?php
 					
 							if (get_option( 'multi_institute_enable_seprate_enrollment_id', $institute_id )) {
-								$student_id = $row->enrollment_id;
+								$student_id = $student->enrollment_id;
 							} else {
-								$student_id = $row->id;
+								$student_id = $student->id;
 							}
 							
 							?>
