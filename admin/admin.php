@@ -306,3 +306,9 @@ function change_user_theme() {
     }
 }
 add_action( 'init', 'change_user_theme' );
+
+function wpse_remove_collapse() {
+    echo '<style type="text/css">#collapse-menu { display: none; visibility: hidden; }</style>';
+ }
+ add_action('admin_head', 'wpse_remove_collapse');
+

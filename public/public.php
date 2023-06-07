@@ -116,3 +116,19 @@ if ( ! wp_next_scheduled( 'wl_mim_send_birthday_messages' ) ) {
 	wp_schedule_event( time(), 'daily', 'wl_mim_send_birthday_messages' );
 }
 add_action( 'wl_mim_send_birthday_messages', array( 'WL_MIM_Helper', 'send_birthday_messages' ) );
+
+
+// function login_redirect( ) {
+//     // Check if the user ID exists in the students table
+//     global $wpdb;
+// 	$user_id = get_current_user_id(); 
+//     $student_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$wpdb->prefix}wl_min_students WHERE user_id = %d", $user_id ) );
+
+//     // Redirect based on the existence of the user ID
+//     if ( $student_id ) {
+//         return home_url( 'wp-admin/admin.php?page=multi-institute-management-students' );
+//     } else {
+//         return home_url( 'wp-admin/index.php' );
+//     }
+// }
+// add_filter( 'login_redirect', 'login_redirect' , 10, 3);
