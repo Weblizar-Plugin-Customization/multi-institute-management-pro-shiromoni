@@ -12,10 +12,13 @@ class WL_MIM_Administrator {
 		}
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
+		
+		$excluded_user_ids = $wpdb->get_col( "SELECT user_id FROM {$wpdb->prefix}wl_min_students" );
 
 		$data = get_users( array(
 			'meta_key'   => 'wlim_institute_id',
-			'meta_value' => $institute_id
+			'meta_value' => $institute_id,
+			'exclude'    => $excluded_user_ids,
 		) );
 
 		if ( count( $data ) !== 0 ) {
