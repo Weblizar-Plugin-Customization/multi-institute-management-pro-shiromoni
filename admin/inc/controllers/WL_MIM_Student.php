@@ -91,6 +91,7 @@ class WL_MIM_Student
 				// $fees_paid     = WL_MIM_Helper::get_fees_total($fees['paid']);
 				// $pending_fees  = number_format($fees_payable - $fees_paid, 2, '.', '');
 				$phone         = $row->phone ? $row->phone : '-';
+				$phon2         = $row->phone2 ? $row->phone2 : '-';
 				$email         = $row->email ? $row->email : '-';
 				$date_of_birth = (!empty($row->date_of_birth)) ? date_format(date_create($row->date_of_birth), "d M, Y") : '-';
 				$is_acitve     = $row->is_active ? esc_html__('Yes', WL_MIM_DOMAIN) : esc_html__('No', WL_MIM_DOMAIN);
@@ -111,10 +112,11 @@ class WL_MIM_Student
 					$time_from    = date("g:i A", strtotime($batch_data[$row->batch_id]->time_from));
 					$time_to      = date("g:i A", strtotime($batch_data[$row->batch_id]->time_to));
 					$timing       = "$time_from - $time_to";
-					$batch        = esc_html($batch_data[$row->batch_id]->batch_code) . ' ( ' . esc_html($batch_data[$row->batch_id]->batch_name) . ' )<br>( ' . esc_html($timing) . ' )';
+					$batch        = esc_html($batch_data[$row->batch_id]->batch_code) . ' ( ' . esc_html($batch_data[$row->batch_id]->batch_name) . ' )';
+					// <br>( ' . esc_html($timing) . ' )';
 					$batch_status = WL_MIM_Helper::get_batch_status($batch_data[$row->batch_id]->start_date, $batch_data[$row->batch_id]->end_date);
 				}
-
+				
 				// if ($pending_fees > 0) {
 				// 	$fees_status = '<strong class="text-danger">' . esc_html__('Pending', WL_MIM_DOMAIN) . ': </strong><br><strong>' . $pending_fees . '</strong>';
 				// } else {
@@ -135,6 +137,7 @@ class WL_MIM_Student
 					// esc_html($fees_paid),
 					// $fees_status,
 					esc_html($phone),
+					esc_html($phon2),
 					esc_html($email),
 					esc_html($qualification),
 					esc_html($class),

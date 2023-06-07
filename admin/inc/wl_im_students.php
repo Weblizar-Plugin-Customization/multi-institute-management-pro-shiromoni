@@ -186,6 +186,7 @@ if (isset($_GET['batch_id'])) {
                                     <!-- <th scope="col"><?php esc_html_e('Total Fees Paid', WL_MIM_DOMAIN); ?></th> -->
                                     <!-- <th scope="col"><?php esc_html_e('Fees Status', WL_MIM_DOMAIN); ?></th> -->
                                     <th scope="col"><?php esc_html_e('Phone', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e('Mother Phone', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Email', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Class', WL_MIM_DOMAIN); ?></th>
