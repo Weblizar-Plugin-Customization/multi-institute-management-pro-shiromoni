@@ -138,10 +138,11 @@ class WL_MIM_Invoice {
 				if ( $row->last_name ) {
 					$student_name .= " $row->last_name";
 				}
+				
 				if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 					$student_id = $row->enrollment_id;
 				} else {
-					$student_id = $row->id;
+					$student_id = $row->student_id;
 				}
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
@@ -187,7 +188,7 @@ class WL_MIM_Invoice {
 		$student_id = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}wl_min_students WHERE `user_id`=$user_id;");
 		$student_id = $student_id->id;
 
-		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.student_id=$student_id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
+		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.id as student_id, s.first_name, s.last_name, s.enrollment_id, i.payable_amount, i.due_date_amount, i.due_date FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.student_id=$student_id AND i.institute_id = $institute_id ORDER BY i.id DESC" );
 
 		if ( count( $data ) !== 0 ) {
 			foreach ( $data as $row ) {
@@ -209,7 +210,7 @@ class WL_MIM_Invoice {
 				if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 					$student_id = $row->enrollment_id;
 				} else {
-					$student_id = $row->id;
+					$student_id = $row->student_id;
 				}
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
