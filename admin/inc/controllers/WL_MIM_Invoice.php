@@ -57,7 +57,7 @@ class WL_MIM_Invoice {
 				if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 					$student_id = $row->enrollment_id;
 				} else {
-					$student_id = $row->id;
+					$student_id = $row->student_id;
 				}
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
