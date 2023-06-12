@@ -301,11 +301,11 @@ if ( empty( $general_institute['institute_name'] ) ) {
 	                        <?php
 	                        if ( count( $wlim_active_students ) > 0 ) {
 	                            foreach ( $wlim_active_students as $active_student ) {
-									if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
+									// if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
 										$student_id = $active_student->enrollment_id;
-									} else {
-										$student_id = $active_student->id;
-									}
+									// } else {
+									// 	$student_id = $active_student->id;
+									// }
 									?>
 	                            <option value="<?php echo $active_student->id; ?>"><?php echo "$active_student->first_name $active_student->last_name (" . WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ) . ")"; ?></option>
 	                        <?php

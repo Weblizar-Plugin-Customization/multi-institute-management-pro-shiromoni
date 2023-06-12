@@ -176,11 +176,13 @@ class WL_MIM_Reminder {
 					<label  class="col-form-label pb-0"><?php _e( 'Student', WL_MIM_DOMAIN ); ?>:</label>
 					<div class="card mb-3 mt-2">
 						<div class="card-block">
-						<?php if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+						<?php 
+						// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
                                             $student_id = $student->enrollment_id;
-                                        } else {
-                                            $student_id = $student->id;
-                                        } ?>
+                                        // } else {
+                                            // $student_id = $student->id;
+                                        // }
+										 ?>
 		    				<span class="text-dark"><?php echo $student->first_name . " " . $student->last_name; ?> (<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ); ?>)</span>
 		  				</div>
 					</div>

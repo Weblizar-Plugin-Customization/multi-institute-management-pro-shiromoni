@@ -54,12 +54,12 @@ class WL_MIM_Invoice {
 				if ( $row->last_name ) {
 					$student_name .= " $row->last_name";
 				}
-				if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+				// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 					$student_id = $row->enrollment_id;
-				} else {
-					$student_id = $row->student_id;
-					$student_id = $row->enrollment_id;
-				}
+				// } else {
+				// 	$student_id = $row->student_id;
+				// 	$student_id = $row->enrollment_id;
+				// }
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
 				if (current_user_can( 'wl_min_edit_fee' )) {
@@ -209,11 +209,11 @@ class WL_MIM_Invoice {
 				if ( $row->last_name ) {
 					$student_name .= " $row->last_name";
 				}
-				if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+				// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 					$student_id = $row->enrollment_id;
-				} else {
-					$student_id = $row->student_id;
-				}
+				// } else {
+				// 	$student_id = $row->student_id;
+				// }
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
 				$results["data"][] = array(
@@ -419,11 +419,13 @@ class WL_MIM_Invoice {
 					<label  class="col-form-label pb-0"><?php _e( 'Student', WL_MIM_DOMAIN ); ?>:</label>
 					<div class="card mb-3 mt-2">
 						<div class="card-block">
-						<?php if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+						<?php 
+						// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
                                             $student_id = $student->enrollment_id;
-                                        } else {
-                                            $student_id = $student->id;
-                                        } ?>
+                                        // } else {
+                                        //     $student_id = $student->id;
+                                        // } 
+										?>
 		    				<span class="text-dark"><?php echo $student->first_name . " " . $student->last_name; ?> (<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ); ?>)</span>
 		  				</div>
 					</div>
