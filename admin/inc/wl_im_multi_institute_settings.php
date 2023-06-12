@@ -49,12 +49,12 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_PaymentHelper.
 										<?php esc_html_e( 'Enable Enquiry Form Title', WL_MIM_DOMAIN ); ?>
                                     </label>
                                 </div>
-                                <div class="form-check pl-0 mb-3">
+                                <!-- <div class="form-check pl-0 mb-3">
                                     <input name="multi_institute_enable_seprate_enrollment_id" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-multi_institute_enable_seprate_enrollment_id" value="1" <?php checked( get_option( 'multi_institute_enable_seprate_enrollment_id', '1' ), '1' ); ?>>
                                     <label for="wlim-setting-multi_institute_enable_seprate_enrollment_id" class="form-check-label">
 										<?php esc_html_e( 'Seperate Enrollment ID (do not this change setting if you already have students. )', WL_MIM_DOMAIN ); ?>
                                     </label>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group">
                                     <label for="wlim-setting-multi_institute_enquiry_form_title" class="col-form-label">

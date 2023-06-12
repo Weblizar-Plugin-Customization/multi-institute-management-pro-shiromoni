@@ -76,11 +76,11 @@ class WL_MIM_Attendance {
 					<?php
 					if ( count( $students ) ) {
 						foreach ( $students as $key => $student ) {
-							if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+							// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 								$student_id = $student->enrollment_id;
-							} else {
-								$student_id = $student->id;
-							}
+							// } else {
+								// $student_id = $student->id;
+							// }
 							$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 							$name          = $student->first_name;
 							$student_id    = $student->id;
@@ -248,11 +248,11 @@ class WL_MIM_Attendance {
 
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $student->institute_id );
 
-		if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
+		// if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
 			$student_id = $student->enrollment_id;
-		} else {
-			$student_id = $student->id;
-		}
+		// } else {
+		// 	$student_id = $student->id;
+		// }
 
 		WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
@@ -327,11 +327,11 @@ class WL_MIM_Attendance {
 
 		$row = $wpdb->get_row( $query );
 
-		if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
+		// if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
 			$student_id = $student->enrollment_id;
-		} else {
-			$student_id = $student->id;
-		}
+		// } else {
+		// 	$student_id = $student->id;
+		// }
 		$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix )
 		?>
 		<ul class="list-group mb-3">

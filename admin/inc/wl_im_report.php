@@ -66,11 +66,11 @@ if ( empty( $general_institute['institute_name'] ) ) {
 									<?php
 									if ( count( $wlim_students ) > 0 ) {
 										foreach ( $wlim_students as $student ) {
-                                            if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
+                                            // if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
                                                 $student_id = $student->enrollment_id;
-                                            } else {
-                                                $student_id = $student->id;
-                                            }
+                                            // } else {
+                                            //     $student_id = $student->id;
+                                            // }
 											$name = $student->first_name;
 											$name .= $student->middle_name ? " $student->middle_name" : "";
 											$name .= $student->last_name ? " $student->last_name" : "";

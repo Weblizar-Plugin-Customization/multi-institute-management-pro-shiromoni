@@ -58,6 +58,7 @@ class WL_MIM_Invoice {
 					$student_id = $row->enrollment_id;
 				} else {
 					$student_id = $row->student_id;
+					$student_id = $row->enrollment_id;
 				}
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 
@@ -139,10 +140,11 @@ class WL_MIM_Invoice {
 					$student_name .= " $row->last_name";
 				}
 				
-				if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+				if (get_option( 'multi_institute_enable_seprate_enrollment_id', 1 )) {
 					$student_id = $row->enrollment_id;
 				} else {
 					$student_id = $row->student_id;
+					$student_id = $row->enrollment_id;
 				}
 				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 

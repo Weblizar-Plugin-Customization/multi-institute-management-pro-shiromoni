@@ -35,11 +35,11 @@ class WL_MIM_Fee {
 				if ( $row->student_id && isset( $student_data[ $row->student_id ] ) ) {
 					$student_name  = $student_data[ $row->student_id ]->first_name . " " . $student_data[ $row->student_id ]->last_name;
 					$mobile        =  $student_data[ $row->student_id ]->phone;
-					if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+					// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 						$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_data[ $row->student_id ]->enrollment_id, $general_enrollment_prefix );
-					}else {
-						$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_data[ $row->student_id ]->id, $general_enrollment_prefix );
-					}
+					// }else {
+					// 	$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_data[ $row->student_id ]->id, $general_enrollment_prefix );
+					// }
 				}
 
 				if (current_user_can( 'wl_min_edit_fee' )) {
@@ -247,11 +247,12 @@ class WL_MIM_Fee {
                     <label class="col-form-label pb-0"><?php esc_html_e( 'Student', WL_MIM_DOMAIN ); ?>:</label>
                     <div class="card mb-3 mt-2">
                         <div class="card-block">
-						<?php if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+						<?php 
+						// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
                                             $student_id = $student->enrollment_id;
-                                        } else {
-                                            $student_id = $student->id;
-                                        } ?>
+                                        // } else {
+                                        //     $student_id = $student->id;
+                                        // } ?>
                             <span class="text-dark"><?php echo esc_html( $student->first_name ) . " " . esc_html( $student->last_name ); ?> (<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ); ?>)</span>
                         </div>
                     </div>
