@@ -12,11 +12,11 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.
 	$general_institute         = WL_MIM_SettingHelper::get_general_institute_settings( $institute_id );
 	$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
-    if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+    // if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
         $student_id = $row->enrollment_id;
-    } else {
-        $student_id = $row->id;
-    }
+    // } else {
+    //     $student_id = $row->id;
+    // }
 	$enrollment_id      = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 	$certificate_number = WL_MIM_Helper::get_certificate_number( $row->id );
 	$course             = $wpdb->get_row( "SELECT course_name, course_code, duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE id = $row->course_id AND institute_id = $institute_id" );

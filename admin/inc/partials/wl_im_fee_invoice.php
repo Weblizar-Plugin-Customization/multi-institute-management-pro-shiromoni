@@ -5,11 +5,11 @@
 
 		$general_institute = WL_MIM_SettingHelper::get_general_institute_settings( $institute_id );
 
-		if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+		// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 			$student_id = $student->enrollment_id;
-		} else {
-			$student_id = $student->id;
-		}
+		// } else {
+		// 	$student_id = $student->id;
+		// }
 		$enrollment_id  = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 		$course         = $wpdb->get_row( "SELECT course_name, course_code, duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE id = $student->course_id AND institute_id = $institute_id" );
 		$batch          = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND id = $student->batch_id AND institute_id = $institute_id" );

@@ -134,11 +134,11 @@ class WL_MIM_Notification {
 						foreach ( $data as $row ) {
 							$fees = unserialize( $row->fees );
 							if ( WL_MIM_Helper::get_fees_total( $fees['payable'] ) > WL_MIM_Helper::get_fees_total( $fees['paid'] ) ) {
-								if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+								// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 									$student_id = $row->enrollment_id;
-								} else {
-									$student_id = $row->id;
-								}
+								// } else {
+								// 	$student_id = $row->id;
+								// }
 								$id            = $row->id;
 								$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 								$name          = $row->first_name;
@@ -178,11 +178,11 @@ class WL_MIM_Notification {
 						<?php
 						foreach ( $data as $row ) {
 							$id            = $row->id;
-							if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+							// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 								$student_id = $row->enrollment_id;
-							} else {
-								$student_id = $row->id;
-							}
+							// } else {
+							// 	$student_id = $row->id;
+							// }
 							$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 							$name          = $row->first_name;
 							if ( $row->last_name ) {
@@ -220,11 +220,11 @@ class WL_MIM_Notification {
 						<?php
 						foreach ( $data as $row ) {
 							$id            = $row->id;
-							if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+							// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 								$student_id = $row->enrollment_id;
-							} else {
-								$student_id = $row->id;
-							}
+							// } else {
+							// 	$student_id = $row->id;
+							// }
 							$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 							$name          = $row->first_name;
 							if ( $row->last_name ) {
@@ -262,11 +262,11 @@ class WL_MIM_Notification {
 						<?php
 						foreach ( $data as $row ) {
 							$id            = $row->id;
-							if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
+							// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
 								$student_id = $row->enrollment_id;
-							} else {
-								$student_id = $row->id;
-							}
+							// } else {
+							// 	$student_id = $row->id;
+							// }
 							$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix );
 							$name          = $row->first_name;
 							if ( $row->last_name ) {
