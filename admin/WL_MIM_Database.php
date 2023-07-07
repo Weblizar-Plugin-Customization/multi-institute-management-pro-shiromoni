@@ -304,6 +304,11 @@ class WL_MIM_Database {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD phone2 varchar(255) DEFAULT NULL" );
 		}
 
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_students' AND COLUMN_NAME = 'source'" );
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD source varchar(255) DEFAULT NULL" );
+		}
+
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_students' AND COLUMN_NAME = 'expire_at'" );
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD class varchar(255) DEFAULT NULL" );

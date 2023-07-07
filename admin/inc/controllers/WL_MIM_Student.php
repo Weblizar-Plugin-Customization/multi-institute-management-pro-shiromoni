@@ -86,6 +86,7 @@ class WL_MIM_Student
 				$father_name   = $row->father_name ? $row->father_name : '-';
 				$class         = $row->class ? $row->class : '-';
 				$business_manager         = $row->business_manager ? $row->business_manager : '-';
+				$source         = $row->source ? $row->source : '-';
 				// $fees          = unserialize($row->fees);
 				// $fees_payable  = WL_MIM_Helper::get_fees_total($fees['payable']);
 				// $fees_paid     = WL_MIM_Helper::get_fees_total($fees['paid']);
@@ -138,6 +139,7 @@ class WL_MIM_Student
 					esc_html($course),
 					$batch,
 					$business_manager,
+					$source,
 					// esc_html($duration),
 					// $batch_status,
 					// esc_html($fees_payable),
@@ -229,6 +231,7 @@ class WL_MIM_Student
 		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
 		$business_manager = isset($_POST['business_manager']) ? sanitize_text_field($_POST['business_manager']) : '';
+		$source = isset($_POST['source']) ? sanitize_text_field($_POST['source']) : '';
 		$student_status = isset($_POST['student_status']) ? sanitize_text_field($_POST['student_status']) : '';
 
 
@@ -455,6 +458,7 @@ class WL_MIM_Student
 					'expire_at'  => $expire_at,
 					'class'      => $class,
 					'business_manager'      => $business_manager,
+					'source'      => $source,
 					'student_status'        => $student_status,
 				);
 
@@ -1746,6 +1750,10 @@ class WL_MIM_Student
 				<input name="roll_number" type="text" class="form-control" id="wlim-student-roll_number_update" placeholder="<?php esc_html_e('Roll Number', WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->roll_number); ?>">
 			</div>
 		<?php } ?>
+		<div class="form-group">
+				<label for="wlim-student-source_update" class="col-form-label"><?php esc_html_e('Source', WL_MIM_DOMAIN); ?>:</label>
+				<input name="source" type="text" class="form-control" id="wlim-student-source_update" placeholder="<?php esc_html_e('Source', WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->source); ?>">
+			</div>
 		<hr>
 		<div class="form-check pl-0">
 			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlmp-student-is_active_update" <?php echo boolval($row->is_active) ? "checked" : ""; ?>>
@@ -1860,6 +1868,7 @@ class WL_MIM_Student
 		$expire_at      = (isset($_POST['expire_at']) && !empty($_POST['expire_at'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['expire_at']))) : NULL;
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
 		$business_manager = isset($_POST['business_manager']) ? sanitize_text_field($_POST['business_manager']) : '';
+		$source = isset($_POST['source']) ? sanitize_text_field($_POST['source']) : '';
 		$student_status = isset($_POST['student_status']) ? sanitize_text_field($_POST['student_status']) : '';
 		$row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND id = $id AND institute_id = $institute_id");
 		if (!$row) {
@@ -2124,6 +2133,7 @@ class WL_MIM_Student
 					'created_at'    => $created_at,
 					'class'         => $class,
 					'business_manager' => $business_manager,
+					'source'       => $source,
 					'student_status'   => $student_status,
 					'expire_at'        => $expire_at,
 					'updated_at'       => date('Y-m-d H:i:s')
@@ -2811,6 +2821,10 @@ class WL_MIM_Student
 				<input name="roll_number" type="text" class="form-control" id="wlim-student-roll_number" placeholder="<?php esc_html_e('Roll Number', WL_MIM_DOMAIN); ?>">
 			</div>
 		<?php } ?>
+		<div class="form-group">
+				<label for="wlim-student-source" class="col-form-label"><?php esc_html_e('Source', WL_MIM_DOMAIN); ?>:</label>
+				<input name="source" type="text" class="form-control" id="wlim-student-source" placeholder="<?php esc_html_e('source', WL_MIM_DOMAIN); ?>">
+			</div>
 		<hr>
 		<div class="form-check pl-0">
 			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active" checked>
@@ -3457,7 +3471,10 @@ class WL_MIM_Student
 			<input name="roll_number" type="text" class="form-control" id="wlim-student-roll_number" placeholder="<?php esc_html_e('Roll Number', WL_MIM_DOMAIN); ?>">
 		</div>
 	<?php } ?>
-
+	<div class="form-group">
+			<label for="wlim-student-source" class="col-form-label"><?php esc_html_e('Source', WL_MIM_DOMAIN); ?>:</label>
+			<input name="source" type="text" class="form-control" id="wlim-student-source" placeholder="<?php esc_html_e('source', WL_MIM_DOMAIN); ?>">
+		</div>
 	<hr>
 	<div class="form-check pl-0">
 		<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active" checked>

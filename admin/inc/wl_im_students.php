@@ -180,6 +180,7 @@ if (isset($_GET['batch_id'])) {
                                     <th scope="col"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Batch', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Business Manager', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e('Source', WL_MIM_DOMAIN); ?></th>
                                     <!-- <th scope="col"><?php esc_html_e('Duration', WL_MIM_DOMAIN); ?></th> -->
                                     <!-- <th scope="col"><?php esc_html_e('Status', WL_MIM_DOMAIN); ?></th> -->
                                     <!-- <th scope="col"><?php esc_html_e('Total Fees Payable', WL_MIM_DOMAIN); ?></th> -->
