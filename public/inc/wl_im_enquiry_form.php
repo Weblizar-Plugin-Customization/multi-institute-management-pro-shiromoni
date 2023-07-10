@@ -207,7 +207,7 @@ if ( isset( $attr['id'] ) ) {
 									<input name="email" type="text" class="form-control" id="wlim-enquiry-email" placeholder="<?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>" required>
 								</div>
 							</div>
-							<div class="row">
+							<!-- <div class="row">
 								<div class="col-sm-6 form-group">
 									<label for="wlim-enquiry-qualification" class="col-form-label"><?php esc_html_e( 'Qualification', WL_MIM_DOMAIN ); ?>:</label>
 									<input name="qualification" type="text" class="form-control" id="wlim-enquiry-qualification" placeholder="<?php esc_html_e( 'Qualification', WL_MIM_DOMAIN ); ?>">
@@ -237,7 +237,7 @@ if ( isset( $attr['id'] ) ) {
 							<div class="form-group">
 								<label for="wlim-enquiry-message" class="col-form-label"><?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?>:</label>
 								<textarea name="message" class="form-control" rows="3" id="wlim-enquiry-message" placeholder="<?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?>"></textarea>
-							</div>
+							</div> -->
 
 							<div class="mt-3">
 								<button type="submit" class="btn btn-block add-enquiry-submit"><?php esc_html_e( 'Submit!', WL_MIM_DOMAIN ); ?></button>
