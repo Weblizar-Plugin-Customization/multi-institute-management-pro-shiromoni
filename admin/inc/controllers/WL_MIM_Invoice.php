@@ -20,10 +20,10 @@ class WL_MIM_Invoice {
 		$institute_id              = WL_MIM_Helper::get_current_institute_id();
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
-		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND is_active = 1 AND i.institute_id = $institute_id ORDER BY i.id DESC" );
+		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.business_manager, s.batch_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND is_active = 1 AND i.institute_id = $institute_id ORDER BY i.id DESC" );
 
 		if ($start_date && $end_date) {
-			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND is_active = 1 AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
+			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.business_manager, s.batch_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND is_active = 1 AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
 		}
 		if ( count( $data ) !== 0 ) {
 			foreach ( $data as $row ) {
@@ -38,6 +38,9 @@ class WL_MIM_Invoice {
 				$added_by       = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
 
 				$pending_amount = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_installments WHERE institute_id = $institute_id AND invoice_id = $row->id ORDER BY id DESC" );
+
+				$batch_name = $wpdb->get_var("SELECT batch_name FROM {$wpdb->prefix}wl_min_batches WHERE id = $row->batch_id");
+				$business_manager = $row->business_manager;
 
 				if ($pending_amount) {
 					$due_amount=0;
@@ -73,6 +76,8 @@ class WL_MIM_Invoice {
 					esc_html( $invoice_title ),
 					esc_html( $amount ),
 					esc_html( $enrollment_id ),
+					esc_html( $business_manager ),
+					esc_html( $batch_name ),
 					esc_html( $student_name ),
 					esc_html( $phone ),
 					esc_html( $total_due_amount ),
@@ -105,10 +110,10 @@ class WL_MIM_Invoice {
 		$institute_id              = WL_MIM_Helper::get_current_institute_id();
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
-		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND is_active = 0 ORDER BY i.id DESC" );
+		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, s.business_manager, s.batch_id, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND is_active = 0 ORDER BY i.id DESC" );
 
 		if ($start_date && $end_date) {
-			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
+			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.phone, s.business_manager, s.batch_id, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
 		}
 		if ( count( $data ) !== 0 ) {
 			foreach ( $data as $row ) {
@@ -123,6 +128,9 @@ class WL_MIM_Invoice {
 				$added_by       = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
 
 				$pending_amount = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_installments WHERE institute_id = $institute_id AND invoice_id = $row->id ORDER BY id DESC" );
+
+				$batch_name = $wpdb->get_var("SELECT batch_name FROM {$wpdb->prefix}wl_min_batches WHERE id = $row->batch_id");
+				$business_manager = $row->business_manager;
 
 				if ($pending_amount) {
 					$due_amount=0;
@@ -159,6 +167,8 @@ class WL_MIM_Invoice {
 					esc_html( $invoice_title ),
 					esc_html( $amount ),
 					esc_html( $enrollment_id ),
+					esc_html( $business_manager ),
+					esc_html( $batch_name ),
 					esc_html( $student_name ),
 					esc_html( $phone ),
 					esc_html( $total_due_amount ),

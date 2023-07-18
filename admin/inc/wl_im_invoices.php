@@ -232,6 +232,8 @@ if ( empty( $general_institute['institute_name'] ) ) {
 						        	<th scope="col"><?php esc_html_e( 'Installment Title', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Amount Payable', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Business Manager', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Batch', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Student Name', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Phone NO.', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Due Amount', WL_MIM_DOMAIN ); ?></th>
@@ -259,6 +261,8 @@ if ( empty( $general_institute['institute_name'] ) ) {
 						        	<th scope="col"><?php esc_html_e( 'Installment Title', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Amount Payable', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Business Manager', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Batch', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Student Name', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Phone NO.', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Due Amount', WL_MIM_DOMAIN ); ?></th>
