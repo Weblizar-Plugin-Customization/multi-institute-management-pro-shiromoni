@@ -22,6 +22,10 @@ require_once 'inc/controllers/WL_MIM_Notice.php';
 require_once 'inc/controllers/WL_MIM_Payment.php';
 require_once 'inc/controllers/WL_MIM_Attendance.php';
 require_once 'inc/controllers/WL_MIM_Reset.php';
+require_once 'inc/controllers/WL_MIM_Subject.php';
+require_once 'inc/controllers/WL_MIM_Topic.php';
+require_once 'inc/controllers/WL_MIM_Room.php';
+require_once 'inc/controllers/WL_MIM_TimeTable.php';
 // require_once( 'inc/controllers/bulk_action.php' );
 
 /* Action for creating institute management menu pages */
@@ -291,6 +295,53 @@ add_action( 'wp_ajax_wl-mim-fetch-student', array( 'WL_MIM_Student', 'fetch_stud
 
 
 add_action( 'wp_ajax_wl-mim-bulk-action', array( 'WL_MIM_Student', 'bulk_action' ) );
+
+//action to add subject
+add_action( 'wp_ajax_wl_mim-add-subject', array( 'WL_MIM_Subject', 'add_subject'));
+add_action( 'wp_ajax_wl-mim-subject-data', array( 'WL_MIM_Subject', 'subList' ));
+add_action( 'wp_ajax_wl-mim-fetch-subject', array( 'WL_MIM_Subject', 'fetch_subject' ) );
+add_action( 'wp_ajax_wl-mim-update-subject', array( 'WL_MIM_Subject', 'update_subject' ) );
+add_action( 'wp_ajax_wl-mim-delete-subject', array( 'WL_MIM_Subject', 'delete_subject' ) );
+
+
+// action to get the subject on change course
+add_action( 'wp_ajax_wl_mim-get-subject', array( 'WL_MIM_Helper', 'get_subject' ));
+
+//action to add the topic
+add_action( 'wp_ajax_wl_mim-add-topic', array( 'WL_MIM_Topic', 'add_Topic' ));
+add_action( 'wp_ajax_wl-mim-topic-data', array( 'WL_MIM_Topic', 'TopicList' ));
+add_action( 'wp_ajax_wl-mim-fetch-topic', array( 'WL_MIM_Topic', 'fetch_topic' ) );
+add_action( 'wp_ajax_wl-mim-update-topic', array( 'WL_MIM_Topic', 'update_topic' ) );
+add_action( 'wp_ajax_wl-mim-delete-topic', array( 'WL_MIM_Topic', 'delete_topic' ) );
+
+//action to add the room/studio
+add_action( 'wp_ajax_wl_mim-add-room', array( 'WL_MIM_Room', 'add_room' ));
+add_action( 'wp_ajax_wl-mim-room-data', array( 'WL_MIM_Room', 'RoomList' ));
+add_action( 'wp_ajax_wl-mim-fetch-room', array( 'WL_MIM_Room', 'fetchRoomModal' ) );
+add_action( 'wp_ajax_wl-mim-update-room', array( 'WL_MIM_Room', 'update_room' ) );
+add_action( 'wp_ajax_wl-mim-delete-room', array( 'WL_MIM_Room', 'delete_room' ) );
+
+//Time Table
+//action to get the batches/subject and teachers according to the course
+add_action( 'wp_ajax_wl-mim-dataforTT', array( 'WL_MIM_TimeTable', 'getBatchSub' ));
+add_action( 'wp_ajax_wl-mim-topicforTT', ['WL_MIM_TimeTable', 'getTopic'] );
+//action to get the topic and teacher after selecting the subject
+add_action( 'wp_ajax_wl-mim-topicTeacher', array( 'WL_MIM_TimeTable', 'getTopicTeacher' ));
+
+//Time Table
+add_action( 'wp_ajax_wl-mim-timetable', array( 'WL_MIM_TimeTable', 'saveTimeTable' ));
+add_action( 'wp_ajax_wl-mim-fetch-timetable', array( 'WL_MIM_TimeTable', 'fetch_timetable' ) );
+// add_action( 'wp_ajax_wl-mim-fetch-timetableview', array( 'WL_MIM_TimeTable', 'fetch_timetableview' ) );
+add_action( 'wp_ajax_wl-mim-fetch-timetablemodal', array( 'WL_MIM_TimeTable', 'fetch_timetablemodal' ) );
+add_action( 'wp_ajax_wl-mim-update-timetable', array( 'WL_MIM_TimeTable', 'update_timeTable' ) );
+add_action( 'wp_ajax_wl-mim-delete-timetable', array( 'WL_MIM_TimeTable', 'delete_timetable' ) );
+add_action( 'wp_ajax_wl-mim-view-timetable', array( 'WL_MIM_TimeTable', 'view_timetable' ) );
+add_action( 'wp_ajax_wl-mim-getRoom-timetable', array( 'WL_MIM_TimeTable', 'get_room' ) );
+add_action( 'wp_ajax_wl-mim-update-teacherRemark', array( 'WL_MIM_TimeTable', 'teacherRemark' ) );
+
+// student time table data
+add_action( 'wp_ajax_wl-mim-get-student-timetable', array( 'WL_MIM_TimeTable', 'get_student_timetable_data' ) );
+
 
 // Change user theme
 function change_user_theme() {

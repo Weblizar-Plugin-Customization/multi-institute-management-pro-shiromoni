@@ -141,6 +141,98 @@ class WL_MIM_Database {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_courses ADD FOREIGN KEY (course_category_id) REFERENCES {$wpdb->prefix}wl_min_course_categories (id) ON DELETE SET NULL" );
 		}
 
+		/* subject, topics, time table */
+		/**
+		 * Subject Table
+		 */
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_subjects (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			instituteId bigint(20) UNSIGNED DEFAULT NULL,
+			courseId bigint(20) UNSIGNED DEFAULT NULL,
+			staffId text DEFAULT NULL,
+			subject_name varchar(255) DEFAULT NULL,
+			subject_desc text DEFAULT NULL,
+			is_active tinyint(1) NOT NULL DEFAULT '1',
+			created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at timestamp NULL DEFAULT NULL,
+			PRIMARY KEY (id)
+		)$charset_collate";
+		dbDelta( $sql );
+
+		/**
+		 * Subject topics
+		 */
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_topics (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			courseId bigint(20) UNSIGNED DEFAULT NULL,
+			subject_id bigint(20) UNSIGNED DEFAULT NULL,
+			topic_name varchar(255) DEFAULT NULL,
+			topic_desc text DEFAULT NULL,
+			is_active tinyint(1) NOT NULL DEFAULT '1',
+			created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at timestamp NULL DEFAULT NULL,
+			PRIMARY KEY (id),
+			INDEX (subject_id)
+		)$charset_collate";
+		dbDelta( $sql );
+		
+
+		/**
+		 * Studio or room
+		 */
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_room (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			institute_id bigint(20) UNSIGNED DEFAULT NULL,
+			room_name varchar(255) DEFAULT NULL,
+			room_desc text DEFAULT NULL,
+			is_active tinyint(1) NOT NULL DEFAULT '1',
+			created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at timestamp NULL DEFAULT NULL,
+			PRIMARY KEY (id)
+		)$charset_collate";
+		dbDelta( $sql );
+
+		/**
+		 * Subject and staff relation
+		 */
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_subjectstaff (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			subjectID bigint(20) UNSIGNED DEFAULT NULL,
+			staffID bigint(20) UNSIGNED DEFAULT NULL,
+			is_active tinyint(1) NOT NULL DEFAULT '1',
+			created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at timestamp NULL DEFAULT NULL,
+			PRIMARY KEY (id)
+		)$charset_collate";
+		dbDelta( $sql );
+
+		/**
+		 * Time table
+		 */
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_timetable (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			institute_id bigint(20) UNSIGNED DEFAULT NULL,
+			timeTableName varchar(255) DEFAULT NULL,
+			courseId bigint(20) UNSIGNED DEFAULT NULL,
+			batch_id  bigint(20) UNSIGNED DEFAULT NULL,
+			subject_id bigint(20) UNSIGNED DEFAULT NULL,
+			topic_id bigint(20) UNSIGNED DEFAULT NULL,
+			staff_id bigint(20) UNSIGNED DEFAULT NULL,                
+			room_id bigint(20) UNSIGNED DEFAULT NULL,
+			batch_date date NULL DEFAULT NULL,
+			start_time time DEFAULT NULL,
+			end_time time DEFAULT NULL,
+			is_active tinyint(1) NOT NULL DEFAULT '1',
+			created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at timestamp NULL DEFAULT NULL,
+			PRIMARY KEY (id),
+			INDEX (subject_id),
+			INDEX (topic_id),
+			FOREIGN KEY (topic_id) REFERENCES {$wpdb->prefix}wl_min_topics (id) ON DELETE SET NULL,
+			FOREIGN KEY (subject_id) REFERENCES {$wpdb->prefix}wl_min_subjects (id) ON DELETE SET NULL
+		)$charset_collate";
+		dbDelta( $sql ); 
+
 		/* Create fee_types table */
 		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_fee_types (
 				id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

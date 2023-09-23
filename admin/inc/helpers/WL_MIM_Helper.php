@@ -16,6 +16,10 @@ class WL_MIM_Helper {
 			'wl_min_manage_batches'        => esc_html__('Manage Batches', WL_MIM_DOMAIN),
 			'wl_min_manage_enquiries'      => esc_html__('Manage Enquiries', WL_MIM_DOMAIN),
 			'wl_min_manage_students'       => esc_html__('Manage Students', WL_MIM_DOMAIN),
+			'wl_min_manage_subjects'       => esc_html__('Manage Subjects', WL_MIM_DOMAIN),
+			'wl_min_manage_topics'         => esc_html__('Manage Topics', WL_MIM_DOMAIN),
+			'wl_min_manage_studios'        => esc_html__('Manage Studios', WL_MIM_DOMAIN),
+			'wl_min_manage_timetable'	   => esc_html__('Manage Time Table', WL_MIM_DOMAIN),
 			'wl_min_manage_attendance'     => esc_html__('Manage Attendance', WL_MIM_DOMAIN),
 			'wl_min_manage_notes'          => esc_html__('Manage Notes', WL_MIM_DOMAIN),
 			'wl_min_manage_expense'        => esc_html__('Manage Expense', WL_MIM_DOMAIN),
@@ -631,6 +635,123 @@ class WL_MIM_Helper {
 		return $row;
 	}
 
+	/* Get batches by course_id */
+	public static function get_batches_by_course_id($id, $institute_id = '') {
+		global $wpdb;
+		if (!$institute_id) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id           = intval(sanitize_text_field($id));
+		$row          = $wpdb->get_results("SELECT id, batch_code, batch_name, time_from, time_to, start_date, end_date FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND course_id = $id AND institute_id = $institute_id");
+		if (!$row) {
+			return null;
+		}
+
+		return $row;
+	}
+
+	/* get subjects according to the course */
+	public static function get_subjects_by_courseID($id, $institute_id = '') {
+		global $wpdb;
+		if (!$institute_id) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id = intval(sanitize_text_field($id));
+		$row = $wpdb->get_results("SELECT id, subject_name FROM {$wpdb->prefix}wl_min_subjects WHERE courseId = $id AND instituteId = $institute_id");
+		if (!$row) {
+			return null;
+		}
+
+		return $row;
+	}
+	/* get topics according to the subject id */
+	public static function get_topics_by_subjectID( $id ) {
+		global $wpdb;
+		if (!$institute_id) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id = intval(sanitize_text_field($id));
+		$row = $wpdb->get_results("SELECT id, topic_name FROM {$wpdb->prefix}wl_min_topics WHERE subject_id = $id");
+		if (!$row) {
+			return null;
+		}
+
+		return $row;
+	}
+
+	/* get the staff according to subject */
+	public static function get_staff_by_subjectID($id, $institute_id = '') {
+		global $wpdb;
+		if (!$institute_id) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id = intval(sanitize_text_field($id));
+		$row = $wpdb->get_row("SELECT staffId FROM {$wpdb->prefix}wl_min_subjects WHERE id = $id AND instituteId = $institute_id");
+		if (!$row) {
+			return null;
+		}
+
+		return $row;
+	}
+
+	/* get_staffName_by_staffID */
+	public static function get_staffName_by_staffID( $id, $institute_id = '' ) {
+		global $wpdb;
+		if (!$institute_id) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id = intval(sanitize_text_field($id));
+
+		$row = $wpdb->get_row("SELECT first_name, last_name, id FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $id AND institute_id = $institute_id");
+		if (!$row) {
+			return null;
+		}
+
+		return $row;
+	}
+
+	/** get the subject name from id */
+	public static function getSubjectName($id) {
+		global $wpdb;
+		if (!isset($institute_id)) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id = intval(sanitize_text_field($id));
+		$row = $wpdb->get_row("SELECT subject_name FROM {$wpdb->prefix}wl_min_subjects WHERE id=$id");
+		if (!$row) {
+			return null;
+		}
+		return $row;
+	}
+
+	/* Get the topic Name from id getTopicName*/
+	public static function getTopicName( $id ) {
+		global $wpdb;
+		if (!isset($institute_id)) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id = intval(sanitize_text_field($id));
+		$row = $wpdb->get_row("SELECT topic_name FROM {$wpdb->prefix}wl_min_topics WHERE id=$id");
+		if (!$row) {
+			return null;
+		}
+		return $row;
+	}
+
+	/* Get the room name */
+	public static function getRoomName( $id ) {
+		global $wpdb;
+		if (!isset($institute_id)) {
+			$institute_id = self::get_current_institute_id();
+		}
+		$id = intval(sanitize_text_field($id));
+		$row = $wpdb->get_row("SELECT room_name FROM {$wpdb->prefix}wl_min_room WHERE id=$id");
+		if (!$row) {
+			return null;
+		}
+		return $row;
+	}
+
 	/* Send birthday messages */
 	public static function send_birthday_messages() {
 		global $wpdb;
@@ -974,6 +1095,32 @@ class WL_MIM_Helper {
 	}
 
 	/**
+	 * Get the staff
+	 */
+	public static function get_staff( $institute_id ) {
+		global $wpdb;
+		$staff = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE is_deleted = 0 AND institute_id = $institute_id" );
+		return $staff;
+	}
+
+	// get the subject, on change of the course
+	public static function get_subject() {
+		if( !wp_verify_nonce( $_POST['nonce'], 'wl-ima' ) ) {
+			die( 'Security verification failed' );
+		}
+		global $wpdb;
+		$insituteID = isset( $_POST['instituteId'] ) ? sanitize_text_field($_POST['instituteId']) : '';
+		$courseId   = isset( $_POST['courseId'] ) ? sanitize_text_field($_POST['courseId']) : ''; 
+		$a = [];
+		$subjects   = $wpdb->get_results("SELECT id, subject_name FROM {$wpdb->prefix}wl_min_subjects WHERE instituteId = $insituteID AND courseId = $courseId");
+		echo "<option value=''>". __('Select Subject', WL_MIM_DOMAIN) ."</option>";
+		foreach($subjects as $key ) {
+			echo "<option value='". $key->id ."'>". $key->subject_name ."</option>";
+		}
+		die();
+	}
+
+	/**
 	 * Get following information from the student id
 	 * Institute Id 
 	 * student certificate id
@@ -985,6 +1132,35 @@ class WL_MIM_Helper {
 		// return $wpdb->get_results("SELECT institute_id, first_name FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id");
 		return $wpdb->get_results( $query );		
 		// return $a;
+	}
+
+	/* get the batch */
+	public static function getBatch() {
+		global $wpdb;
+		$institute_id = self::get_current_institute_id();
+		return $wpdb->get_results("SELECT id, batch_name FROM {$wpdb->prefix}wl_min_batches WHERE institute_id = $institute_id AND is_active = 1");
+	}
+
+	/* get the course */
+	public static function getCourses() {
+		global $wpdb;
+		$institute_id = self::get_current_institute_id();
+		return $wpdb->get_results("SELECT id, course_name, course_code FROM {$wpdb->prefix}wl_min_courses WHERE institute_id = $institute_id AND is_active = 1");
+	}
+
+	//Time table: get the batchers, teacher and other details on change of courses
+	public static function getBatchesTimeTable() {
+		global $wpdb;
+		$institute_id = self::get_current_institute_id();
+		
+	}
+
+	//disable the remark until the class end time not come
+	public static function controlRemark( $id ) {
+		global $wpdb;
+		$institute_id = self::get_current_institute_id();	
+		$query = $wpdb->get_row( "SELECT CASE WHEN batch_date = CURRENT_DATE() AND end_time <= CURRENT_TIME() AND end_time <= '12:00:00' THEN 1 ELSE 0 END AS MATCHED FROM {$wpdb->prefix}wl_min_timetable WHERE id=$id" );
+		return $query;
 	}
 
 	public static function get_certificate_dynamic_fields() {

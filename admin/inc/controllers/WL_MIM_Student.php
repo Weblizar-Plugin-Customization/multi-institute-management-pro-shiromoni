@@ -427,7 +427,7 @@ class WL_MIM_Student
 				}
 				$data = array(
 					'course_id'     => $course_id,
-					'enrollment_id'     => $enrollment_id,
+					'enrollment_id' => $enrollment_id,
 					'batch_id'      => $batch_id,
 					'first_name'    => $first_name,
 					'last_name'     => $last_name,
@@ -3239,7 +3239,6 @@ class WL_MIM_Student
 				<?php
 				if (count($wlim_active_courses) > 0) {
 					foreach ($wlim_active_courses as $active_course) {
-
 				?>
 						<option value="<?php echo esc_attr($active_course->id); ?>">
 							<?php echo esc_html("$active_course->course_name ($active_course->course_code) (" . __("Fees", WL_MIM_DOMAIN) . ": " . $active_course->fees . ")"); ?>

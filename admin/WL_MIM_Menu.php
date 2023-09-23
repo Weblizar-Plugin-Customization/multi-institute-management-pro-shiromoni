@@ -228,6 +228,40 @@ class WL_MIM_Menu {
 				));
 				add_action('admin_print_styles-' . $settings, array('WL_MIM_Menu', 'settings_assets'));
 
+				/**
+				 * sub menu for time table
+				 * @subject, topic, room or studios
+				 * wl_min_manage_subjects
+				 */
+				$subjects = add_submenu_page('multi-institute-management', esc_html__('Subjects', WL_MIM_DOMAIN), esc_html__('Subjects', WL_MIM_DOMAIN), 'wl_min_manage_subjects', 'multi-institute-management-subjects', array(
+					'WL_MIM_Menu',
+					'subjects'
+				));
+				add_action('admin_print_styles-' . $subjects, array('WL_MIM_Menu', 'subjects_assets'));
+
+				/** Submenu for the topics */
+				$topics = add_submenu_page('multi-institute-management', esc_html__('Topics', WL_MIM_DOMAIN), esc_html__('Topics', WL_MIM_DOMAIN), 'wl_min_manage_topics', 'multi-institute-management-topics', array(
+					'WL_MIM_Menu',
+					'topics'
+				));
+				add_action('admin_print_styles-' . $topics, array('WL_MIM_Menu', 'topics_assets'));
+
+				/** Sub menu for the room/studio */
+				$studios = add_submenu_page('multi-institute-management', esc_html__('Studios', WL_MIM_DOMAIN), esc_html__('Studios', WL_MIM_DOMAIN), 'wl_min_manage_studios', 'multi-institute-management-studios', array(
+					'WL_MIM_Menu',
+					'studios'
+				));
+				add_action('admin_print_styles-' . $studios, array('WL_MIM_Menu', 'studios_assets'));
+
+				/** Sub menu for the timeTable */
+				$timetble = add_submenu_page('multi-institute-management', esc_html__('Time Table', WL_MIM_DOMAIN), esc_html__('Time Table', WL_MIM_DOMAIN), 'wl_min_manage_timetable', 'multi-institute-management-timetable', array(
+					'WL_MIM_Menu',
+					'timetable'
+				));
+				add_action('admin_print_styles-' . $timetble, array('WL_MIM_Menu', 'timetable_assets'));
+
+				
+
 				if (!current_user_can('manage_options')) :
 					/* Student dashboard */
 					$student_dashboard = add_menu_page(esc_html__('Dashboard', WL_MIM_DOMAIN), esc_html__('Dashboard', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-dashboard', array(
@@ -290,6 +324,17 @@ class WL_MIM_Menu {
 					));
 
 					/* Student admit_card submenu */
+					$student_timetable_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Time Table', WL_MIM_DOMAIN), esc_html__('Time Table', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-time-table', array(
+						'WL_MIM_Menu',
+						'student_timetable'
+					));
+					add_action('admin_print_styles-' . $student_timetable_submenu, array(
+						'WL_MIM_Menu',
+						'student_attendance_assets'
+					));	
+					
+
+					/* Student admit_card submenu */
 					// $student_admit_card_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Admit Card', WL_MIM_DOMAIN), esc_html__('Admit Card', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-admit-card', array(
 					// 	'WL_MIM_Menu',
 					// 	'student_admit_card'
@@ -311,14 +356,17 @@ class WL_MIM_Menu {
 				endif;
 			}
 
-			$wl_admin_submenu = add_submenu_page('multi-institute', esc_html__('License', WL_MIM_DOMAIN), esc_html__('License', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'));
+			$wl_admin_submenu = add_submenu_page('multi-institute', esc_html__('License8', WL_MIM_DOMAIN), esc_html__('License9', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'));
 			add_action('admin_print_styles-' . $wl_admin_submenu, array('WL_MIM_Menu', 'admin_menu_assets'));
+
+			
 		} else {
 			$wl_admin_menu = add_menu_page(esc_html__('Multi Institute Management', WL_MIM_DOMAIN), esc_html__('Multi Institute', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'), 'dashicons-welcome-learn-more', 27);
 			add_action('admin_print_styles-' . $wl_admin_menu, array('WL_MIM_Menu', 'admin_menu_assets'));
 
 			$wl_admin_submenu = add_submenu_page('multi-institute-license', esc_html__('License', WL_MIM_DOMAIN), esc_html__('License', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'));
 			add_action('admin_print_styles-' . $wl_admin_submenu, array('WL_MIM_Menu', 'admin_menu_assets'));
+			
 		}
 
 		// set session 
@@ -431,8 +479,64 @@ class WL_MIM_Menu {
 		require_once('inc/wl_im_batches.php');
 	}
 
+	/* Subjects menu callback */
+	public static function subjects() {
+		require_once('inc/wl_im_subjects.php');
+	}
+
+	/* Topics menu callback */
+	public static function topics() {
+		require_once('inc/wl_im_topics.php');
+	}
+	
+	/* Studio menu callback */
+	public static function studios() {
+		require_once('inc/wl_im_studios.php');
+	}
+
+	/* Time table menu callback */
+	public static function timetable() {
+		require_once('inc/wl_im_timetable.php');
+	}
+
 	/* Batches menu assets */
 	public static function batches_assets() {
+		self::enqueue_libraries();
+		self::enqueue_datatable_assets();
+		self::enqueue_datatable_export_assets();
+		self::enqueue_filters_assets();
+		self::enqueue_custom_assets();
+	}
+
+	/* Subjects menu assets */
+	public static function subjects_assets() {
+		self::enqueue_libraries();
+		self::enqueue_datatable_assets();
+		self::enqueue_datatable_export_assets();
+		self::enqueue_filters_assets();
+		self::enqueue_custom_assets();
+	}
+
+	/* Topics menu assets */
+	public static function topics_assets() {
+		self::enqueue_libraries();
+		self::enqueue_datatable_assets();
+		self::enqueue_datatable_export_assets();
+		self::enqueue_filters_assets();
+		self::enqueue_custom_assets();
+	}
+
+	/* Studios menu assets */
+	public static function studios_assets() {
+		self::enqueue_libraries();
+		self::enqueue_datatable_assets();
+		self::enqueue_datatable_export_assets();
+		self::enqueue_filters_assets();
+		self::enqueue_custom_assets();
+	}
+
+	/* Time table menu assets */
+	public static function timetable_assets() {
 		self::enqueue_libraries();
 		self::enqueue_datatable_assets();
 		self::enqueue_datatable_export_assets();
@@ -694,6 +798,10 @@ class WL_MIM_Menu {
 	public static function student_invoices() {
 		require_once('inc/wl_im_student_invoices.php');
 	}	
+
+	public static function student_timetable() {
+		require_once('inc/wl_im_student_timetable.php');
+	}
 
 	/* Admit card menu assets */
 	public static function student_admit_card_assets() {

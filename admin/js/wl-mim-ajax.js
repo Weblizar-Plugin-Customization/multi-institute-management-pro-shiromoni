@@ -9,7 +9,7 @@
         }).ajaxStop(function () {
             jQuery('button[type="submit"]').prop('disabled', false);
         });
-
+        jQuery('.selectpicker').selectpicker(); 
       
         /* Serialize object */
         (function ($, undefined) {
@@ -416,6 +416,7 @@
         });
 
         initializeDatatable('#student-invoice-table', 'wl-mim-get-student-invoice-data');
+        initializeDatatable('#student_timetableList', 'wl-mim-get-student-timetable');
 
         initializeDatatable('#inactive-invoice-table', 'wl-mim-get-inactive-invoice-data');
 
@@ -1526,7 +1527,493 @@
                 }
             });
         });
-        jQuery(document).on('submit', '#wlim-view-overall-report-form', function (e) {
+
+     /* add subject */
+     jQuery('#wim_add_subject').on('submit', function(e){
+        e.preventDefault();
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl_mim-add-subject",
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                    jQuery('#add-subject'). modal('hide'); 
+                   // jQuery('#addTopic')[0].reset();
+                    jQuery("#subject-table").DataTable().ajax.reload();
+                    window.location.reload();
+                }               
+            }
+        })
+     });
+     remove('.delete-subject', 'delete-subject-id', 'delete-subject-security', 'delete-subject', 'wl-mim-delete-subject', ['#subject-table']);
+
+     //data table for subject
+     initializeDatatable('#subject-table', 'wl-mim-subject-data');
+
+     //open modal to edit the subjects
+     jQuery(document).on('show.bs.modal', '#update-subject', function (e) {
+        var id = jQuery(e.relatedTarget).data('id');
+        jQuery.ajax({
+            type: 'post',
+            url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-fetch-subject',
+            data: 'id=' + id,
+            dataType: 'json',
+            success: function (response) {
+                // console.table(response.data.html);
+                // var data = JSON.parse(response.data.json);
+                jQuery('#fetch_subject').html(response.data.html);
+                jQuery('.selectpicker').selectpicker();                
+            }
+        });
+    });
+
+    //update the subject
+    jQuery('#wim_update_subject').on('submit', function(e){
+        e.preventDefault();
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl-mim-update-subject",
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                   // jQuery('#addTopic')[0].reset();
+                   jQuery('#update-subject'). modal('hide'); 
+                   jQuery("#subject-table").DataTable().ajax.reload();
+                }               
+            }
+        })
+     });
+
+     // Get the batches on change of course
+     jQuery("#courseID").on("changed.bs.select", 
+            function(e, clickedIndex, newValue, oldValue) {
+                    var data = jQuery('#wlim-notification-configure-form').serialize();
+                    var formData = new FormData();
+                    var batches = $('#batchID');
+                    var course_id = this.value;
+                    formData.append('course_id', newValue);
+            jQuery.ajax({
+                type: 'post',
+                url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-get-batches&course_id='+course_id, 
+                data: data,
+                dataType: 'json',
+                success: function (response) {o
+                    var data = (response.data);
+                    batches.html('');
+                    // cada array del parametro tiene un elemento index(concepto) y un elemento value(el  valor de concepto)
+                    batches.append('<option value="' + 0 + '">' +'Select Batch'+ '</option>');
+                    $.each(data, function(index, value) {
+                      // darle un option con los valores asignados a la variable select
+                      batches.append('<option value="' + value.id + '">' + value.batch_name +' ['+value.batch_code +']'+ '</option>');
+                    });
+                    batches.selectpicker("refresh");
+                }
+            });
+        });
+
+     // get the subject on change of the course
+     jQuery('#wlim-course-name').on('change', function(e) {
+        e.preventDefault();
+        let courseId = jQuery(this).val();
+        let instituteId = jQuery('#instituteId').val();
+        //alert(`${courseId} and ${instituteId}`);
+        jQuery.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action: 'wl_mim-get-subject',
+                nonce: WLIMAjax.security,
+                instituteId: instituteId,
+                courseId: courseId,
+            },
+            success: function(response){
+                // console.table(response);
+                jQuery('#wlim-subject').html(response).selectpicker('refresh');
+            }
+        });
+    });
+
+     //add topic
+     initializeDatatable('#topicList', 'wl-mim-topic-data');
+     jQuery("#wim_add_topic").on('submit', function(e) { 
+        e.preventDefault();        
+        var form = jQuery(this);
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl_mim-add-topic",
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                    jQuery('#add-topic'). modal('hide'); 
+                    jQuery('#wim_add_topic')[0].reset();
+                    jQuery("#topicList").DataTable().ajax.reload();
+                }
+                else if( response.success == false ){ 
+                    jQuery.each( response.data, function( key, value ) {
+                        //console.log( key + ": " + value );
+                        var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
+                        jQuery('input[name="' + key + '"], select[name="' + key + '"]').addClass('is-invalid').after(msg);
+                    });
+                    var keys = Object.keys(response);
+                    jQuery('input[name="'+keys[0]+'"]').focus();
+                }
+            }
+        })       
+    });
+   
+    //fetch topic data to modal for edit it
+    jQuery(document).on('show.bs.modal', '#update-topic', function (e) {
+        var id = jQuery(e.relatedTarget).data('id');
+        jQuery.ajax({
+            type: 'post',
+            url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-fetch-topic',
+            data: 'id=' + id,
+            dataType: 'json',
+            success: function (response) {
+                // console.table(response.data.html);
+                // var data = JSON.parse(response.data.json);
+                jQuery('#fetch_topic').html(response.data.html);
+                jQuery('.selectpicker').selectpicker();                
+            }
+        });
+    });
+     //update the topic
+    // wl-mim-update-topic
+    jQuery("#wim_update_topic").on('submit', function(e) { 
+        e.preventDefault();        
+        var form = jQuery(this);
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl-mim-update-topic",
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                    jQuery('#update-topic'). modal('hide'); 
+                    // jQuery('#wim_update_topic')[0].reset();
+                    jQuery("#topicList").DataTable().ajax.reload();
+                }
+                else if( response.success == false ){ 
+                    jQuery.each( response.data, function( key, value ) {
+                        //console.log( key + ": " + value );
+                        var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
+                        jQuery('input[name="' + key + '"], select[name="' + key + '"]').addClass('is-invalid').after(msg);
+                    });
+                    var keys = Object.keys(response);
+                    jQuery('input[name="'+keys[0]+'"]').focus();
+                }
+            }
+        })       
+    });
+
+    //Delete the topic
+    remove('.delete-topic', 'delete-topic-id', 'delete-topic-security', 'delete-topic', 'wl-mim-delete-topic', ['#topicList']);
+
+    /* studio/room */
+    remove('.delete-room', 'delete-room-id', 'delete-room-security', 'delete-room', 'wl-mim-delete-room', ['#roomList']);
+    initializeDatatable('#roomList', 'wl-mim-room-data');
+    jQuery("#wim_add_room").on('submit', function(e) { 
+        e.preventDefault();        
+        var form = jQuery(this);
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl_mim-add-room",
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                    jQuery('#add-studio').modal('hide'); 
+                    jQuery('#wim_add_room')[0].reset();
+                    jQuery("#roomList").DataTable().ajax.reload();
+                }
+                else if( response.success == false ){ 
+                    jQuery.each( response.data, function( key, value ) {
+                        //console.log( key + ": " + value );
+                        var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
+                        jQuery('input[name="' + key + '"], select[name="' + key + '"]').addClass('is-invalid').after(msg);
+                    });
+                    var keys = Object.keys(response);
+                    jQuery('input[name="'+keys[0]+'"]').focus();
+                }
+            }
+        })
+    });
+    //fetch room data on modal to edit it
+    jQuery(document).on('show.bs.modal', '#update-room', function (e) {
+        var id = jQuery(e.relatedTarget).data('id');
+        jQuery.ajax({
+            type: 'post',
+            url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-fetch-room',
+            data: 'id=' + id,
+            dataType: 'json',
+            success: function (response) {
+                // console.table(response.data.html);
+                // var data = JSON.parse(response.data.json);
+                jQuery('#fetch_room').html(response.data.html);
+                jQuery('.selectpicker').selectpicker();                
+            }
+        });
+    });
+    //update room
+    jQuery('#wim_update_room').on('submit', function(e){
+        e.preventDefault();
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl-mim-update-room",
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                   // jQuery('#addTopic')[0].reset();
+                   jQuery('#update-room'). modal('hide'); 
+                   jQuery("#roomList").DataTable().ajax.reload();
+                }               
+            }
+        })
+     });
+
+    jQuery('.selectpicker').selectpicker();
+    jQuery('#ttcourseID').on('change', function(e) {
+        e.preventDefault();
+        var courseID  = jQuery(this).val();        
+        let batchhtml = jQuery('#ttbatchID');
+        let subhtml   = jQuery('#ttsubID');
+        jQuery.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action: 'wl-mim-dataforTT',
+                nonce: WLIMAjax.security,                
+                courseID: courseID,
+            },
+            success: function(response){
+                let data     = jQuery.parseJSON(response);
+                let batchD   = data.batchData;
+                let subD     = data.subData;
+                let batch    = '';
+                let subjects = '';
+                batchD.forEach(function(item){
+                    batch += batchhtml.append('<option value="' + item.batchid + '">' + item.batchName + '</option>');
+                });                
+                batchhtml.selectpicker("refresh");
+
+                subD.forEach(function(item){
+                    subjects += subhtml.append('<option value="' + item.subid + '">' + item.subName + '</option>');
+                });                
+                subhtml.selectpicker("refresh");              
+
+            }   
+        });     
+    });
+
+    //ajax call to get the topic and teacher
+    jQuery('#ttsubID').on('change', function(e){
+        e.preventDefault();
+        var subID       = jQuery(this).val(); 
+        // let subfield    = jQuery( '#ttsubID' );       
+        let topichtml   = jQuery('#tttopicID');
+        let teacherhtml = jQuery('#ttteacherID');        
+        jQuery.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action: 'wl-mim-topicTeacher',
+                nonce: WLIMAjax.security,                
+                subID: subID,
+            },
+            success: function(response){
+                // console.table(response);
+                let data     = jQuery.parseJSON(response);
+                let topicD   = data.topicData;
+                let teacherD = data.teacherNames;
+                let topic    = '';
+                let teacher  = '';
+                console.log( data );
+                topicD.forEach(function(item){                    
+                    topic += topichtml.append('<option value="' + item.id + '">' + item.topic_name + '</option>');
+                });                
+                topichtml.selectpicker("refresh");
+
+                teacherD.forEach(function(item){
+                    teacher += teacherhtml.append('<option value="' + item.user_id + '">' + item.first_name + '</option>');
+                });                
+                teacherhtml.selectpicker("refresh");
+            }   
+        });     
+    });
+    initializeDatatable('#timetableList', 'wl-mim-fetch-timetable');
+    // initializeDatatable('#viewtimetableList', 'wl-mim-view-timetable');
+    $('#myTable').DataTable({
+    buttons: [
+      { text: 'PDF', extend: 'pdf' },
+      { text: 'Print', extend: 'print' },
+      { text: 'CSV', extend: 'csv' }
+    ],
+    dom: 'Bfrtip'
+  });
+        //add time table:- wl-mim-timetable
+        jQuery("#wim_add_timetable").on('submit', function(e) { 
+            e.preventDefault();        
+            var form = jQuery(this);
+            jQuery.ajax({
+                url: ajaxurl+"?action=wl-mim-timetable",
+                type: "post",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    if( response.success == true ) {
+                        toastr.success(response.data.message);
+                        jQuery('#add-timetable'). modal('hide'); 
+                        jQuery('#wim_add_timetable')[0].reset();
+                        jQuery("#timetableList").DataTable().ajax.reload();
+                    }
+                    else if( response.success == false ){ 
+                        jQuery.each( response.data, function( key, value ) {
+                            //console.log( key + ": " + value );
+                            var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
+                            jQuery('input[name="' + key + '"], select[name="' + key + '"]').addClass('is-invalid').after(msg);
+                        });
+                        var keys = Object.keys(response);
+                        jQuery('input[name="'+keys[0]+'"]').focus();
+                    }
+                    jQuery('#wim_add_timetable')[0].reset();
+                }
+            })       
+        });
+
+        //time table modal wl-mim-fetch-timetablemodal
+        jQuery(document).on('show.bs.modal', '#update-timetable', function (e) {
+            var id = jQuery(e.relatedTarget).data('id');
+            jQuery.ajax({
+                type: 'post',
+                url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-fetch-timetablemodal',
+                data: 'id=' + id,
+                dataType: 'json',
+                success: function (response) {
+                    // console.table(response.data.html);
+                    // var data = JSON.parse(response.data.json);
+                    jQuery('#fetch_timetable').html(response.data.html);
+                    jQuery('.selectpicker').selectpicker();                
+                }
+            });
+        });
+
+        /* Time table show on modal*/
+        jQuery(document).on('show.bs.modal', '#view-timetable', function (e) {
+            var id = jQuery(e.relatedTarget).data('id');
+            jQuery.ajax({
+                type: 'post',
+                url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-view-timetable',
+                data: 'id=' + id,
+                dataType: 'json',
+                success: function (response) {                    
+                    let tableData = response.data;
+                    // var data = JSON.parse(response.data.json);                             
+                    tableData.forEach((element) => {                        
+                        // jQuery('#viewtimetableList tbody').append(tableData);
+                        jQuery('#viewtimetableList').find('tbody').html(tableData);
+                      });    
+                }
+            });
+        });
+
+        //Get the room on date and time change
+        jQuery('#wlim_tt_class_endTime').on('change', function(e){
+            e.preventDefault();
+            let endtime   = jQuery(this).val(); 
+            let starttime = jQuery('#wlim_tt_class_startTime').val();
+            let classDate = jQuery('#wlim_tt_class_date').val();
+            // console.log(endtime);           
+            console.log(`end time ${endtime} start time ${starttime}`);
+            let roomhtml   = jQuery('#ttroomID');
+            // roomhtml.selectpicker();
+            jQuery.ajax({
+                url: ajaxurl,
+                type: 'post',
+                data: {
+                    action: 'wl-mim-getRoom-timetable',
+                    nonce: WLIMAjax.security,                
+                    classDate: classDate,
+                    starttime: starttime,
+                    endtime: endtime,
+                },
+                success: function(response){
+                    // console.log(response);
+                    roomhtml.empty();
+                    let data = jQuery.parseJSON(response);
+                    let roomD = data.roomlist;
+                    let rooms = '';
+                    // console.log(roomD);
+                    roomD.forEach(function(item){
+                        // console.log(item);
+                        rooms += roomhtml.append(`<option value="${item.id}">${item.room_name}( ${item.room_desc} )</option>`);
+                    });                                       
+                }   
+            });     
+        });
+
+    //update time table
+    jQuery('#wim_update_timetable').on('submit', function(e){
+        e.preventDefault();
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl-mim-update-timetable",
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                   // jQuery('#addTopic')[0].reset();
+                   jQuery('#update-timetable'). modal('hide'); 
+                   jQuery("#timetableList").DataTable().ajax.reload();
+                }               
+            }
+        })
+     });
+
+     //save the remark
+     jQuery(document).on('click', '#saveRemark', function(e){
+        e.preventDefault();
+        let teacherRemark = jQuery( '#teacherRemark' ).val();
+        let timeTableID   = jQuery( '#timeTableID' ).val();
+        console.log( `the teachers remark is ${teacherRemark} and the time table id is ${timeTableID}` );
+        jQuery.ajax({
+            url: ajaxurl+"?action=wl-mim-update-teacherRemark",
+            type: "post",
+            data: 'teacherRemark='+teacherRemark + '&timeTableID='+ timeTableID,
+            processData: false,
+            contentType: false,
+            success: function(response){
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                   jQuery("#timetableList").DataTable().ajax.reload();
+                } else {
+                    toastr.danger(response.data.message);
+                }              
+            }
+        });
+     });
+     
+     remove('.delete-timetable', 'delete-timetable-id', 'delete-timetable-security', 'delete-timetable', 'wl-mim-delete-timetable', ['#timetableList']);
+
+        jQuery(document).on('submit','#wlim-view-overall-report-form', function(e) {
             e.preventDefault();
             var data = jQuery('#wlim-view-overall-report-form').serialize();
             jQuery.ajax({
