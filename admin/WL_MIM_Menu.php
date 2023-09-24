@@ -144,7 +144,14 @@ class WL_MIM_Menu {
 					'invoices'
 				));
 				add_action('admin_print_styles-' . $invoices, array('WL_MIM_Menu', 'fees_assets'));
-				
+
+				/* fees_report submenu */
+				$fees_report = add_submenu_page('multi-institute-management', esc_html__('Fees Report', WL_MIM_DOMAIN), esc_html__('Fees Report', WL_MIM_DOMAIN), 'wl_min_manage_fees', 'multi-institute-management-fees-report', array(
+					'WL_MIM_Menu',
+					'fees_report'
+				));
+				add_action('admin_print_styles-' . $fees_report, array('WL_MIM_Menu', 'fees_assets'));
+
 
 				if ( current_user_can('administrator') ) {
 					$reminders = add_submenu_page('multi-institute-management', esc_html__('Reminders', WL_MIM_DOMAIN), esc_html__('Reminders', WL_MIM_DOMAIN), 'wl_min_manage_fees', 'multi-institute-management-reminders', array(
@@ -158,7 +165,7 @@ class WL_MIM_Menu {
 				));
 				}
 
-				
+
 				add_action('admin_print_styles-' . $reminders, array('WL_MIM_Menu', 'fees_assets'));
 
 				if (current_user_can( 'administrator' ) ) {
@@ -168,16 +175,16 @@ class WL_MIM_Menu {
 					));
 					add_action('admin_print_styles-' . $fees, array('WL_MIM_Menu', 'fees_assets'));
 				}
-				
-				if ( current_user_can( 'wl_min_manage_collect_fees' ) ) { 
+
+				if ( current_user_can( 'wl_min_manage_collect_fees' ) ) {
 					/* Fees submenu */
 					$fees = add_submenu_page('multi-institute-management', esc_html__('Collect Fees', WL_MIM_DOMAIN), esc_html__('Collect Fees', WL_MIM_DOMAIN), 'wl_min_manage_fees', 'multi-institute-management-fees', array(
 						'WL_MIM_Menu',
 						'fees'
 					));
 					add_action('admin_print_styles-' . $fees, array('WL_MIM_Menu', 'fees_assets'));
-				}				
-				
+				}
+
 
 				/* Expense submenu */
 				// $expense = add_submenu_page('multi-institute-management', esc_html__('Expense', WL_MIM_DOMAIN), esc_html__('Expense', WL_MIM_DOMAIN), 'wl_min_manage_expense', 'multi-institute-management-expense', array(
@@ -187,11 +194,11 @@ class WL_MIM_Menu {
 				// add_action('admin_print_styles-' . $expense, array('WL_MIM_Menu', 'expense_assets'));
 
 				/* Report submenu */
-				// $report = add_submenu_page('multi-institute-management', esc_html__('Report', WL_MIM_DOMAIN), esc_html__('Report', WL_MIM_DOMAIN), 'wl_min_manage_report', 'multi-institute-management-report', array(
-				// 	'WL_MIM_Menu',
-				// 	'report'
-				// ));
-				// add_action('admin_print_styles-' . $report, array('WL_MIM_Menu', 'report_assets'));
+				$report = add_submenu_page('multi-institute-management', esc_html__('Report', WL_MIM_DOMAIN), esc_html__('Report', WL_MIM_DOMAIN), 'wl_min_manage_report', 'multi-institute-management-report', array(
+					'WL_MIM_Menu',
+					'report'
+				));
+				add_action('admin_print_styles-' . $report, array('WL_MIM_Menu', 'report_assets'));
 
 				/* Notifications submenu */
 				$notifications = add_submenu_page('multi-institute-management', esc_html__('Notifications', WL_MIM_DOMAIN), esc_html__('Notifications', WL_MIM_DOMAIN), 'wl_min_manage_notifications', 'multi-institute-management-notifications', array(
@@ -260,7 +267,7 @@ class WL_MIM_Menu {
 				));
 				add_action('admin_print_styles-' . $timetble, array('WL_MIM_Menu', 'timetable_assets'));
 
-				
+
 
 				if (!current_user_can('manage_options')) :
 					/* Student dashboard */
@@ -331,8 +338,8 @@ class WL_MIM_Menu {
 					add_action('admin_print_styles-' . $student_timetable_submenu, array(
 						'WL_MIM_Menu',
 						'student_attendance_assets'
-					));	
-					
+					));
+
 
 					/* Student admit_card submenu */
 					// $student_admit_card_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Admit Card', WL_MIM_DOMAIN), esc_html__('Admit Card', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-admit-card', array(
@@ -359,21 +366,21 @@ class WL_MIM_Menu {
 			$wl_admin_submenu = add_submenu_page('multi-institute', esc_html__('License8', WL_MIM_DOMAIN), esc_html__('License9', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'));
 			add_action('admin_print_styles-' . $wl_admin_submenu, array('WL_MIM_Menu', 'admin_menu_assets'));
 
-			
+
 		} else {
 			$wl_admin_menu = add_menu_page(esc_html__('Multi Institute Management', WL_MIM_DOMAIN), esc_html__('Multi Institute', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'), 'dashicons-welcome-learn-more', 27);
 			add_action('admin_print_styles-' . $wl_admin_menu, array('WL_MIM_Menu', 'admin_menu_assets'));
 
 			$wl_admin_submenu = add_submenu_page('multi-institute-license', esc_html__('License', WL_MIM_DOMAIN), esc_html__('License', WL_MIM_DOMAIN), 'manage_options', 'multi-institute-license', array('WL_MIM_Menu', 'admin_menu'));
 			add_action('admin_print_styles-' . $wl_admin_submenu, array('WL_MIM_Menu', 'admin_menu_assets'));
-			
+
 		}
 
-		// set session 
+		// set session
 		$current_user_id = get_current_user_id();
-		
+
 		if (current_user_can('administrator')) {
-			$role = 'admin'; 
+			$role = 'admin';
 			$user_can = 1;
 			echo "<script>";
 			echo "sessionStorage.setItem('user_can_export', '".$user_can. "');";
@@ -389,7 +396,7 @@ class WL_MIM_Menu {
 			echo "sessionStorage.setItem('current_user_id', '".$current_user_id. "');";
 			echo "</script>";
 		}
-		if ( current_user_can( 'wl_min_manage_export_data' ) ) { 
+		if ( current_user_can( 'wl_min_manage_export_data' ) ) {
 			$user_can = 1;
 			echo "<script>";
 			echo "sessionStorage.setItem('user_can_export', '".$user_can. "');";
@@ -488,7 +495,7 @@ class WL_MIM_Menu {
 	public static function topics() {
 		require_once('inc/wl_im_topics.php');
 	}
-	
+
 	/* Studio menu callback */
 	public static function studios() {
 		require_once('inc/wl_im_studios.php');
@@ -601,6 +608,10 @@ class WL_MIM_Menu {
 	/* Installments menu callback */
 	public static function invoices() {
 		require_once('inc/wl_im_invoices.php');
+	}
+
+	public static function fees_report() {
+		require_once('inc/wl_im_fees_report.php');
 	}
 
 	public static function reminders() {
@@ -794,10 +805,10 @@ class WL_MIM_Menu {
 	public static function student_admit_card() {
 		require_once('inc/wl_im_student_admit_card.php');
 	}
-	
+
 	public static function student_invoices() {
 		require_once('inc/wl_im_student_invoices.php');
-	}	
+	}
 
 	public static function student_timetable() {
 		require_once('inc/wl_im_student_timetable.php');

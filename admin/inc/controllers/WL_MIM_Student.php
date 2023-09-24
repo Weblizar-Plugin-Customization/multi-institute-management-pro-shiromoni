@@ -7,8 +7,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
 class WL_MIM_Student
 {
 	/* Get student data to display on table */
-	public static function get_student_data()
-	{
+	public static function get_student_data() {
 		self::check_permission();
 		if (!wp_verify_nonce($_REQUEST['security'], 'wl-ima')) {
 			die();
@@ -117,7 +116,7 @@ class WL_MIM_Student
 					// <br>( ' . esc_html($timing) . ' )';
 					$batch_status = WL_MIM_Helper::get_batch_status($batch_data[$row->batch_id]->start_date, $batch_data[$row->batch_id]->end_date);
 				}
-				
+
 				// if ($pending_fees > 0) {
 				// 	$fees_status = '<strong class="text-danger">' . esc_html__('Pending', WL_MIM_DOMAIN) . ': </strong><br><strong>' . $pending_fees . '</strong>';
 				// } else {
@@ -167,6 +166,231 @@ class WL_MIM_Student
 		wp_send_json($results);
 	}
 
+	public static function get_student_fees_report_data_dash(){
+		$course_id       = isset($_POST['course']) ? intval(sanitize_text_field($_POST['course'])) : null;
+		$batch_id        = isset($_POST['batch']) ? intval(sanitize_text_field($_POST['batch'])) : null;
+
+		$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+		global $wpdb;
+		$students = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id AND course_id = $course_id AND batch_id = $batch_id ORDER BY id DESC");
+
+		$total_students = count($students);
+		$paid_students = 0;
+		$unpaid_students = 0;
+		$total_payable_amount = 0;
+		$total_paid_amount = 0;
+		$total_unpaid_amount = 0;
+		$paid_amount=0;
+
+		foreach ($students as $student) {
+			$student_id = $student->id;
+			// get total fees payable amount from invoices table.
+			$fees_payable = $wpdb->get_var("SELECT SUM(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE student_id = $student_id");
+			// get total fees paid amount from installments table.
+			$fees_paid = $wpdb->get_var("SELECT SUM(paid_amount) FROM {$wpdb->prefix}wl_min_installments WHERE student_id = $student_id");
+			// get total fees pending amount from fees_payable and fees_paid.
+			$pending_fees = $fees_payable - $fees_paid;
+			$paid_amount += $fees_paid;
+
+			if ($pending_fees == 0) {
+				$paid_students++;
+				$total_paid_amount += $fees_paid;
+			} else {
+				$unpaid_students++;
+				$total_unpaid_amount += $pending_fees;
+			}
+
+			$total_payable_amount += $fees_payable;
+		}
+
+		// return all variabls in json
+		wp_send_json(array(
+			'total_students' => $total_students,
+			'paid_students' => $paid_students,
+			'paid_amount' => $paid_amount,
+			'unpaid_students' => $unpaid_students,
+			'total_payable_amount' => $total_payable_amount,
+			'total_paid_amount' => $total_paid_amount,
+			'total_unpaid_amount' => $total_unpaid_amount,
+		));
+
+
+	}
+
+	public static function get_student_fees_report_data() {
+		self::check_permission();
+
+		global $wpdb;
+
+		$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings($institute_id);
+
+		/* Filters */
+		$filter_by_year  = (isset($_REQUEST['filter_by_year']) && !empty($_REQUEST['filter_by_year'])) ? intval(sanitize_text_field($_REQUEST['filter_by_year'])) : null;
+		$filter_by_month = (isset($_REQUEST['filter_by_month']) && !empty($_REQUEST['filter_by_month'])) ? intval(sanitize_text_field($_REQUEST['filter_by_month'])) : null;
+		$status          = isset($_REQUEST['status']) ? sanitize_text_field($_REQUEST['status']) : null;
+		$course_id       = isset($_REQUEST['course_id']) ? intval(sanitize_text_field($_REQUEST['course_id'])) : null;
+		$batch_id        = isset($_REQUEST['batch_id']) ? intval(sanitize_text_field($_REQUEST['batch_id'])) : null;
+
+		$filters = array();
+
+		/* Add Filter: year */
+		if (!empty($filter_by_year)) {
+			array_push($filters, "YEAR(created_at) = $filter_by_year");
+
+			/* Add Filter: month */
+			if (!empty($filter_by_month)) {
+				array_push($filters, "MONTH(created_at) = $filter_by_month");
+			}
+		}
+
+		/* Add Filter: status */
+		if (!empty($status)) {
+			if ($status == 'all') {
+			} elseif ($status == 'active') {
+				array_push($filters, "is_active = 1");
+			}
+		}
+
+		/* Add Filter: course */
+		if (!empty($course_id)) {
+			array_push($filters, "course_id = $course_id");
+		}
+
+		/* Add Filter: branch */
+		if (!empty($batch_id)) {
+			array_push($filters, "batch_id = $batch_id");
+		}
+		/* End filters */
+
+		if (count($filters)) {
+			$filter_query = 'AND ' . implode(' AND ', $filters);
+		} else {
+			$filter_query = '';
+		}
+
+		if (!empty($filter_query)) {
+			// $data = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id $filter_query ORDER BY id DESC");
+
+			$data = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id AND course_id = $course_id AND batch_id = $batch_id ORDER BY id DESC");
+
+		} else {
+			$data = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id ORDER BY id DESC");
+		}
+
+		$course_data = $wpdb->get_results("SELECT id, course_name, course_code, fees, duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE institute_id = $institute_id ORDER BY course_name", OBJECT_K);
+
+		$batch_data = $wpdb->get_results("SELECT id, batch_code, batch_name, time_from, time_to, start_date, end_date FROM {$wpdb->prefix}wl_min_batches WHERE institute_id = $institute_id ORDER BY id", OBJECT_K);
+
+		$page_url = WL_MIM_Helper::get_reminder_page_url();
+
+		if (count($data) !== 0) {
+			foreach ($data as $row) {
+				$id            = $row->id;
+				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix($row->enrollment_id, $general_enrollment_prefix);
+				$first_name    = $row->first_name ? $row->first_name : '-';
+				$last_name     = $row->last_name ? $row->last_name : '-';
+				$qualification     = $row->qualification ? $row->qualification : '-';
+				$registration_date     = $row->created_at ? date_format(date_create($row->created_at), 'd-m-Y') : '-';
+				$expire_at     = $row->created_at ? date_format(date_create($row->expire_at), 'd-m-Y') : '-';
+				$father_name   = $row->father_name ? $row->father_name : '-';
+				$class         = $row->class ? $row->class : '-';
+				$business_manager         = $row->business_manager ? $row->business_manager : '-';
+				$source         = $row->source ? $row->source : '-';
+				// $fees          = unserialize($row->fees);
+				// $fees_payable  = WL_MIM_Helper::get_fees_total($fees['payable']);
+				// $fees_paid     = WL_MIM_Helper::get_fees_total($fees['paid']);
+				// $pending_fees  = number_format($fees_payable - $fees_paid, 2, '.', '');
+				$phone         = $row->phone ? $row->phone : '-';
+				$phon2         = $row->phone2 ? $row->phone2 : '-';
+				$email         = $row->email ? $row->email : '-';
+				$date_of_birth = (!empty($row->date_of_birth)) ? date_format(date_create($row->date_of_birth), "d M, Y") : '-';
+				$is_acitve     = $row->is_active ? esc_html__('Yes', WL_MIM_DOMAIN) : esc_html__('No', WL_MIM_DOMAIN);
+				$date          = date_format(date_create($row->created_at), "d-m-Y");
+				$added_by      = ($user = get_userdata($row->added_by)) ? $user->user_login : '-';
+
+				$course   = '-';
+				$duration = '-';
+				$batch    = '-';
+				if ($row->course_id && isset($course_data[$row->course_id])) {
+					$course_name = $course_data[$row->course_id]->course_name;
+					$course_code = $course_data[$row->course_id]->course_code;
+					$course      = "$course_name ($course_code)";
+					$duration    = $course_data[$row->course_id]->duration . " " . $course_data[$row->course_id]->duration_in;
+				}
+
+				if ($row->batch_id && isset($batch_data[$row->batch_id])) {
+					$time_from    = date("g:i A", strtotime($batch_data[$row->batch_id]->time_from));
+					$time_to      = date("g:i A", strtotime($batch_data[$row->batch_id]->time_to));
+					$timing       = "$time_from - $time_to";
+					$batch        = esc_html($batch_data[$row->batch_id]->batch_code) . ' ( ' . esc_html($batch_data[$row->batch_id]->batch_name) . ' )';
+					// <br>( ' . esc_html($timing) . ' )';
+					$batch_status = WL_MIM_Helper::get_batch_status($batch_data[$row->batch_id]->start_date, $batch_data[$row->batch_id]->end_date);
+				}
+
+				if ($row->id) {
+					// create a new query to get the fees payable_amount total from the invoices table.
+					$fees_payable = $wpdb->get_var("SELECT SUM(payable_amount) FROM {$wpdb->prefix}wl_min_invoices WHERE student_id = $row->id");
+
+					// create a new query to get the fees paid total from the wp_wl_min_installments .
+					$fees_paid = $wpdb->get_var("SELECT SUM(paid_amount) FROM {$wpdb->prefix}wl_min_installments WHERE student_id = $row->id");
+
+					// create condition to get fees status from fees_payable and fees_paid total.
+					if ($fees_payable > $fees_paid) {
+						$fees_status = '<strong class="text-danger">' . esc_html__('Pending', WL_MIM_DOMAIN) . ': </strong><br><strong>' . $fees_payable-$fees_paid . '</strong>';
+					} else {
+						$fees_status = '<strong class="text-success">' . esc_html__('Paid', WL_MIM_DOMAIN) . '</strong>';
+					}
+				} else {
+					$fees_payable = 0;
+					$fees_paid = 0;
+				}
+
+				if (current_user_can( 'wl_min_student_view_only' ) && !current_user_can('administrator')) {
+					$edit = '<a class="mr-3" href="#update-student" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-student-security="' . wp_create_nonce("delete-student-$id") . '"delete-student-id="' . $id . '" class="delete-student"> <i class="fa fa-trash text-danger"></i></a>';
+				}
+				if (current_user_can('administrator')) {
+					$edit = '<a class="mr-3" href="#update-student" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> <a href="javascript:void(0)" delete-student-security="' . wp_create_nonce("delete-student-$id") . '"delete-student-id="' . $id . '" class="delete-student"> <i class="fa fa-trash text-danger"></i></a>';
+				}
+
+				$results["data"][] = array(
+					// '<input type="checkbox" class="wl-mim-select-single wl-mim-bulk-students" name="bulk_data[]" value="' . esc_attr($row->id) . '">',
+					esc_html($enrollment_id),
+					esc_html(ucwords($first_name)),
+					// esc_html($last_name),
+					esc_html($course),
+					$batch,
+					$business_manager,
+					$source,
+					// esc_html($duration),
+					// $batch_status,
+					esc_html($fees_payable),
+					esc_html($fees_paid),
+					$fees_status,
+					esc_html($phone),
+					esc_html($phon2),
+					esc_html($email),
+					esc_html($qualification),
+					esc_html($class),
+					esc_html($registration_date),
+					esc_html($expire_at),
+					esc_html($father_name),
+					// esc_html($date_of_birth),
+					esc_html($is_acitve),
+					esc_html($added_by),
+					'<i class="fa fa-eye text-success"><a class="mr-3" href="'. $page_url. '&student_id='. $id .'" ></i> Follow Up</a>',
+					// esc_html($date),
+					$edit
+				);
+			}
+		} else {
+			$results["data"] = array();
+		}
+		wp_send_json($results);
+	}
+
 	/* Add new student */
 	public static function add_student() {
 		self::check_permission();
@@ -187,7 +411,7 @@ class WL_MIM_Student
 		$date_of_birth   = (isset($_POST['date_of_birth']) && !empty($_POST['date_of_birth'])) ? date("Y-m-d", strtotime(sanitize_text_field($_REQUEST['date_of_birth']))) : null;
 		$roll_number     = isset($_POST['roll_number']) ? sanitize_text_field($_POST['roll_number']) : '';
 		$enrollment_id   = isset($_POST['enrollment_id']) ? sanitize_text_field($_POST['enrollment_id']) : '';
-		
+
 		$id_proof        = (isset($_FILES['id_proof']) && is_array($_FILES['id_proof'])) ? $_FILES['id_proof'] : null;
 		$id_proof_in_db  = isset($_POST['id_proof_in_db']) ? intval(sanitize_text_field($_POST['id_proof_in_db'])) : null;
 		$father_name     = isset($_POST['father_name']) ? sanitize_text_field($_POST['father_name']) : '';
@@ -274,7 +498,7 @@ class WL_MIM_Student
 		if (empty($batch_id)) {
 			wp_send_json_error(esc_html__('Please select a batch', WL_MIM_DOMAIN));
 		}
-		
+
 		$count = $wpdb->get_var("SELECT COUNT(*) as count FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND is_active = 1 AND id = $batch_id AND course_id = $course_id AND institute_id = $institute_id");
 
 		// get batch details
@@ -613,7 +837,7 @@ class WL_MIM_Student
 
 						$subject = $template['et_inquiry_processing_subject'];
 						$body    = $template['et_inquiry_processing_body'];
-						
+
 						$body = str_replace('[COURSE_NAME]', $course->course_name, $body);
 						$body = str_replace('[STUDENT_NAME]', $first_name." ".$last_name, $body);
 						$body = str_replace('[STUDENT_EMAIL]', $email, $body);
@@ -630,9 +854,9 @@ class WL_MIM_Student
 						$body = str_replace('[ENROLLMENT_NUMBER]', $enrollment_id, $body);
 
 // 						$body .= "<pre>
-// LINK:- HTTPS://SHIROMANIINSTITUTE.IN/ 
+// LINK:- HTTPS://SHIROMANIINSTITUTE.IN/
 
-// IF YOU PAY THROUGH ANY OTHER MODE THEN YOU ARE ONLY RESPONSIBLE FOR THE PAYMENT DONE…INSTITUE WILL NOT TAKE ANY RESPONSIBILITY FOR ANY FRAUD.   
+// IF YOU PAY THROUGH ANY OTHER MODE THEN YOU ARE ONLY RESPONSIBLE FOR THE PAYMENT DONE…INSTITUE WILL NOT TAKE ANY RESPONSIBILITY FOR ANY FRAUD.
 
 // IF THIS PAYMENT DATE FAILS THEN LATE FINE WILL BE CHARGED SEPARATELY 100/- PER DAY.
 
@@ -734,7 +958,7 @@ class WL_MIM_Student
 		}
 		wp_send_json_error($errors);
 	}
-	
+
 	/* Bulk Import new students */
 	public static function import_students()
 	{
@@ -1733,7 +1957,7 @@ class WL_MIM_Student
 			</div>
 		<?php
 		} ?>
-		
+
 		<div class="row">
 			<div class="form-group col-sm-6">
 				<label for="wlim-student-created_at_update" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
@@ -2232,7 +2456,7 @@ class WL_MIM_Student
 					'institute_id' => $institute_id
 				));
 
-				$student = $wpdb->get_row( "SELECT mb.user_login FROM {$wpdb->prefix}wl_min_students as s 
+				$student = $wpdb->get_row( "SELECT mb.user_login FROM {$wpdb->prefix}wl_min_students as s
 				JOIN {$wpdb->prefix}users as mb ON mb.id = s.user_id
 				WHERE s.id = $id" );
 
@@ -2255,8 +2479,8 @@ class WL_MIM_Student
 							$body = str_replace('[STUDENT_USERNAME]', $student->user_login, $body);
 							$body = str_replace('[REGISTRATION_DATE]', $created_at, $body);
 							$body = str_replace('[EXPIRATION_DATE]', $expire_at, $body);
-							// add string to $body 
-							
+							// add string to $body
+
 							WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
 					}
 				}
@@ -2358,8 +2582,7 @@ class WL_MIM_Student
 	}
 
 	/* Fetch course batches */
-	public static function fetch_course_batches()
-	{
+	public static function fetch_course_batches() {
 		self::check_permission();
 		if (!wp_verify_nonce($_REQUEST['security'], 'wl-ima')) {
 			die();
@@ -2413,6 +2636,39 @@ class WL_MIM_Student
 		}
 		$html = ob_get_clean();
 		wp_send_json_success(array('html' => $html, 'json' => $json));
+	}
+
+	// Fetch course batches and return json.
+	public static function wlim_get_batches(){
+		$course_id = intval(sanitize_text_field($_POST['course_id']));
+
+		global $wpdb;
+		$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+		$batches = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_batches WHERE is_deleted = 0 AND is_active = 1 AND course_id = $course_id AND institute_id = $institute_id ORDER BY id DESC");
+
+		$batch_data = array();
+
+		if (count($batches) > 0) {
+			foreach ($batches as $batch) {
+				$time_from  = date("g:i A", strtotime($batch->time_from));
+				$time_to    = date("g:i A", strtotime($batch->time_to));
+				$timing     = "$time_from - $time_to";
+				$batch_info = $batch->batch_code;
+				if ($batch->batch_name) {
+					$batch_info .= " ( $batch->batch_name )";
+				}
+				$batch_data[] = array(
+					'id' => $batch->id,
+					'batch_info' => $batch_info,
+					'timing' => $timing,
+					'status' => WL_MIM_Helper::get_batch_status($batch->start_date, $batch->end_date)
+				);
+			}
+		}
+
+		wp_send_json_success($batches);
+
 	}
 
 	/* Fetch course update batches */
@@ -2801,14 +3057,14 @@ class WL_MIM_Student
 		</div>
 		<hr>
 
-		
+
 
 		<div class="row">
 			<div class="form-group col-sm-6 ">
 				<label for="wlim-student-created_at" class="col-form-label"><?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>:</label>
 				<input name="created_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-created_at" placeholder="<?php esc_html_e('Registration Date', WL_MIM_DOMAIN); ?>">
 			</div>
-			
+
 			<div class="form-group col-sm-6">
 				<label for="wlim-student-expired_at" class="col-form-label"><?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?>:</label>
 				<input name="expire_at" type="text" class="form-control wlim-date_of_birth" id="wlim-student-expired_at" placeholder="<?php esc_html_e('Registration Expiry Date', WL_MIM_DOMAIN); ?>">
@@ -2959,7 +3215,7 @@ class WL_MIM_Student
 		</div>
 		<div id="wlim-add-student-fetch-installment">
 		</div>
-			
+
 		<!-- <div class="fee_types_box">
 			<table class="table table-bordered">
 				<thead>
@@ -3192,7 +3448,7 @@ class WL_MIM_Student
 							<td><input type="text" name="due_date_amount[]" class="form-control" placeholder="Fee Type" value="<?php echo round($course_payable / $id ); ?>"></td>
 						</tr>
 						<?php } ?>
-											
+
 				</tbody>
 			</table>
 		</div>

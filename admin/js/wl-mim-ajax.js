@@ -1,7 +1,7 @@
 (function ($) {
     "use strict";
 
-   
+
     jQuery(document).ready(function () {
         /* Loading */
         jQuery(document).ajaxStart(function () {
@@ -9,8 +9,8 @@
         }).ajaxStop(function () {
             jQuery('button[type="submit"]').prop('disabled', false);
         });
-        jQuery('.selectpicker').selectpicker(); 
-      
+        jQuery('.selectpicker').selectpicker();
+
         /* Serialize object */
         (function ($, undefined) {
             '$:nomunge';
@@ -26,7 +26,7 @@
                 return obj;
             };
         })(jQuery);
-        
+
 
         /* Get data to display on table */
         function initializeDatatable(table, action, data = {}) {
@@ -43,7 +43,7 @@
                 var epppp = 'lBfrtip';
             }
             // console.log(epppp);
-         
+
 
             jQuery(table).DataTable({
                 aaSorting: [],
@@ -114,7 +114,7 @@
         }
 
 
-        
+
 
         /* Add or update record */
         function save(selector, action, form = null, modal = null, reloadTables = []) {
@@ -296,6 +296,46 @@
             });
         }
 
+          // when id wlim-institute-select-course is changed then get the batches of that course
+          jQuery(document).on('change', '#wlim-institute-select-course', function () {
+            var course_id = jQuery(this).val();
+            jQuery.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'wlim_get_batches',
+                    course_id: course_id
+                },
+                success: function (response) {
+                    jQuery('#wlim-institute-select-batch').html('');
+                    response.data.forEach(function (batch) {
+                        jQuery('#wlim-institute-select-batch').append('<option value="' + batch.id + '">' + batch.batch_name + '</option>');
+                    });
+                    jQuery('#wlim-institute-select-batch').selectpicker('refresh');
+                }
+            });
+        });
+
+        // when fees-report-btn is clicked get data from form id fees-report-form update the text of span id total-student.
+        jQuery(document).ready(function() {
+            $('#fees-report-btn').click(function() {
+                var data = $('#fees-report-form').serialize();
+                $.ajax({
+                    url: ajaxurl + '?action=wl-mim-get-student-fees-report-data-dash',
+                    type: 'POST',
+                    data: data,
+                    success: function(response) {
+                        $('#total-students-count').text(response.total_students);
+                        $('#total-students-amount').text(response.total_payable_amount);
+                        $('#paid-students-count').text(response.paid_students);
+                        $('#paid-students-amount').text(response.paid_amount);
+                        $('#unpaid-students-count').text(response.unpaid_students);
+                        $('#unpaid-students-amount').text(response.total_unpaid_amount);
+                    }
+                });
+            });
+        });
+
         /* Switch institute on click */
         jQuery(document).on('click', '.wlmim-institute-switch', function () {
             var institute_id = jQuery(this).data('id');
@@ -407,6 +447,15 @@
         });
         saveWithFiles('.update-administrator-submit', '#wlim-update-administrator-form', '#update-administrator', ['#administrator-table', '#staff-table']);
 
+
+        jQuery(document).on('click', '#fees-report-btn', function (event) {
+            event.preventDefault();
+            var course_id = jQuery('#wlim-institute-select-course').val();
+            var batch_id = jQuery('#wlim-institute-select-batch').val();
+            jQuery('#student-fees-report-table').DataTable().destroy();
+            initializeDatatable('#student-fees-report-table', 'wl-mim-get-student-fees-report-data', { 'course_id': course_id, 'batch_id': batch_id });
+        });
+
         jQuery(document).on('click', '#wlim-invoice-filter', function (event) {
             event.preventDefault();
             var start_date = jQuery('#wlim-invoice_start').val();
@@ -464,9 +513,9 @@
             initializeDatatable('#reminder-table', 'wl-mim-get-reminder-data', {'start_date' : start_date, 'end_date': end_date});
         });
 
-        
+
         /* Actions for fee reminder */
-       
+
         save('.add-reminder-submit', 'wl-mim-add-reminder', '#wlim-add-reminder-form', '#add-reminder', ['#reminder-table']);
         jQuery(document).on('show.bs.modal', '#update-reminder', function (e) {
             var id = jQuery(e.relatedTarget).data('id');
@@ -492,7 +541,7 @@
             });
         });
         save('.update-reminder-submit', 'wl-mim-update-reminder', '#wlim-update-reminder-form', '#update-reminder', ['#reminder-table']);
-        remove('.delete-reminder', 'delete-reminder-id', 'delete-reminder-security', 'delete-reminder', 'wl-mim-delete-reminder', ['#reminder-table']);        
+        remove('.delete-reminder', 'delete-reminder-id', 'delete-reminder-security', 'delete-reminder', 'wl-mim-delete-reminder', ['#reminder-table']);
 
         /* Action to fetch invoice amount */
         jQuery(document).on('change', '#wlim-invoice-id', function() {
@@ -519,7 +568,7 @@
                             $('#wlim-invoice-due-date-amount').val(due_date_amount);
                             $('#wlim-installment-created_at').val(created_at);
                         });
-                       
+
                         jQuery('.wlima-amount-payable-total').html(sum.toFixed(2));
                     }
                 });
@@ -1189,8 +1238,8 @@
             var course_payable = $('#course_payable').val()
             if (this.value) {
                 data = 'id='+ this.value + '&course_payable=' + course_payable;
-            } 
-            console.log();           
+            }
+            console.log();
             jQuery.ajax({
                 type: 'post',
                 url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-add-student-fetch-installment',
@@ -1350,7 +1399,7 @@
         fetch('#update-result', 'wl-mim-fetch-result', '#fetch_result');
 
         fetch('#print-exam-result', 'wl-mim-print-exam-result', '#print_exam_result');
-        
+
         remove('.delete-result', 'delete-result-id', 'delete-result-security', 'delete-result', 'wl-mim-delete-result', ['#result-table']);
         /* Fetch result course batches */
         jQuery(document).on('change', '#wlim-result-course', function () {
@@ -1540,11 +1589,11 @@
             success: function(response){
                 if( response.success == true ) {
                     toastr.success(response.data.message);
-                    jQuery('#add-subject'). modal('hide'); 
+                    jQuery('#add-subject'). modal('hide');
                    // jQuery('#addTopic')[0].reset();
                     jQuery("#subject-table").DataTable().ajax.reload();
                     window.location.reload();
-                }               
+                }
             }
         })
      });
@@ -1565,7 +1614,7 @@
                 // console.table(response.data.html);
                 // var data = JSON.parse(response.data.json);
                 jQuery('#fetch_subject').html(response.data.html);
-                jQuery('.selectpicker').selectpicker();                
+                jQuery('.selectpicker').selectpicker();
             }
         });
     });
@@ -1583,15 +1632,15 @@
                 if( response.success == true ) {
                     toastr.success(response.data.message);
                    // jQuery('#addTopic')[0].reset();
-                   jQuery('#update-subject'). modal('hide'); 
+                   jQuery('#update-subject'). modal('hide');
                    jQuery("#subject-table").DataTable().ajax.reload();
-                }               
+                }
             }
         })
      });
 
      // Get the batches on change of course
-     jQuery("#courseID").on("changed.bs.select", 
+     jQuery("#courseID").on("changed.bs.select",
             function(e, clickedIndex, newValue, oldValue) {
                     var data = jQuery('#wlim-notification-configure-form').serialize();
                     var formData = new FormData();
@@ -1600,7 +1649,7 @@
                     formData.append('course_id', newValue);
             jQuery.ajax({
                 type: 'post',
-                url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-get-batches&course_id='+course_id, 
+                url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-get-batches&course_id='+course_id,
                 data: data,
                 dataType: 'json',
                 success: function (response) {o
@@ -1641,8 +1690,8 @@
 
      //add topic
      initializeDatatable('#topicList', 'wl-mim-topic-data');
-     jQuery("#wim_add_topic").on('submit', function(e) { 
-        e.preventDefault();        
+     jQuery("#wim_add_topic").on('submit', function(e) {
+        e.preventDefault();
         var form = jQuery(this);
         jQuery.ajax({
             url: ajaxurl+"?action=wl_mim-add-topic",
@@ -1653,11 +1702,11 @@
             success: function(response){
                 if( response.success == true ) {
                     toastr.success(response.data.message);
-                    jQuery('#add-topic'). modal('hide'); 
+                    jQuery('#add-topic'). modal('hide');
                     jQuery('#wim_add_topic')[0].reset();
                     jQuery("#topicList").DataTable().ajax.reload();
                 }
-                else if( response.success == false ){ 
+                else if( response.success == false ){
                     jQuery.each( response.data, function( key, value ) {
                         //console.log( key + ": " + value );
                         var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
@@ -1667,9 +1716,9 @@
                     jQuery('input[name="'+keys[0]+'"]').focus();
                 }
             }
-        })       
+        })
     });
-   
+
     //fetch topic data to modal for edit it
     jQuery(document).on('show.bs.modal', '#update-topic', function (e) {
         var id = jQuery(e.relatedTarget).data('id');
@@ -1682,14 +1731,14 @@
                 // console.table(response.data.html);
                 // var data = JSON.parse(response.data.json);
                 jQuery('#fetch_topic').html(response.data.html);
-                jQuery('.selectpicker').selectpicker();                
+                jQuery('.selectpicker').selectpicker();
             }
         });
     });
      //update the topic
     // wl-mim-update-topic
-    jQuery("#wim_update_topic").on('submit', function(e) { 
-        e.preventDefault();        
+    jQuery("#wim_update_topic").on('submit', function(e) {
+        e.preventDefault();
         var form = jQuery(this);
         jQuery.ajax({
             url: ajaxurl+"?action=wl-mim-update-topic",
@@ -1700,11 +1749,11 @@
             success: function(response){
                 if( response.success == true ) {
                     toastr.success(response.data.message);
-                    jQuery('#update-topic'). modal('hide'); 
+                    jQuery('#update-topic'). modal('hide');
                     // jQuery('#wim_update_topic')[0].reset();
                     jQuery("#topicList").DataTable().ajax.reload();
                 }
-                else if( response.success == false ){ 
+                else if( response.success == false ){
                     jQuery.each( response.data, function( key, value ) {
                         //console.log( key + ": " + value );
                         var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
@@ -1714,7 +1763,7 @@
                     jQuery('input[name="'+keys[0]+'"]').focus();
                 }
             }
-        })       
+        })
     });
 
     //Delete the topic
@@ -1723,8 +1772,8 @@
     /* studio/room */
     remove('.delete-room', 'delete-room-id', 'delete-room-security', 'delete-room', 'wl-mim-delete-room', ['#roomList']);
     initializeDatatable('#roomList', 'wl-mim-room-data');
-    jQuery("#wim_add_room").on('submit', function(e) { 
-        e.preventDefault();        
+    jQuery("#wim_add_room").on('submit', function(e) {
+        e.preventDefault();
         var form = jQuery(this);
         jQuery.ajax({
             url: ajaxurl+"?action=wl_mim-add-room",
@@ -1735,11 +1784,11 @@
             success: function(response){
                 if( response.success == true ) {
                     toastr.success(response.data.message);
-                    jQuery('#add-studio').modal('hide'); 
+                    jQuery('#add-studio').modal('hide');
                     jQuery('#wim_add_room')[0].reset();
                     jQuery("#roomList").DataTable().ajax.reload();
                 }
-                else if( response.success == false ){ 
+                else if( response.success == false ){
                     jQuery.each( response.data, function( key, value ) {
                         //console.log( key + ": " + value );
                         var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
@@ -1763,7 +1812,7 @@
                 // console.table(response.data.html);
                 // var data = JSON.parse(response.data.json);
                 jQuery('#fetch_room').html(response.data.html);
-                jQuery('.selectpicker').selectpicker();                
+                jQuery('.selectpicker').selectpicker();
             }
         });
     });
@@ -1780,9 +1829,9 @@
                 if( response.success == true ) {
                     toastr.success(response.data.message);
                    // jQuery('#addTopic')[0].reset();
-                   jQuery('#update-room'). modal('hide'); 
+                   jQuery('#update-room'). modal('hide');
                    jQuery("#roomList").DataTable().ajax.reload();
-                }               
+                }
             }
         })
      });
@@ -1790,7 +1839,7 @@
     jQuery('.selectpicker').selectpicker();
     jQuery('#ttcourseID').on('change', function(e) {
         e.preventDefault();
-        var courseID  = jQuery(this).val();        
+        var courseID  = jQuery(this).val();
         let batchhtml = jQuery('#ttbatchID');
         let subhtml   = jQuery('#ttsubID');
         jQuery.ajax({
@@ -1798,7 +1847,7 @@
             type: 'post',
             data: {
                 action: 'wl-mim-dataforTT',
-                nonce: WLIMAjax.security,                
+                nonce: WLIMAjax.security,
                 courseID: courseID,
             },
             success: function(response){
@@ -1809,31 +1858,31 @@
                 let subjects = '';
                 batchD.forEach(function(item){
                     batch += batchhtml.append('<option value="' + item.batchid + '">' + item.batchName + '</option>');
-                });                
+                });
                 batchhtml.selectpicker("refresh");
 
                 subD.forEach(function(item){
                     subjects += subhtml.append('<option value="' + item.subid + '">' + item.subName + '</option>');
-                });                
-                subhtml.selectpicker("refresh");              
+                });
+                subhtml.selectpicker("refresh");
 
-            }   
-        });     
+            }
+        });
     });
 
     //ajax call to get the topic and teacher
     jQuery('#ttsubID').on('change', function(e){
         e.preventDefault();
-        var subID       = jQuery(this).val(); 
-        // let subfield    = jQuery( '#ttsubID' );       
+        var subID       = jQuery(this).val();
+        // let subfield    = jQuery( '#ttsubID' );
         let topichtml   = jQuery('#tttopicID');
-        let teacherhtml = jQuery('#ttteacherID');        
+        let teacherhtml = jQuery('#ttteacherID');
         jQuery.ajax({
             url: ajaxurl,
             type: 'post',
             data: {
                 action: 'wl-mim-topicTeacher',
-                nonce: WLIMAjax.security,                
+                nonce: WLIMAjax.security,
                 subID: subID,
             },
             success: function(response){
@@ -1844,17 +1893,17 @@
                 let topic    = '';
                 let teacher  = '';
                 console.log( data );
-                topicD.forEach(function(item){                    
+                topicD.forEach(function(item){
                     topic += topichtml.append('<option value="' + item.id + '">' + item.topic_name + '</option>');
-                });                
+                });
                 topichtml.selectpicker("refresh");
 
                 teacherD.forEach(function(item){
                     teacher += teacherhtml.append('<option value="' + item.user_id + '">' + item.first_name + '</option>');
-                });                
+                });
                 teacherhtml.selectpicker("refresh");
-            }   
-        });     
+            }
+        });
     });
     initializeDatatable('#timetableList', 'wl-mim-fetch-timetable');
     // initializeDatatable('#viewtimetableList', 'wl-mim-view-timetable');
@@ -1867,8 +1916,8 @@
     dom: 'Bfrtip'
   });
         //add time table:- wl-mim-timetable
-        jQuery("#wim_add_timetable").on('submit', function(e) { 
-            e.preventDefault();        
+        jQuery("#wim_add_timetable").on('submit', function(e) {
+            e.preventDefault();
             var form = jQuery(this);
             jQuery.ajax({
                 url: ajaxurl+"?action=wl-mim-timetable",
@@ -1879,11 +1928,11 @@
                 success: function(response){
                     if( response.success == true ) {
                         toastr.success(response.data.message);
-                        jQuery('#add-timetable'). modal('hide'); 
+                        jQuery('#add-timetable'). modal('hide');
                         jQuery('#wim_add_timetable')[0].reset();
                         jQuery("#timetableList").DataTable().ajax.reload();
                     }
-                    else if( response.success == false ){ 
+                    else if( response.success == false ){
                         jQuery.each( response.data, function( key, value ) {
                             //console.log( key + ": " + value );
                             var msg = '<label class="text-danger" for="'+key+'">'+value+'</label>';
@@ -1894,7 +1943,7 @@
                     }
                     jQuery('#wim_add_timetable')[0].reset();
                 }
-            })       
+            })
         });
 
         //time table modal wl-mim-fetch-timetablemodal
@@ -1909,7 +1958,7 @@
                     // console.table(response.data.html);
                     // var data = JSON.parse(response.data.json);
                     jQuery('#fetch_timetable').html(response.data.html);
-                    jQuery('.selectpicker').selectpicker();                
+                    jQuery('.selectpicker').selectpicker();
                 }
             });
         });
@@ -1922,13 +1971,13 @@
                 url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-view-timetable',
                 data: 'id=' + id,
                 dataType: 'json',
-                success: function (response) {                    
+                success: function (response) {
                     let tableData = response.data;
-                    // var data = JSON.parse(response.data.json);                             
-                    tableData.forEach((element) => {                        
+                    // var data = JSON.parse(response.data.json);
+                    tableData.forEach((element) => {
                         // jQuery('#viewtimetableList tbody').append(tableData);
                         jQuery('#viewtimetableList').find('tbody').html(tableData);
-                      });    
+                      });
                 }
             });
         });
@@ -1936,10 +1985,10 @@
         //Get the room on date and time change
         jQuery('#wlim_tt_class_endTime').on('change', function(e){
             e.preventDefault();
-            let endtime   = jQuery(this).val(); 
+            let endtime   = jQuery(this).val();
             let starttime = jQuery('#wlim_tt_class_startTime').val();
             let classDate = jQuery('#wlim_tt_class_date').val();
-            // console.log(endtime);           
+            // console.log(endtime);
             console.log(`end time ${endtime} start time ${starttime}`);
             let roomhtml   = jQuery('#ttroomID');
             // roomhtml.selectpicker();
@@ -1948,7 +1997,7 @@
                 type: 'post',
                 data: {
                     action: 'wl-mim-getRoom-timetable',
-                    nonce: WLIMAjax.security,                
+                    nonce: WLIMAjax.security,
                     classDate: classDate,
                     starttime: starttime,
                     endtime: endtime,
@@ -1963,9 +2012,9 @@
                     roomD.forEach(function(item){
                         // console.log(item);
                         rooms += roomhtml.append(`<option value="${item.id}">${item.room_name}( ${item.room_desc} )</option>`);
-                    });                                       
-                }   
-            });     
+                    });
+                }
+            });
         });
 
     //update time table
@@ -1981,9 +2030,9 @@
                 if( response.success == true ) {
                     toastr.success(response.data.message);
                    // jQuery('#addTopic')[0].reset();
-                   jQuery('#update-timetable'). modal('hide'); 
+                   jQuery('#update-timetable'). modal('hide');
                    jQuery("#timetableList").DataTable().ajax.reload();
-                }               
+                }
             }
         })
      });
@@ -2006,11 +2055,11 @@
                    jQuery("#timetableList").DataTable().ajax.reload();
                 } else {
                     toastr.danger(response.data.message);
-                }              
+                }
             }
         });
      });
-     
+
      remove('.delete-timetable', 'delete-timetable-id', 'delete-timetable-security', 'delete-timetable', 'wl-mim-delete-timetable', ['#timetableList']);
 
         jQuery(document).on('submit','#wlim-view-overall-report-form', function(e) {
@@ -2580,12 +2629,12 @@
 				wlsmComplete(distributeCertificateBtn);
 			}
         });
-        
 
-        
+
+
 
         /* Select stuadents */
-        jQuery("#wl_mim_batch").on("changed.bs.select", 
+        jQuery("#wl_mim_batch").on("changed.bs.select",
             function(e, clickedIndex, newValue, oldValue) {
                     var data = jQuery('#wlim-notification-configure-form').serialize();
                     var formData = new FormData();
@@ -2611,7 +2660,7 @@
             });
         });
 
-        jQuery("#wl_mim_course").on("changed.bs.select", 
+        jQuery("#wl_mim_course").on("changed.bs.select",
             function(e, clickedIndex, newValue, oldValue) {
                     var data = jQuery('#wlim-notification-configure-form').serialize();
                     var formData = new FormData();
@@ -2620,7 +2669,7 @@
                     formData.append('course_id', newValue);
             jQuery.ajax({
                 type: 'post',
-                url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-get-batches&course_id='+course_id, 
+                url: ajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-get-batches&course_id='+course_id,
                 data: data,
                 dataType: 'json',
                 success: function (response) {
@@ -2709,14 +2758,14 @@
 
         // Fetch cetificate table
         initializeDatatable('#wl-mim-certificates-table', 'wl-mim-fetch-certificates');
-        
+
         const certificateData = {
             'certificate': $('#wl-mim-certificates-distributed-table').data('certificate')
         }
 
         initializeDatatable('#wl-mim-certificates-distributed-table', 'wl-mim-fetch-certificates-distributed', certificateData);
         // var cert_id = jQuery('#wl-mim-certificates-distributed-table').data('certificate');
-        
+
 
         // var certificatesDistributedTable = $('#wl-mim-certificates-distributed-table');
         // var certificate = certificatesDistributedTable.data('certificate');
@@ -2724,10 +2773,10 @@
 		// if ( certificate && nonce ) {
 		// 	var data = {'action': 'wl-mim-fetch-certificates-distributed', 'certificate': certificate };
         //     data['certificate-' + certificate] = nonce;
-            
+
 		// 	initializeDatatable(certificatesDistributedTable, data);
 		// }
-        
+
 
         /* Actions for noticeboard */
         initializeDatatable('#notice-table', 'wl-mim-get-notice-data');
@@ -2825,7 +2874,7 @@
                         }
                     } else if (data.payment_method == 'instamojo') {
                         var amount_paid = JSON.parse(data.amount_paid);
-                    } 
+                    }
                     else if (data.payment_method == 'paystack') {
                         var amount_paid = JSON.parse(data.amount_paid);
 
@@ -2968,7 +3017,7 @@
                 jQuery('#wlim-progress').text(percentComplete);
             }
         });
-        
+
         /* Action to get student attendance */
         jQuery(document).on('submit', '#pay-with-instamojo', function (e) {
             e.preventDefault();
@@ -2990,8 +3039,8 @@
                     if (response.success) {
                         // Simulate an HTTP redirect:
                         if (response.data.status == 'Pending') {
-                            var Instamojo_response = Instamojo.open(response.data.longurl); 
-                        } 
+                            var Instamojo_response = Instamojo.open(response.data.longurl);
+                        }
                     }
                 },
                 error: function (response) {
@@ -3031,10 +3080,10 @@
             //         wlsmComplete(payInstamojoBtn);
             //     }
             // });
-                     
+
         });
 
-        
+
         /* Actions for payments */
         jQuery('#pay-with-instamojo').ajaxForm({
             success: function (response) {
@@ -3160,7 +3209,7 @@
                             rzp1.open();
                             e.preventDefault();
                         }
-                    } 
+                    }
                     else if (data.payment_method == 'paystack') {
                         var amount_paid = JSON.parse(data.amount_paid);
 
@@ -3397,7 +3446,7 @@
 			loader.appendTo(loaderContainer);
 			return true;
         }
-        
+
         	// Function: Show Success Alert.
 		function wlsmShowSuccessAlert(message, formId) {
 			var alertBox = '<div class="mt-2 alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="wlsm-font-bold"><i class="fa fa-check"></i> &nbsp;' + message + '</span></div>';
@@ -3410,8 +3459,8 @@
 			loaderContainer.remove();
 		}
 
-        
-      
+
+
     // Function: Display Form Erros.
     function wlsmDisplayFormErrors(response, formId) {
         if(response.data && $.isPlainObject(response.data)) {
@@ -3429,7 +3478,7 @@
             $(errorSpan).insertBefore(formId);
             toastr.error(response.data);
         }
-    }  
+    }
 
     var subHeader = '.wlsm-sub-header-left';
     // Function: Action.
@@ -3514,7 +3563,7 @@
 				$('.wl-mim-select-single').prop('checked', false);
 			}
 		});
-        
+
         // Bulk Action.
 		$(document).on('click', '.bulk-action-btn', function(event) {
 			var button = $(this);
@@ -3544,7 +3593,7 @@
 
 			wlsmAction(event, this, data, performActions, 'red', true);
 		});
-        
+
     /// Staff: Delete certificate.
 		$(document).on('click', '.wl-mim-delete-certificate', function(event) {
 			var certificateId = $(this).data('certificate');
@@ -3569,8 +3618,8 @@
 			wlsmAction(event, this, data, performActions);
 		});
 
-        
-    
+
+
 
     // Staff: Save certificate.
 		var saveCertificateFormId = '#wl-mim-save-certificate-form';

@@ -99,9 +99,28 @@
 
         /* Actions for student */
         initializeDatatable('#student-table', 'wl-mim-get-student-data');
+        initializeDatatable('#student-fees-report-table', 'wl-mim-get-student-fees-report-data');
 
         initializeDatatable('#student-invoice-table', 'wl-mim-get-student-invoice-data');
 
         initializeDatatable('#reminder-table', 'wl-mim-get-reminder-data');
+
+
+        // when button fees-report-btn is clicked get data from form id fees-report-form and display on table id student-fees-report-table
+        // jQuery('#fees-report-btn').on('click', function (e) {
+        //     e.preventDefault();
+        //     var form = jQuery('#fees-report-form');
+        //     var data = form.serialize();
+        //     var action = ajaxurl +'&action=wl-mim-get-student-fees-report-data&' + data
+        //     var table = '#student-fees-report-table';
+        //     jQuery(table).DataTable().destroy();
+        //     initializeDatatable(table, action);
+
+        // });
+
+
+
+
+
     });
 })(jQuery);

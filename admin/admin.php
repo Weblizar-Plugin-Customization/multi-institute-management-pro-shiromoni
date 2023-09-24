@@ -121,6 +121,10 @@ add_action( 'wp_ajax_wl-mim-student-fetch-category-courses', array( 'WL_MIM_Stud
 add_action( 'wp_ajax_wl-mim-student-fetch-category-courses-update', array( 'WL_MIM_Student', 'fetch_category_courses_update' ) );
 
 /* Actions for student */
+add_action( 'wp_ajax_wlim_get_batches', array( 'WL_MIM_Student', 'wlim_get_batches' ) );
+
+add_action( 'wp_ajax_wl-mim-get-student-fees-report-data', array( 'WL_MIM_Student', 'get_student_fees_report_data' ) );
+add_action( 'wp_ajax_wl-mim-get-student-fees-report-data-dash', array( 'WL_MIM_Student', 'get_student_fees_report_data_dash' ) );
 add_action( 'wp_ajax_wl-mim-get-student-data', array( 'WL_MIM_Student', 'get_student_data' ) );
 add_action( 'wp_ajax_wl-mim-add-student', array( 'WL_MIM_Student', 'add_student' ) );
 add_action( 'wp_ajax_wl-mim-fetch-student', array( 'WL_MIM_Student', 'fetch_student' ) );

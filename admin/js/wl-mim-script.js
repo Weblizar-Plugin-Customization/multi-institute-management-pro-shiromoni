@@ -9,7 +9,7 @@
             showClose: true,
             minDate: minDate
         });
-        
+
         /* Date time picker */
         function dateTimePicker() {
             var minDate = new Date();
@@ -21,7 +21,7 @@
                 minDate: minDate
             });
             console.log(jQuery('#wl_min_date_issued'));
-            
+
             jQuery('.wlim-batch-date').datetimepicker({
                 format: 'DD-MM-YYYY',
                 showClear: true,
