@@ -368,7 +368,7 @@ class WL_MIM_Student
 					// $batch_status,
 					esc_html($fees_payable),
 					esc_html($fees_paid),
-					esc_html_e($fees_status),
+					$fees_status,
 					esc_html($phone),
 					esc_html($phon2),
 					esc_html($email),
