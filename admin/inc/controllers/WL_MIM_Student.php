@@ -339,7 +339,7 @@ class WL_MIM_Student
 
 					// create condition to get fees status from fees_payable and fees_paid total.
 					if ($fees_payable > $fees_paid) {
-						$fees_status = '<strong class="text-danger">' . esc_html__('Pending', WL_MIM_DOMAIN) . ': </strong><br><strong>' . $fees_payable-$fees_paid . '</strong>';
+						$fees_status = '<strong class="text-danger">' . esc_html__('Pending', WL_MIM_DOMAIN) . ': </strong><br><strong>' . ($fees_payable-$fees_paid) . '</strong>';
 					} else {
 						$fees_status = '<strong class="text-success">' . esc_html__('Paid', WL_MIM_DOMAIN) . '</strong>';
 					}
@@ -368,7 +368,7 @@ class WL_MIM_Student
 					// $batch_status,
 					esc_html($fees_payable),
 					esc_html($fees_paid),
-					$fees_status,
+					esc_html_e($fees_status),
 					esc_html($phone),
 					esc_html($phon2),
 					esc_html($email),
