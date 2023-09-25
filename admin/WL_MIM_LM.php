@@ -7,6 +7,7 @@ final class WL_MIM_LM {
     private $api_url = 'https://weblizar.com/members/softsale/api';
     private $key = NULL;
     public $error_message = NULL;
+    public $license_key = NULL;
     private static $instance = NULL;
 
     private function __construct() {
