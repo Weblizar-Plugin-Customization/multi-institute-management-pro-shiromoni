@@ -183,7 +183,7 @@ if (isset($_GET['batch_id'])) {
                             </form>
 
                             <div class="row text-center mb-4 ">
-                                <ul class="list-group mr-2">
+                                <ul class="list-group  col-md-4">
                                     <li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
                                         <!-- <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white"> -->
                                             <?php esc_html_e( 'Total', WL_MIM_DOMAIN ); ?>
@@ -196,7 +196,7 @@ if (isset($_GET['batch_id'])) {
                                         <span class="text-secondary"><?php esc_html_e( 'Amount', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span id="total-students-amount"><?php echo esc_html( 0 ); ?></span>
                                     </li>
                                 </ul>
-                                <ul class="list-group mr-2">
+                                <ul class="list-group  col-md-4">
                                     <li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
                                         <!-- <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white"> -->
                                             <?php esc_html_e( 'Total Paid', WL_MIM_DOMAIN ); ?>
@@ -209,7 +209,7 @@ if (isset($_GET['batch_id'])) {
                                         <span class="text-secondary"><?php esc_html_e( 'Amount', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span id="paid-students-amount" ><?php echo esc_html( 0 ); ?></span>
                                     </li>
                                 </ul>
-                                <ul class="list-group mr-2">
+                                <ul class="list-group  col-md-4">
                                     <li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
                                         <!-- <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white"> -->
                                             <?php esc_html_e( 'Total Unpaid', WL_MIM_DOMAIN ); ?>
