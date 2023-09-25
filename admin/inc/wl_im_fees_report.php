@@ -185,9 +185,9 @@ if (isset($_GET['batch_id'])) {
                             <div class="row text-center mb-4 ">
                                 <ul class="list-group mr-2">
                                     <li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
-                                        <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
+                                        <!-- <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white"> -->
                                             <?php esc_html_e( 'Total', WL_MIM_DOMAIN ); ?>
-                                        </a>
+                                        <!-- </a> -->
                                     </li>
                                     <li class="list-group-item h6">
                                         <span class="text-secondary"><?php esc_html_e( 'Students', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span id="total-students-count"><?php echo esc_html( 0 ); ?></span>
@@ -198,9 +198,9 @@ if (isset($_GET['batch_id'])) {
                                 </ul>
                                 <ul class="list-group mr-2">
                                     <li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
-                                        <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
+                                        <!-- <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white"> -->
                                             <?php esc_html_e( 'Total Paid', WL_MIM_DOMAIN ); ?>
-                                        </a>
+                                        <!-- </a> -->
                                     </li>
                                     <li class="list-group-item h6">
                                         <span class="text-secondary"><?php esc_html_e( 'Students', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span id="paid-students-count"><?php echo esc_html( 0 ); ?></span>
@@ -211,9 +211,9 @@ if (isset($_GET['batch_id'])) {
                                 </ul>
                                 <ul class="list-group mr-2">
                                     <li class="list-group-item active h5"><i class="fa fa-graduation-cap"></i>
-                                        <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white">
+                                        <!-- <a href="<?php menu_page_url( 'multi-institute-management-courses' ); ?>" class="text-white"> -->
                                             <?php esc_html_e( 'Total Unpaid', WL_MIM_DOMAIN ); ?>
-                                        </a>
+                                        <!-- </a> -->
                                     </li>
                                     <li class="list-group-item h6">
                                         <span class="text-secondary"><?php esc_html_e( 'Students', WL_MIM_DOMAIN ); ?>:</span>&nbsp;<span id="unpaid-students-count"><?php echo esc_html( 0 ); ?></span>
