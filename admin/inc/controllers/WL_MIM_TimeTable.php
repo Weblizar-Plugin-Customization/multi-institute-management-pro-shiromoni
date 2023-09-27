@@ -126,6 +126,26 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $errors['ttbatchID'] = esc_html__( 'Please select a batch.', WL_MIM_DOMAIN );
             }
 
+            // Batch Validations
+            if ($ttbatchID) {
+                global $wpdb;
+                $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_timetable WHERE batch_id = $ttbatchID AND batch_date = '$wlim_tt_class_date' AND start_time = '$wlim_tt_class_startTime' AND end_time = '$wlim_tt_class_endTime'");
+               
+                if (!empty($result)) {
+                    $errors['ttbatchID'] = esc_html__( 'This Batch already exists for given date and time', WL_MIM_DOMAIN );
+                }
+            }
+            
+
+            if ($ttteacherID) {
+                global $wpdb;
+                $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_timetable WHERE staff_id = $ttteacherID AND batch_date = '$wlim_tt_class_date' AND start_time = '$wlim_tt_class_startTime' AND end_time = '$wlim_tt_class_endTime'");
+                
+                if (!empty($result)) {
+                    $errors['ttteacherID'] = esc_html__( 'This Teacher already exists for given date and time', WL_MIM_DOMAIN );
+                }
+            }
+
             if ( empty( $ttsubID ) ) {
                 $errors['ttsubID'] = esc_html__( 'Please select a subject.', WL_MIM_DOMAIN );
             }
