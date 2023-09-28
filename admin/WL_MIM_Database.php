@@ -271,6 +271,18 @@ class WL_MIM_Database {
 				FOREIGN KEY (institute_id) REFERENCES {$wpdb->prefix}wl_min_institutes (id) ON DELETE CASCADE
 				) $charset_collate";
 		dbDelta( $sql );
+		
+		/* Create custom_fields table */
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_source (
+				id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				source varchar(200) NOT NULL,
+				institute_id bigint(20) UNSIGNED DEFAULT NULL,
+				created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+				updated_at timestamp NULL DEFAULT NULL,
+				PRIMARY KEY (id),
+				FOREIGN KEY (institute_id) REFERENCES {$wpdb->prefix}wl_min_institutes (id) ON DELETE CASCADE
+				) $charset_collate";
+		dbDelta( $sql );
 
 		/* Create enquiries table */
 		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_enquiries (

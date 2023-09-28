@@ -93,6 +93,7 @@ if (empty($general_institute['institute_name'])) {
                 <a class="list-group-item list-group-item-action" id="list-email-template" data-toggle="list" href="#email-template" role="tab" aria-controls="email"><?php esc_html_e('Email template', WL_MIM_DOMAIN); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-sms-list" data-toggle="list" href="#list-sms" role="tab" aria-controls="sms"><?php esc_html_e('SMS', WL_MIM_DOMAIN); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-custom-fields-list" data-toggle="list" href="#list-custom-fields" role="tab" aria-controls="custom-fields"><?php esc_html_e('Response Codes', WL_MIM_DOMAIN); ?></a>
+                <a class="list-group-item list-group-item-action" id="sources-list" data-toggle="list" href="#sources" role="tab" aria-controls="custom-fields"><?php esc_html_e('Sources', WL_MIM_DOMAIN); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-admit-card-list" data-toggle="list" href="#list-admit-card" role="tab" aria-controls="admit-card"><?php esc_html_e('Admit Card', WL_MIM_DOMAIN); ?></a>
                 <a class="list-group-item list-group-item-action" id="list-id-card-list" data-toggle="list" href="#list-id-card" role="tab" aria-controls="id-card"><?php esc_html_e('ID Card', WL_MIM_DOMAIN); ?></a>
                 <!-- <a class="list-group-item list-group-item-action" id="list-certificate-list" data-toggle="list" href="#list-certificate" role="tab" aria-controls="certificate"><?php esc_html_e('Certificate', WL_MIM_DOMAIN); ?></a> -->
@@ -1102,6 +1103,46 @@ if (empty($general_institute['institute_name'])) {
                         <button type="submit" class="btn btn-primary save-sms-settings-submit"><?php esc_html_e('Save Settings', WL_MIM_DOMAIN); ?></button>
                     </form>
                 </div>
+
+                <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-list">
+                    <div class="row">
+                        <div class="card col">
+                            <div class="card-header bg-primary text-white">
+                                <!-- card header content -->
+                                <div class="row">
+                                    <div class="col-md-7 col-xs-12">
+                                        <div class="h5"><?php esc_html_e('Manage sources', WL_MIM_DOMAIN); ?></div>
+                                    </div>
+                                    <div class="col-md-5 col-xs-12">
+                                        <div class="btn-group float-right" role="group">
+                                            <button type="button" class="btn btn-sm btn-outline-light add-sources" data-toggle="modal" data-target="#add-source" data-backdrop="static" data-keyboard="false">
+                                                <i class="fa fa-plus"></i> <?php esc_html_e('Add New sources', WL_MIM_DOMAIN); ?>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end - card header content -->
+                            </div>
+                            <div class="card-body">
+                                <!-- card body content -->
+                                <div class="row">
+                                    <div class="col">
+                                        <table class="table table-hover table-striped table-bordered w-100" id="sources-table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"><?php esc_html_e('Source Name', WL_MIM_DOMAIN); ?></th>
+                                                    <th scope="col"><?php esc_html_e('Edit', WL_MIM_DOMAIN); ?></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- end - card body content -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="tab-pane fade" id="list-custom-fields" role="tabpanel" aria-labelledby="list-custom-fields-list">
                     <div class="row">
                         <div class="card col">
@@ -1416,6 +1457,42 @@ if (empty($general_institute['institute_name'])) {
         </div>
     </div>
 </div><!-- end - add new code Name modal -->
+
+
+<!-- add new code Name modal -->
+<div class="modal fade" id="add-source" tabindex="-1" role="dialog" aria-labelledby="add-source-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-source-label"><?php esc_html_e('Add New source ', WL_MIM_DOMAIN); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pr-4 pl-4">
+                <form id="wlim-add-source-form">
+                    <?php $nonce = wp_create_nonce('add-source'); ?>
+                    <input type="hidden" name="add-source" value="<?php echo esc_attr($nonce); ?>">
+                    <div class="form-group">
+                        <label for="wlim-source-name" class="col-form-label"><?php esc_html_e('Source Name', WL_MIM_DOMAIN); ?>:</label>
+                        <input name="source" type="text" class="form-control" id="wlim-source" placeholder="<?php esc_html_e("Name", WL_MIM_DOMAIN); ?>" min="0">
+                    </div>
+                    <!-- <div class="form-check pl-0">
+                        <input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-source-is_active" checked>
+                        <label class="form-check-label" for="wlim-source-is_active">
+                            <?php esc_html_e('Is Active?', WL_MIM_DOMAIN); ?>
+                        </label>
+                    </div> -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php esc_html_e('Cancel', WL_MIM_DOMAIN); ?></button>
+                <button type="button" class="btn btn-primary add-source-submit"><?php esc_html_e('Add New source Name', WL_MIM_DOMAIN); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end - add new code Name modal -->
 
 <!-- update code Name modal -->
 <div class="modal fade" id="update-custom-field" tabindex="-1" role="dialog" aria-labelledby="update-custom-field-label" aria-hidden="true">

@@ -1328,6 +1328,10 @@
         remove('.delete-fee-type', 'delete-fee-type-id', 'delete-fee-type-security', 'delete-fee-type', 'wl-mim-delete-fee-type', ['#fee-type-table']);
 
         /* Actions for custom field */
+        initializeDatatable('#sources-table', 'wl-mim-get-source');
+        save('.add-source-submit', 'wl-mim-add-source', '#wlim-add-source-form', '#add-source', ['#source-table']);
+        remove('.delete-source', 'delete-source-id', 'delete-source-security', 'delete-source', 'wl-mim-delete-source', ['#source-table']);
+
         initializeDatatable('#custom-field-table', 'wl-mim-get-custom-field-data');
         save('.add-custom-field-submit', 'wl-mim-add-custom-field', '#wlim-add-custom-field-form', '#add-custom-field', ['#custom-field-table']);
         fetch('#update-custom-field', 'wl-mim-fetch-custom-field', '#fetch_custom-field');

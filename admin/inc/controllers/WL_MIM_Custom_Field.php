@@ -35,6 +35,33 @@ class WL_MIM_Custom_Field {
 		wp_send_json( $results );
 	}
 
+	public static function get_source() {
+		self::check_permission();
+		if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
+			die();
+		}
+		global $wpdb;
+		$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+		$data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_source WHERE institute_id = $institute_id ORDER BY id DESC" );
+
+		if ( count( $data ) !== 0 ) {
+			foreach ( $data as $row ) {
+				$id         = $row->id;
+				$source = $row->source;
+				$date       = date_format( date_create( $row->created_at ), "d-m-Y g:i A" );
+
+				$results["data"][] = array(
+					esc_html( $source ),
+					' <a href="javascript:void(0)" delete-source-security="' . wp_create_nonce( "delete-source-$id" ) . '"delete-source-id="' . $id . '" class="delete-source"> <i class="fa fa-trash text-danger"></i></a>'
+				);
+			}
+		} else {
+			$results["data"] = array();
+		}
+		wp_send_json( $results );
+	}
+
 	/* Add new custom field */
 	public static function add_custom_field() {
 		self::check_permission();
@@ -73,6 +100,50 @@ class WL_MIM_Custom_Field {
 
 				$wpdb->query( 'COMMIT;' );
 				wp_send_json_success( array( 'message' => esc_html__( 'Custom field added successfully.', WL_MIM_DOMAIN ) ) );
+			} catch ( Exception $exception ) {
+				$wpdb->query( 'ROLLBACK;' );
+				wp_send_json_error( $exception->getMessage() );
+			}
+		}
+		wp_send_json_error( $errors );
+	}
+
+	public static function add_source() {
+		self::check_permission();
+		if ( ! wp_verify_nonce( $_POST['add-source'], 'add-source' ) ) {
+			die();
+		}
+		global $wpdb;
+		$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+		$source = isset( $_POST['source'] ) ? sanitize_text_field( $_POST['source'] ) : null;
+		// $is_active  = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 0;
+
+		/* Validations */
+		$errors = array();
+		if ( empty( $source ) ) {
+			$errors['source'] = esc_html__( 'Please specify field name.', WL_MIM_DOMAIN );
+		}
+		/* End validations */
+
+		if ( count( $errors ) < 1 ) {
+			try {
+				$wpdb->query( 'BEGIN;' );
+
+				$data = array(
+					'source'       => $source,
+					'institute_id' => $institute_id
+				);
+
+				$data['created_at'] = current_time( 'Y-m-d H:i:s' );
+
+				$success = $wpdb->insert( "{$wpdb->prefix}wl_min_source", $data );
+				if ( ! $success ) {
+					throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
+				}
+
+				$wpdb->query( 'COMMIT;' );
+				wp_send_json_success( array( 'message' => esc_html__( 'source added successfully.', WL_MIM_DOMAIN ) ) );
 			} catch ( Exception $exception ) {
 				$wpdb->query( 'ROLLBACK;' );
 				wp_send_json_error( $exception->getMessage() );
@@ -190,6 +261,39 @@ class WL_MIM_Custom_Field {
 
 			$wpdb->query( 'COMMIT;' );
 			wp_send_json_success( array( 'message' => esc_html__( 'Custom field removed successfully.', WL_MIM_DOMAIN ) ) );
+		} catch ( Exception $exception ) {
+			$wpdb->query( 'ROLLBACK;' );
+			wp_send_json_error( esc_html__( $exception->getMessage(), WL_MIM_DOMAIN ) );
+		}
+	}
+
+
+	public static function delete_source() {
+		self::check_permission();
+		$id = intval( sanitize_text_field( $_POST['id'] ) );
+		if ( ! wp_verify_nonce( $_POST["delete-source-$id"], "delete-source-$id" ) ) {
+			die();
+		}
+		global $wpdb;
+		$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+		try {
+			$source = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}wl_min_source WHERE id = $id AND institute_id = $institute_id" );
+
+			if ( ! $source ) {
+				throw new Exception( esc_html__( 'source not found.', WL_MIM_DOMAIN ) );
+			}
+
+			$wpdb->query( 'BEGIN;' );
+
+			$success = $wpdb->delete( "{$wpdb->prefix}wl_min_source", array( 'id' => $id )
+			);
+			if ( ! $success ) {
+				throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
+			}
+
+			$wpdb->query( 'COMMIT;' );
+			wp_send_json_success( array( 'message' => esc_html__( 'source removed successfully.', WL_MIM_DOMAIN ) ) );
 		} catch ( Exception $exception ) {
 			$wpdb->query( 'ROLLBACK;' );
 			wp_send_json_error( esc_html__( $exception->getMessage(), WL_MIM_DOMAIN ) );

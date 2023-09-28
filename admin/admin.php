@@ -203,6 +203,9 @@ add_action( 'wp_ajax_wl-mim-fetch-custom-field', array( 'WL_MIM_Custom_Field', '
 add_action( 'wp_ajax_wl-mim-update-custom-field', array( 'WL_MIM_Custom_Field', 'update_custom_field' ) );
 add_action( 'wp_ajax_wl-mim-delete-custom-field', array( 'WL_MIM_Custom_Field', 'delete_custom_field' ) );
 
+add_action( 'wp_ajax_wl-mim-add-source', array( 'WL_MIM_Custom_Field', 'add_source' ) );
+add_action( 'wp_ajax_wl-mim-get-source', array( 'WL_MIM_Custom_Field', 'get_source' ) );
+add_action( 'wp_ajax_wl-mim-delete-source', array( 'WL_MIM_Custom_Field', 'delete_source' ) );
 /* Actions for exam */
 add_action( 'wp_ajax_wl-mim-get-exam-data', array( 'WL_MIM_Result', 'get_exam_data' ) );
 add_action( 'wp_ajax_wl-mim-add-exam', array( 'WL_MIM_Result', 'add_exam' ) );
