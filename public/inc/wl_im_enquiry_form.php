@@ -184,10 +184,18 @@ if ( isset( $attr['id'] ) ) {
 								</div>
 							</div>
 							<div class="row">
+								
 								<div class="col-sm-6 form-group">
 									<label for="wlim-enquiry-state" class="col-form-label">* <?php esc_html_e( 'State', WL_MIM_DOMAIN ); ?>:</label>
-									<input name="state" type="text" class="form-control" id="wlim-enquiry-state" placeholder="<?php esc_html_e( 'State', WL_MIM_DOMAIN ); ?>" required>
+									<?php $states = WL_MIM_Helper::get_states(); ?>
+									<select name="state" id="wlim-enquiry-state" class="form-control"  id="wlim-enquiry-state" >
+										<option value="">Select State</option>
+										<?php foreach ($states as $state): ?>
+											<option value="<?php echo $state; ?>"><?php echo $state; ?></option>
+										<?php endforeach ?> 
+									</select>
 								</div>
+
 								<div class="col-sm-6 form-group">
 									<label for="wlim-enquiry-nationality" class="col-form-label">* <?php esc_html_e( 'Nationality', WL_MIM_DOMAIN ); ?>:</label>
 									<input name="nationality" type="text" class="form-control" id="wlim-enquiry-nationality" placeholder="<?php esc_html_e( 'Nationality', WL_MIM_DOMAIN ); ?>" required>
