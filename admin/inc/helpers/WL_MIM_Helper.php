@@ -39,6 +39,64 @@ class WL_MIM_Helper {
 		);
 	}
 
+	public static function get_states(){
+		$states = [ 'AP' => 'Andhra Pradesh',
+					'AR' => 'Arunachal Pradesh',
+					'AS' => 'Assam',
+					'BR' => 'Bihar',
+					'CT' => 'Chhattisgarh',
+					'GA' => 'Goa',
+					'GJ' => 'Gujarat',
+					'HR' => 'Haryana',
+					'HP' => 'Himachal Pradesh',
+					'JK' => 'Jammu &amp; Kashmir',
+					'JH' => 'Jharkhand',
+					'KA' => 'Karnataka',
+					'KL' => 'Kerala',
+					'MP' => 'Madhya Pradesh',
+					'MH' => 'Maharashtra',
+					'MN' => 'Manipur',
+					'ML' => 'Meghalaya',
+					'MZ' => 'Mizoram',
+					'NL' => 'Nagaland',
+					'OR' => 'Odisha',
+					'PB' => 'Punjab',
+					'RJ' => 'Rajasthan',
+					'SK' => 'Sikkim',
+					'TN' => 'Tamil Nadu',
+					'TR' => 'Tripura',
+					'TS' => 'Telangana',
+					'UK' => 'Uttarakhand',
+					'UP' => 'Uttar Pradesh',
+					'WB' => 'West Bengal',
+					'AN' => 'Andaman &amp; Nicobar',
+					'CH' => 'Chandigarh',
+					'DN' => 'Dadra &amp; Nagar Haveli and Daman &amp; Diu',
+					'DD' => 'Daman &amp; Diu',
+					'DL' => 'Delhi',
+					'JK' => 'Jammu and Kashmir',
+					'LD' => 'Lakshadweep',
+					'PY' => 'Puducherry',
+					'LA' => 'Ladakh' ];
+
+		return $states;
+	}
+
+	// get sources from database.
+	public static function get_sources(){
+		global $wpdb;
+		$institute_id = self::get_current_institute_id();
+		$sources = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_source WHERE institute_id = $institute_id");
+		return $sources;
+	}
+
+	// get staff teacher from database.
+	public static function get_staff_teachers(){
+		global $wpdb;
+		$staff_teachers = $wpdb->get_results("SELECT id, first_name, last_name, user_id FROM {$wpdb->prefix}wl_min_staffs ");
+		return $staff_teachers;
+	}
+
 	/* Get student capability */
 	public static function get_student_capability() {
 		return 'wl_min_student';
