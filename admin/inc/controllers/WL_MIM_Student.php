@@ -86,6 +86,8 @@ class WL_MIM_Student
 				$class         = $row->class ? $row->class : '-';
 				$business_manager         = $row->business_manager ? $row->business_manager : '-';
 				$source         = $row->source ? $row->source : '-';
+				$state         = $row->state ? $row->state : '-';
+				$teacher         = $row->teacher ? $row->teacher : '-';
 				// $fees          = unserialize($row->fees);
 				// $fees_payable  = WL_MIM_Helper::get_fees_total($fees['payable']);
 				// $fees_paid     = WL_MIM_Helper::get_fees_total($fees['paid']);
@@ -139,11 +141,8 @@ class WL_MIM_Student
 					$batch,
 					$business_manager,
 					$source,
-					// esc_html($duration),
-					// $batch_status,
-					// esc_html($fees_payable),
-					// esc_html($fees_paid),
-					// $fees_status,
+					$state,
+					$teacher,
 					esc_html($phone),
 					esc_html($phon2),
 					esc_html($email),
