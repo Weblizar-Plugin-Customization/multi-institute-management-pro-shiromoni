@@ -172,7 +172,7 @@ class WL_MIM_Student
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
 
 		global $wpdb;
-		$students = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id AND course_id = $course_id AND batch_id = $batch_id ORDER BY id DESC");
+		$students = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id AND course_id = $course_id AND batch_id = $batch_id AND is_active = 1 ORDER BY id DESC");
 
 		$total_students = count($students);
 		$paid_students = 0;
@@ -189,7 +189,7 @@ class WL_MIM_Student
 			// get total fees paid amount from installments table.
 			$fees_paid = $wpdb->get_var("SELECT SUM(paid_amount) FROM {$wpdb->prefix}wl_min_installments WHERE student_id = $student_id");
 			// get total fees pending amount from fees_payable and fees_paid.
-			$pending_fees = $fees_payable - $fees_paid;
+			$pending_fees = ($fees_payable - $fees_paid);
 			$paid_amount += $fees_paid;
 
 			if ($pending_fees == 0) {
@@ -338,7 +338,7 @@ class WL_MIM_Student
 
 					// create condition to get fees status from fees_payable and fees_paid total.
 					if ($fees_payable > $fees_paid) {
-						$fees_status = '<strong class="text-danger">' . esc_html__('Pending', WL_MIM_DOMAIN) . ': </strong><br><strong>' . ($fees_payable-$fees_paid) . '</strong>';
+						$fees_status = '<strong class="text-danger">' . esc_html__('Pending', WL_MIM_DOMAIN) . ': </strong><br><strong>' . ($fees_payable - $fees_paid) . '</strong>';
 					} else {
 						$fees_status = '<strong class="text-success">' . esc_html__('Paid', WL_MIM_DOMAIN) . '</strong>';
 					}
@@ -1900,7 +1900,7 @@ class WL_MIM_Student
 					<?php foreach ($states as $state): ?>
 						<option value="<?php echo $state; ?>" <?php if($row->state == $state) echo 'selected';
 							?>><?php echo esc_html($state); ?></option>
-					<?php endforeach ?> 
+					<?php endforeach ?>
 				</select>
 		</div>
 			<div class="col-sm-6 form-group">
@@ -1986,7 +1986,7 @@ class WL_MIM_Student
 				<input name="roll_number" type="text" class="form-control" id="wlim-student-roll_number_update" placeholder="<?php esc_html_e('Roll Number', WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->roll_number); ?>">
 			</div>
 		<?php } ?>
-		<?php 
+		<?php
 		$sources       = WL_MIM_Helper::get_sources();
 		$wlim_teachers = WL_MIM_Helper::get_staff_teachers();
 		?>
@@ -1998,7 +1998,7 @@ class WL_MIM_Student
 				<?php foreach ($sources as $source): ?>
 					<option value="<?php echo $source->source; ?>" <?php if($row->source == $source->source) echo 'selected';
 						?>><?php echo esc_html($source->source); ?></option>
-				<?php endforeach ?> 
+				<?php endforeach ?>
 			</select>
 		</div>
 
@@ -2009,12 +2009,12 @@ class WL_MIM_Student
 				<?php foreach ($wlim_teachers as $teacher): ?>
 					<option value="<?php echo $teacher->first_name; ?>" <?php if($row->teacher == $teacher->first_name) echo 'selected';
 						?> ><?php echo esc_html($teacher->first_name." ". $teacher->last_name); ?></option>
-				<?php endforeach ?> 
+				<?php endforeach ?>
 			</select>
 		</div>
 
 	</div>
-			
+
 		<hr>
 		<div class="form-check pl-0">
 			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlmp-student-is_active_update" <?php echo boolval($row->is_active) ? "checked" : ""; ?>>
@@ -3122,9 +3122,9 @@ class WL_MIM_Student
 				<label for="wlim-student-source" class="col-form-label"><?php esc_html_e('Source', WL_MIM_DOMAIN); ?>:</label>
 				<input name="source" type="text" class="form-control" id="wlim-student-source" placeholder="<?php esc_html_e('source', WL_MIM_DOMAIN); ?>">
 			</div>
-			
+
 		</div>
-		
+
 		<hr>
 		<div class="form-check pl-0">
 			<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active" checked>
@@ -3641,7 +3641,7 @@ class WL_MIM_Student
 				<option value="">Select State</option>
 				<?php foreach ($wlim_states as $state): ?>
 					<option value="<?php echo $state; ?>"><?php echo esc_html($state); ?></option>
-				<?php endforeach ?> 
+				<?php endforeach ?>
 			</select>
 		</div>
 		<div class="col-sm-6 form-group">
@@ -3781,7 +3781,7 @@ class WL_MIM_Student
 		</div>
 	<?php } ?>
 
-	<?php 
+	<?php
 
 	$sources     = WL_MIM_Helper::get_sources();
 	$wlim_teachers     = WL_MIM_Helper::get_staff_teachers();
@@ -3794,21 +3794,21 @@ class WL_MIM_Student
 			<option value="">Select Source</option>
 				<?php foreach ($sources as $source): ?>
 					<option value="<?php echo $source->source; ?>"><?php echo esc_html($source->source); ?></option>
-				<?php endforeach ?> 
+				<?php endforeach ?>
 			</select>
 		</div>
-		
+
 		<div class="form-group col-md-4">
 			<label for="wlim-teacher" class="col-form-label"><?php esc_html_e('Teacher', WL_MIM_DOMAIN); ?>:</label>
 			<select name="teacher" id="wlim-teacher" class="form-control">
 				<option value="">Select Teacher</option>
 				<?php foreach ($wlim_teachers as $teacher): ?>
 					<option value="<?php echo $teacher->first_name; ?>"><?php echo esc_html($teacher->first_name. ' '. $teacher->last_name); ?></option>
-				<?php endforeach ?> 
+				<?php endforeach ?>
 			</select>
 		</div>
 	</div>
-	
+
 	<hr>
 	<div class="form-check pl-0">
 		<input name="is_active" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-student-is_active" checked>

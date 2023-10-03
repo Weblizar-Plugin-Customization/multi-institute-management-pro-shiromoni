@@ -168,13 +168,13 @@ class WL_MIM_Menu {
 
 				add_action('admin_print_styles-' . $reminders, array('WL_MIM_Menu', 'fees_assets'));
 
-				if (current_user_can( 'administrator' ) ) {
-					$fees = add_submenu_page('multi-institute-management', esc_html__('Collect Fees', WL_MIM_DOMAIN), esc_html__('Collect Fees', WL_MIM_DOMAIN), 'wl_min_manage_fees', 'multi-institute-management-fees', array(
-						'WL_MIM_Menu',
-						'fees'
-					));
-					add_action('admin_print_styles-' . $fees, array('WL_MIM_Menu', 'fees_assets'));
-				}
+				// if (current_user_can( 'administrator' ) ) {
+				// 	$fees = add_submenu_page('multi-institute-management', esc_html__('Collect Fees', WL_MIM_DOMAIN), esc_html__('Collect Fees', WL_MIM_DOMAIN), 'wl_min_manage_fees', 'multi-institute-management-fees', array(
+				// 		'WL_MIM_Menu',
+				// 		'fees'
+				// 	));
+				// 	add_action('admin_print_styles-' . $fees, array('WL_MIM_Menu', 'fees_assets'));
+				// }
 
 				if ( current_user_can( 'wl_min_manage_collect_fees' ) ) {
 					/* Fees submenu */
