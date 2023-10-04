@@ -112,7 +112,6 @@ class WL_MIM_Invoice {
 		$start_date  = ( isset( $_REQUEST['start_date'] ) && ! empty( $_REQUEST['start_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['start_date'] ) ) ) : NULL;
 		$end_date  = ( isset( $_REQUEST['end_date'] ) && ! empty( $_REQUEST['end_date'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['end_date'] ) ) ) : NULL;
 
-
 		global $wpdb;
 		$institute_id              = WL_MIM_Helper::get_current_institute_id();
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );

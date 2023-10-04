@@ -61,6 +61,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <table class="table table-hover table-striped table-bordered" id="administrator-table">
                             <thead>
                                 <tr>
+                                    <th scope="col"><?php esc_html_e( 'ID', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'First Name', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Last Name', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Username', WL_MIM_DOMAIN ); ?></th>
@@ -97,6 +98,7 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         <table class="table table-hover table-striped table-bordered" id="staff-table">
                             <thead>
                                 <tr>
+                                    <th scope="col"><?php esc_html_e( 'ID', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Username', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Salary', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Job Title', WL_MIM_DOMAIN ); ?></th>
@@ -163,8 +165,8 @@ if ( empty( $general_institute['institute_name'] ) ) {
                         // if ( !current_user_can('administrator') ) {
                         //     if ( ! current_user_can( $capability_key ) ) {
                         //         continue;
-                        //     } 
-                        // } 
+                        //     }
+                        // }
                         ?>
                         <div class="form-check pl-0">
                             <input name="permissions[]" class="position-static mt-0 form-check-input" type="checkbox" id="<?php echo esc_attr( $capability_key ); ?>" value="<?php echo esc_attr( $capability_key ); ?>">
