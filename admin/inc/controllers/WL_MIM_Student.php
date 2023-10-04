@@ -2130,6 +2130,7 @@ class WL_MIM_Student
 		$class = isset($_POST['class']) ? sanitize_text_field($_POST['class']) : '';
 		$business_manager = isset($_POST['business_manager']) ? sanitize_text_field($_POST['business_manager']) : '';
 		$source = isset($_POST['source']) ? sanitize_text_field($_POST['source']) : '';
+		$teacher = isset($_POST['teacher']) ? sanitize_text_field($_POST['teacher']) : '';
 		$student_status = isset($_POST['student_status']) ? sanitize_text_field($_POST['student_status']) : '';
 		$row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND id = $id AND institute_id = $institute_id");
 		if (!$row) {
@@ -2395,6 +2396,7 @@ class WL_MIM_Student
 					'class'         => $class,
 					'business_manager' => $business_manager,
 					'source'       => $source,
+					'teacher'       => $teacher,
 					'student_status'   => $student_status,
 					'expire_at'        => $expire_at,
 					'updated_at'       => date('Y-m-d H:i:s')

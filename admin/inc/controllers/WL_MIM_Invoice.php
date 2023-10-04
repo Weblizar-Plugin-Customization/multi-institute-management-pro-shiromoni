@@ -23,7 +23,7 @@ class WL_MIM_Invoice {
 		$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.business_manager, s.batch_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id, s.source, s.teacher, s.state FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND is_active = 1 AND i.institute_id = $institute_id ORDER BY i.id DESC" );
 
 		if ($start_date && $end_date) {
-			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.business_manager, s.batch_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND is_active = 1 AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
+			$data = $wpdb->get_results( "SELECT i.id, i.fees, i.invoice_title, i.status, i.created_at, i.added_by, s.first_name, s.last_name, s.enrollment_id, s.business_manager, s.batch_id, s.phone, i.payable_amount, i.due_date_amount, i.due_date, s.id as student_id, s.source, s.teacher, s.state FROM {$wpdb->prefix}wl_min_invoices as i, {$wpdb->prefix}wl_min_students as s WHERE i.student_id = s.id AND i.institute_id = $institute_id AND is_active = 1 AND i.due_date BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY i.id DESC" );
 		}
 		if ( count( $data ) !== 0 ) {
 			foreach ( $data as $row ) {
@@ -158,7 +158,7 @@ class WL_MIM_Invoice {
 				if ( $row->last_name ) {
 					$student_name .= " $row->last_name";
 				}
-				
+
 				if (get_option( 'multi_institute_enable_seprate_enrollment_id', 1 )) {
 					$student_id = $row->enrollment_id;
 				} else {
@@ -443,12 +443,12 @@ class WL_MIM_Invoice {
 					<label  class="col-form-label pb-0"><?php _e( 'Student', WL_MIM_DOMAIN ); ?>:</label>
 					<div class="card mb-3 mt-2">
 						<div class="card-block">
-						<?php 
+						<?php
 						// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
                                             $student_id = $student->enrollment_id;
                                         // } else {
                                         //     $student_id = $student->id;
-                                        // } 
+                                        // }
 										?>
 		    				<span class="text-dark"><?php echo $student->first_name . " " . $student->last_name; ?> (<?php echo WL_MIM_Helper::get_enrollment_id_with_prefix( $student_id, $general_enrollment_prefix ); ?>)</span>
 		  				</div>
