@@ -12,7 +12,7 @@ class WL_MIM_Administrator {
 		}
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
-		
+
 		$excluded_user_ids = $wpdb->get_col( "SELECT user_id FROM {$wpdb->prefix}wl_min_students" );
 
 		$data = get_users( array(
@@ -27,6 +27,7 @@ class WL_MIM_Administrator {
 				if ( user_can( $id, 'manage_options' ) ) {
 					continue;
 				}
+				$id = $row->ID;
 				$first_name  = get_user_meta( $id, 'first_name', true ) ? get_user_meta( $id, 'first_name', true ) : '-';
 				$last_name   = get_user_meta( $id, 'last_name', true ) ? get_user_meta( $id, 'last_name', true ) : '-';
 				$username    = $row->user_login;
@@ -40,6 +41,7 @@ class WL_MIM_Administrator {
 				$added_on    = date_format( date_create( $row->user_registered ), "d-m-Y g:i A" );
 
 				$results["data"][] = array(
+					esc_html( $id ),
 					esc_html( $first_name ),
 					esc_html( $last_name ),
 					esc_html( $username ),
@@ -696,6 +698,7 @@ class WL_MIM_Administrator {
 				$added_by        = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
 
 				$results["data"][] = array(
+					esc_html( $id ),
 					esc_html( $username ),
 					esc_html( $salary ),
 					esc_html( $job_title ),
