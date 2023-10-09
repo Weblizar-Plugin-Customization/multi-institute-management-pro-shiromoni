@@ -2953,10 +2953,16 @@ class WL_MIM_Student
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-6 form-group">
-				<label for="wlim-student-state" class="col-form-label"><?php esc_html_e('State', WL_MIM_DOMAIN); ?>:</label>
-				<input name="state" type="text" class="form-control" id="wlim-student-state" placeholder="<?php esc_html_e("State", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->state); ?>">
-			</div>
+		<?php  	$wlim_states = WL_MIM_Helper::get_states(); ?>
+		<div class="form-group col-md-6">
+			<label for="wlim-state" class="col-form-label"><?php esc_html_e('State', WL_MIM_DOMAIN); ?>:</label>
+			<select name="state" id="wlim-state" class="form-control">
+				<option value="">Select State</option>
+				<?php foreach ($wlim_states as $state): ?>
+					<option value="<?php echo $state; ?>"><?php echo esc_html($state); ?></option>
+				<?php endforeach ?>
+			</select>
+		</div>
 			<div class="col-sm-6 form-group">
 				<label for="wlim-student-nationality" class="col-form-label"><?php esc_html_e('Nationality', WL_MIM_DOMAIN); ?>:</label>
 				<input name="nationality" type="text" class="form-control" id="wlim-student-nationality" placeholder="<?php esc_html_e("Nationality", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->nationality); ?>">
@@ -3118,14 +3124,35 @@ class WL_MIM_Student
 				<input name="roll_number" type="text" class="form-control" id="wlim-student-roll_number" placeholder="<?php esc_html_e('Roll Number', WL_MIM_DOMAIN); ?>">
 			</div>
 		<?php } ?>
-		<div class="row">
 
-			<div class="form-group col-sm-6">
-				<label for="wlim-student-source" class="col-form-label"><?php esc_html_e('Source', WL_MIM_DOMAIN); ?>:</label>
-				<input name="source" type="text" class="form-control" id="wlim-student-source" placeholder="<?php esc_html_e('source', WL_MIM_DOMAIN); ?>">
-			</div>
 
+		<?php
+
+	$sources     = WL_MIM_Helper::get_sources();
+	$wlim_teachers     = WL_MIM_Helper::get_staff_teachers();
+
+	 ?>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="wlim-student-source" class="col-form-label"><?php esc_html_e('Source', WL_MIM_DOMAIN); ?>:</label>
+			<select name="source" id="wlim-source" class="form-control">
+			<option value="">Select Source</option>
+				<?php foreach ($sources as $source): ?>
+					<option value="<?php echo $source->source; ?>"><?php echo esc_html($source->source); ?></option>
+				<?php endforeach ?>
+			</select>
 		</div>
+
+		<div class="form-group col-md-4">
+			<label for="wlim-teacher" class="col-form-label"><?php esc_html_e('Teacher', WL_MIM_DOMAIN); ?>:</label>
+			<select name="teacher" id="wlim-teacher" class="form-control">
+				<option value="">Select Teacher</option>
+				<?php foreach ($wlim_teachers as $teacher): ?>
+					<option value="<?php echo $teacher->first_name; ?>"><?php echo esc_html($teacher->first_name. ' '. $teacher->last_name); ?></option>
+				<?php endforeach ?>
+			</select>
+		</div>
+	</div>
 
 		<hr>
 		<div class="form-check pl-0">
