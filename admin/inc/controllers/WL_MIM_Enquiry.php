@@ -37,18 +37,18 @@ class WL_MIM_Enquiry {
 
 		if ( count( $data ) !== 0 ) {
 			foreach ( $data as $row ) {
-				$id         = $row->id;
-				$enquiry_id = WL_MIM_Helper::get_enquiry_id( $row->id );
-				$reference  = $row->reference ? $row->reference : '-';
-				$business_manager  = $row->business_manager ? $row->business_manager : '-';
-				$first_name = $row->first_name ? $row->first_name : '-';
-				$last_name  = $row->last_name ? $row->last_name : '-';
-				$phone      = $row->phone ? $row->phone : '-';
-				$mother_phone      = $row->phone2 ? $row->phone2 : '-';
-				$email      = $row->email ? $row->email : '-';
-				$is_acitve  = $row->is_active ? esc_html__( 'Yes', WL_MIM_DOMAIN ) : esc_html__( 'No', WL_MIM_DOMAIN );
-				$added_by   = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
-				$date       = date_format( date_create( $row->created_at ), "d-m-Y g:i A" );
+				$id               = $row->id;
+				$enquiry_id       = WL_MIM_Helper::get_enquiry_id( $row->id );
+				$reference        = $row->reference ? $row->reference : '-';
+				$business_manager = $row->business_manager ? $row->business_manager : '-';
+				$first_name       = $row->first_name ? $row->first_name : '-';
+				$last_name        = $row->last_name ? $row->last_name : '-';
+				$phone            = $row->phone ? $row->phone : '-';
+				$mother_phone     = $row->phone2 ? $row->phone2 : '-';
+				$email            = $row->email ? $row->email : '-';
+				$is_acitve        = $row->is_active ? esc_html__( 'Yes', WL_MIM_DOMAIN ) : esc_html__( 'No', WL_MIM_DOMAIN );
+				$added_by         = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
+				$date             = date_format( date_create( $row->created_at ), "d-m-Y g:i A" );
 
 				$course = '-';
 				if ( $row->course_id && isset( $course_data[ $row->course_id ] ) ) {
@@ -659,6 +659,7 @@ class WL_MIM_Enquiry {
 		$state           = isset( $_POST['state'] ) ? sanitize_text_field( $_POST['state'] ) : '';
 		$nationality     = isset( $_POST['nationality'] ) ? sanitize_text_field( $_POST['nationality'] ) : '';
 		$phone           = isset( $_POST['phone'] ) ? sanitize_text_field( $_POST['phone'] ) : '';
+		$phone2           = isset( $_POST['phone2'] ) ? sanitize_text_field( $_POST['phone2'] ) : '';
 		$qualification   = isset( $_POST['qualification'] ) ? sanitize_text_field( $_POST['qualification'] ) : '';
 		$email           = isset( $_POST['email'] ) ? sanitize_text_field( $_POST['email'] ) : '';
 		$photo           = ( isset( $_FILES['photo'] ) && is_array( $_FILES['photo'] ) ) ? $_FILES['photo'] : null;
@@ -817,30 +818,31 @@ class WL_MIM_Enquiry {
 				$custom_fields = serialize( $custom_fields );
 
 				$data = array(
-					'course_id'     => $course_id,
-					'reference'     => $reference,
-					'first_name'    => $first_name,
-					'last_name'     => $last_name,
-					'gender'        => $gender,
-					'date_of_birth' => $date_of_birth,
-					'father_name'   => $father_name,
-					'mother_name'   => $mother_name,
-					'address'       => $address,
-					'city'          => $city,
-					'zip'           => $zip,
-					'state'         => $state,
-					'nationality'   => $nationality,
-					'phone'         => $phone,
-					'qualification' => $qualification,
-					'email'         => $email,
-					'message'       => $message,
-					'is_active'     => $is_active,
-					'custom_fields' => $custom_fields,
-					'updated_at'    => date( 'Y-m-d H:i:s' ),
-					'follow_up_date'=> $follow_up_date,
-					'note'          => $note,
-					'class'         => $class,
-					'business_manager'      => $business_manager,
+					'course_id'        => $course_id,
+					'reference'        => $reference,
+					'first_name'       => $first_name,
+					'last_name'        => $last_name,
+					'gender'           => $gender,
+					'date_of_birth'    => $date_of_birth,
+					'father_name'      => $father_name,
+					'mother_name'      => $mother_name,
+					'address'          => $address,
+					'city'             => $city,
+					'zip'              => $zip,
+					'state'            => $state,
+					'nationality'      => $nationality,
+					'phone'            => $phone,
+					'phone2'           => $phone2,
+					'qualification'    => $qualification,
+					'email'            => $email,
+					'message'          => $message,
+					'is_active'        => $is_active,
+					'custom_fields'    => $custom_fields,
+					'updated_at'       => date( 'Y-m-d H:i:s' ),
+					'follow_up_date'   => $follow_up_date,
+					'note'             => $note,
+					'class'            => $class,
+					'business_manager' => $business_manager,
 				);
 
 				if ( ! empty( $id_proof ) ) {
