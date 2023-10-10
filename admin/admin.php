@@ -348,6 +348,10 @@ add_action( 'wp_ajax_wl-mim-update-teacherRemark', array( 'WL_MIM_TimeTable', 't
 
 // student time table data
 add_action( 'wp_ajax_wl-mim-get-student-timetable', array( 'WL_MIM_TimeTable', 'get_student_timetable_data' ) );
+add_action( 'wp_ajax_wl-mim-student-timetableRemark', array( 'WL_MIM_TimeTable', 'post_student_timetableRemark' ) );
+
+// student time table data
+add_action( 'wp_ajax_wl-mim-get-student-timetable', array( 'WL_MIM_TimeTable', 'get_student_timetable_data' ) );
 
 
 // Change user theme

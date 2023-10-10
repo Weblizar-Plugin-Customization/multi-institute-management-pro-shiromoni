@@ -146,20 +146,21 @@ if (empty($general_institute['institute_name'])) {
                             <thead>
                                 <tr>
                                     <th><input type="checkbox" name="select_all" id="wl-mim-select-all" value="1"></th>
-                                    <th scope="col"><?php esc_html_e('Time Table Name', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e('Studio Number', WL_MIM_DOMAIN); ?></th>                                    
-                                    <th scope="col"><?php esc_html_e('Course', WL_MIM_DOMAIN); ?></th>                                    
-                                    <th scope="col"><?php esc_html_e('Batch', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Time Table Name', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Studio', WL_MIM_DOMAIN); ?></th>                                    
+                                    <th scope="col"><?php esc_html_e( 'Course', WL_MIM_DOMAIN); ?></th>                                    
+                                    <th scope="col"><?php esc_html_e( 'Batch', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Subject', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Topic', WL_MIM_DOMAIN ); ?></th>
-                                    <th scope="col"><?php esc_html_e('Is Active', WL_MIM_DOMAIN); ?></th>
-                                    <!-- <th scope="col"><?php esc_html_e('Follow Up History', WL_MIM_DOMAIN); ?></th> -->
-                                    <th scope="col"><?php esc_html_e('Date', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e('Start Time', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e('End Time', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e('Remark', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Staff', WL_MIM_DOMAIN ); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Is Active', WL_MIM_DOMAIN); ?></th>
+                                    <!-- <th scope="col"><?php esc_html_e( 'Follow Up History', WL_MIM_DOMAIN); ?></th> -->
+                                    <th scope="col"><?php esc_html_e( 'Date', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Start Time', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'End Time', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Remark', WL_MIM_DOMAIN); ?></th>
                                     <!-- <th scope="col"><?php //esc_html_e('Added By', WL_MIM_DOMAIN); ?></th> -->
-                                    <th scope="col"><?php esc_html_e('Edit', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Edit', WL_MIM_DOMAIN); ?></th>
                                 </tr>
                             </thead>
                         </table>
@@ -211,10 +212,10 @@ if (empty($general_institute['institute_name'])) {
                         <div class="row">
                                 <div class="form-group col">                                
                                     <label for="ttroomID" class="col-form-label">
-                                        <?php _e( 'Rooms', WL_MIM_DOMAIN ); ?>
+                                        <?php _e( 'Studio', WL_MIM_DOMAIN ); ?>
                                     </label>                                                                  
                                     <select name="ttroomID" id="ttroomID" class="form-control" data-live-search="true">
-                                        <option value=""><?php esc_html_e('Select a Room', WL_MIM_DOMAIN); ?></option>                                        
+                                        <option value=""><?php esc_html_e('Select a Studio', WL_MIM_DOMAIN); ?></option>                                        
                                     </select>
                                 </div>
                             </div>
@@ -244,7 +245,7 @@ if (empty($general_institute['institute_name'])) {
                                     <?php 
                                         $courses = WL_MIM_Helper::getCourses();
                                     ?>                              
-                                    <select name="ttcourseID" id="ttcourseID" class="form-control selectpicker" data-live-search="true">
+                                    <select name="ttcourseID" id="ttcourseID" class="form-control">
                                         <option value=""><?php esc_html_e('Select a Course', WL_MIM_DOMAIN); ?></option>
                                         <?php 
                                              foreach($courses as $key=>$value) {                                        
@@ -264,7 +265,7 @@ if (empty($general_institute['institute_name'])) {
                                     <?php 
                                         $batches = WL_MIM_Helper::getBatch();                                       
                                     ?>                              
-                                    <select name="ttbatchID" id="ttbatchID" class="form-control selectpicker" data-live-search="true"></select>
+                                    <select name="ttbatchID" id="ttbatchID" class="form-control "></select>
                                 </div>
                             </div>
                             <div class="row">
@@ -272,7 +273,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="ttsubID" class="col-form-label">
                                         <?php _e( 'Subjects', WL_MIM_DOMAIN ); ?>
                                     </label>
-                                    <select name="ttsubID" id="ttsubID" class="form-control selectpicker" data-live-search="true"></select>
+                                    <select name="ttsubID" id="ttsubID" class="form-control"></select>
                                 </div>
                             </div>                           
                             
@@ -281,7 +282,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="tttopicID" class="col-form-label">
                                         <?php _e( 'Topic', WL_MIM_DOMAIN ); ?>
                                     </label>                               
-                                    <select name="tttopicID" id="tttopicID" class="form-control selectpicker" data-live-search="true">
+                                    <select name="tttopicID" id="tttopicID" class="form-control">
                                     <option value="">-------- <?php esc_html_e("Select Topic", WL_MIM_DOMAIN); ?> --------</option>
                                     </select>
                                 </div>
@@ -292,7 +293,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="ttteacherID" class="col-form-label">
                                         <?php _e( 'Teacher', WL_MIM_DOMAIN ); ?>
                                     </label>                               
-                                    <select name="ttteacherID" id="ttteacherID" class="form-control selectpicker" data-live-search="true">
+                                    <select name="ttteacherID" id="ttteacherID" class="form-control ">
                                         <option value="">-------- <?php esc_html_e('Select a Teacher', WL_MIM_DOMAIN); ?> --------</option>
                                     </select>
                                 </div>

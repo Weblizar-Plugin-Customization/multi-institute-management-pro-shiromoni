@@ -32,6 +32,7 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_Helper.php' );
                                     <th scope="col"><?php esc_html_e('Batch', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Subject', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Topic', WL_MIM_DOMAIN ); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Teacher', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e('Is Active', WL_MIM_DOMAIN); ?></th>                                    
                                     <th scope="col"><?php esc_html_e('Date', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e('Start Time', WL_MIM_DOMAIN); ?></th>

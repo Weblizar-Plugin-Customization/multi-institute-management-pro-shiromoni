@@ -233,6 +233,34 @@ class WL_MIM_Database {
 		)$charset_collate";
 		dbDelta( $sql ); 
 
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_timetable' AND COLUMN_NAME = 'remark'" );
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_timetable ADD remark text NOT NULL" );
+		}
+
+		//Remark table
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_studentRemark (
+			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			institute_id bigint(20) UNSIGNED DEFAULT NULL,
+			student_id bigint(20) UNSIGNED DEFAULT NULL,
+			timeTableId bigint(20) UNSIGNED DEFAULT NULL,			
+			batch_id  bigint(20) UNSIGNED DEFAULT NULL,
+			subject_id bigint(20) UNSIGNED DEFAULT NULL,
+			topic_id bigint(20) UNSIGNED DEFAULT NULL,
+			staff_id bigint(20) UNSIGNED DEFAULT NULL,
+			remark text NOT NULL,			
+			is_active tinyint(1) NOT NULL DEFAULT '1',
+			created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at timestamp NULL DEFAULT NULL,
+			PRIMARY KEY (id)			
+		)$charset_collate";
+		dbDelta( $sql ); 
+
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_studentRemark' AND COLUMN_NAME = 'batch_date'" );
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_studentRemark ADD batch_date date NOT NULL" );
+		}
+
 		/* Create fee_types table */
 		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_fee_types (
 				id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

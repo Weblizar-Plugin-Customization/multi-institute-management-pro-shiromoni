@@ -775,7 +775,7 @@ class WL_MIM_Helper {
 			$institute_id = self::get_current_institute_id();
 		}
 		$id = intval(sanitize_text_field($id));
-		$row = $wpdb->get_row("SELECT subject_name FROM {$wpdb->prefix}wl_min_subjects WHERE id=$id");
+		$row = $wpdb->get_row("SELECT id, subject_name FROM {$wpdb->prefix}wl_min_subjects WHERE id=$id");
 		if (!$row) {
 			return null;
 		}
@@ -789,7 +789,7 @@ class WL_MIM_Helper {
 			$institute_id = self::get_current_institute_id();
 		}
 		$id = intval(sanitize_text_field($id));
-		$row = $wpdb->get_row("SELECT topic_name FROM {$wpdb->prefix}wl_min_topics WHERE id=$id");
+		$row = $wpdb->get_row("SELECT id, topic_name FROM {$wpdb->prefix}wl_min_topics WHERE id=$id");
 		if (!$row) {
 			return null;
 		}

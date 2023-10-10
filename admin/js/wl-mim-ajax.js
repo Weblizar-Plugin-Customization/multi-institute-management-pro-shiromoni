@@ -1844,6 +1844,10 @@
     jQuery('#ttcourseID').on('change', function(e) {
         e.preventDefault();
         var courseID  = jQuery(this).val();
+        let startTime = jQuery('#wlim_tt_class_startTime').val();
+        let endTime   = jQuery('#wlim_tt_class_endTime').val();
+        let batch_date   = jQuery('#wlim_tt_class_date').val();
+        
         let batchhtml = jQuery('#ttbatchID');
         let subhtml   = jQuery('#ttsubID');
         jQuery.ajax({
@@ -1853,6 +1857,9 @@
                 action: 'wl-mim-dataforTT',
                 nonce: WLIMAjax.security,
                 courseID: courseID,
+                startTime: startTime,
+                endTime: endTime,
+                batch_date: batch_date
             },
             success: function(response){
                 let data     = jQuery.parseJSON(response);
@@ -1860,27 +1867,35 @@
                 let subD     = data.subData;
                 let batch    = '';
                 let subjects = '';
-                batchD.forEach(function(item){
-                    batch += batchhtml.append('<option value="' + item.batchid + '">' + item.batchName + '</option>');
-                });
-                batchhtml.selectpicker("refresh");
 
-                subD.forEach(function(item){
-                    subjects += subhtml.append('<option value="' + item.subid + '">' + item.subName + '</option>');
-                });
-                subhtml.selectpicker("refresh");
+                jQuery('#ttbatchID').html(data.batchData);                              
+                jQuery('#ttsubID').html(data.subData);
+
+                // batchD.forEach(function(item){
+                //     batch += batchhtml.append('<option value="' + item.batchid + '">' + item.batchName + '</option>');
+                // });
+                //batchhtml.selectpicker("refresh");
+
+                // subD.forEach(function(item){
+                //     subjects += subhtml.append('<option value="' + item.subid + '">' + item.subName + '</option>');
+                // });
+                //subhtml.selectpicker("refresh");
 
             }
         });
     });
 
     //ajax call to get the topic and teacher
+    //ajax call to get the topic and teacher
     jQuery('#ttsubID').on('change', function(e){
         e.preventDefault();
-        var subID       = jQuery(this).val();
-        // let subfield    = jQuery( '#ttsubID' );
+        var subID       = jQuery(this).val(); 
+        let endtime     = jQuery('#wlim_tt_class_endTime').val(); 
+        let starttime   = jQuery('#wlim_tt_class_startTime').val();
+        let classDate   = jQuery('#wlim_tt_class_date').val();   
         let topichtml   = jQuery('#tttopicID');
-        let teacherhtml = jQuery('#ttteacherID');
+        let teacherhtml = jQuery('#ttteacherID'); 
+        
         jQuery.ajax({
             url: ajaxurl,
             type: 'post',
@@ -1888,6 +1903,9 @@
                 action: 'wl-mim-topicTeacher',
                 nonce: WLIMAjax.security,
                 subID: subID,
+                classDate: classDate,
+                starttime: starttime,
+                endtime: endtime
             },
             success: function(response){
                 // console.table(response);
@@ -1897,18 +1915,13 @@
                 let topic    = '';
                 let teacher  = '';
                 console.log( data );
-                topicD.forEach(function(item){
-                    topic += topichtml.append('<option value="' + item.id + '">' + item.topic_name + '</option>');
-                });
-                topichtml.selectpicker("refresh");
-
-                teacherD.forEach(function(item){
-                    teacher += teacherhtml.append('<option value="' + item.user_id + '">' + item.first_name + '</option>');
-                });
-                teacherhtml.selectpicker("refresh");
-            }
+                jQuery('#tttopicID').html(data.topics);                              
+                jQuery('#ttteacherID').html(data.teacherNames);               
+            }   
         });
     });
+
+
     initializeDatatable('#timetableList', 'wl-mim-fetch-timetable');
     // initializeDatatable('#viewtimetableList', 'wl-mim-view-timetable');
     $('#myTable').DataTable({
@@ -1962,7 +1975,7 @@
                     // console.table(response.data.html);
                     // var data = JSON.parse(response.data.json);
                     jQuery('#fetch_timetable').html(response.data.html);
-                    jQuery('.selectpicker').selectpicker();
+                    // jQuery('.selectpicker').selectpicker();
                 }
             });
         });
@@ -2013,6 +2026,7 @@
                     let roomD = data.roomlist;
                     let rooms = '';
                     // console.log(roomD);
+                    rooms += roomhtml.append(`<option value="">Select Studio</option>`);
                     roomD.forEach(function(item){
                         // console.log(item);
                         rooms += roomhtml.append(`<option value="${item.id}">${item.room_name}( ${item.room_desc} )</option>`);
@@ -2041,24 +2055,46 @@
         })
      });
 
-     //save the remark
-     jQuery(document).on('click', '#saveRemark', function(e){
+      //save the remark
+      jQuery(document).on('submit', '#teacherRemark', function(e){
         e.preventDefault();
         let teacherRemark = jQuery( '#teacherRemark' ).val();
         let timeTableID   = jQuery( '#timeTableID' ).val();
-        console.log( `the teachers remark is ${teacherRemark} and the time table id is ${timeTableID}` );
+        // console.log( `the teachers remark is ${teacherRemark} and the time table id is ${timeTableID}` );
         jQuery.ajax({
-            url: ajaxurl+"?action=wl-mim-update-teacherRemark",
+            // url: ajaxurl+'?action=wl-mim-update-teacherRemark'+ '&security='+WLIMAjax.security,
+            url: ajaxurl + '?action=wl-mim-update-teacherRemark',
             type: "post",
-            data: 'teacherRemark='+teacherRemark + '&timeTableID='+ timeTableID,
+            data: new FormData(this),
             processData: false,
             contentType: false,
-            success: function(response){
+            success: function(response){                
                 if( response.success == true ) {
                     toastr.success(response.data.message);
+                   // jQuery('#addTopic')[0].reset();
+                   jQuery('#update-timetable'). modal('hide');
                    jQuery("#timetableList").DataTable().ajax.reload();
-                } else {
-                    toastr.danger(response.data.message);
+                }
+            }
+        });
+     });
+
+     //Save the student remark
+     //wl-mim-student-timetableRemark
+     jQuery(document).on('submit', '#studentRemarkPost', function(e){
+        e.preventDefault();        
+        // console.log( `the teachers remark is ${teacherRemark} and the time table id is ${timeTableID}` );
+        jQuery.ajax({           
+            url: ajaxurl + '?action=wl-mim-student-timetableRemark',
+            type: "post",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response){                
+                if( response.success == true ) {
+                    toastr.success(response.data.message);
+                   // jQuery('#addTopic')[0].reset();                  
+                   jQuery("#student_timetableList").DataTable().ajax.reload();
                 }
             }
         });

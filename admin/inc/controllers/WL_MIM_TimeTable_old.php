@@ -257,8 +257,6 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $institute_id = WL_MIM_Helper::get_current_institute_id();
             //get current user
             $currentUserId = get_current_user_id();
-            $user            = wp_get_current_user(); 
-            $currentUserRole = $user->roles[0];
             $result1       = $wpdb->get_results("SELECT tt.id as tid, tt.subject_id AS subid, tt.topic_name AS tname, tt.is_active AS tisActive, st.`id` AS subID, st.subject_name AS subName FROM {$wpdb->prefix}wl_min_topics AS tt JOIN {$wpdb->prefix}wl_min_subjects AS st ON tt.subject_id=st.id");
            // if( $currentUserId == 1 ) {
             if( current_user_can( 'manage_options' ) ) {
@@ -273,7 +271,8 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                     $id            = $row->id;
                     $courseID      = WL_MIM_Helper::get_course($row->courseId);
                     $courseName    = $courseID->course_name . " (" . $courseID->course_code . ")";
-                    $batch_id      = WL_MIM_Helper::get_batch($row->batch_id);
+                    $batch_id      = WL_MIM_Helper::get_batch($row->batch_id, $institute_id);
+                    // var_dump($institute_id);
                     $batch_name    = $batch_id->batch_name . " (" . $batch_id->batch_code . ")";
                     $subjectID     = WL_MIM_Helper::getSubjectName($row->subject_id);
                     $subjectName   = $subjectID->subject_name;
@@ -306,42 +305,23 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         $remark = "<input type='text' name='remark' id='remark' value='" . $remark ."' disabled />";
                     }
                     $nonce = wp_create_nonce( "sRemark" );
-                    if($currentUserRole == 'subscriber') {
-                        $results['data'][] = array(
-                            $sno,
-                            esc_html($timetablename),
-                            $room_id->room_name, 
-                            $courseName,
-                            $batch_name,
-                            $subjectName,
-                            $topic_name,
-                            $staff_name,
-                            $is_acitve,
-                            $date,
-                            $start_time,
-                            $end_time,
-                            $remark,
-                            ''
-                        );
-                    } else {
-                        $results['data'][] = array(
-                            $sno,
-                            esc_html($timetablename),
-                            $room_id->room_name, 
-                            $courseName,
-                            $batch_name,
-                            $subjectName,
-                            $topic_name,
-                            $staff_name,
-                            $is_acitve,
-                            $date,
-                            $start_time,
-                            $end_time,
-                            $remark,
-                            '<a class="mr-3" href="#update-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> ' . '<a href="javascript:void(0)" delete-timetable-security="' . wp_create_nonce( "delete-timetable-$id" ) . '"delete-timetable-id="' . $id . '" class="delete-timetable"> <i class="fa fa-trash text-danger"></i></a>' . ' <a class="mr-3" href="#view-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-eye"></i></a> '
-                        );
-                    }
-                    
+
+                    $results['data'][] = array(
+                        $sno,
+                        esc_html($timetablename),
+                        $room_id->room_name, 
+                        $courseName,
+                        $batch_name,
+                        $subjectName,
+                        $topic_name,
+                        $staff_name,
+                        $is_acitve,
+                        $date,
+                        $start_time,
+                        $end_time,
+                        $remark,
+                        '<a class="mr-3" href="#update-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> ' . '<a href="javascript:void(0)" delete-timetable-security="' . wp_create_nonce( "delete-timetable-$id" ) . '"delete-timetable-id="' . $id . '" class="delete-timetable"> <i class="fa fa-trash text-danger"></i></a>' . ' <a class="mr-3" href="#view-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-eye"></i></a> '
+                    );
                     $i++;
                 }
             } else {
