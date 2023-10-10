@@ -101,6 +101,7 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                                     <th scope="col"><?php esc_html_e( 'First Name', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Last Name', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Mother\'s Phone', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Reference', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Business Manager', WL_MIM_DOMAIN ); ?></th>
@@ -235,9 +236,15 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-state" class="col-form-label"><?php esc_html_e( 'State', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="state" type="text" class="form-control" id="wlim-enquiry-state" placeholder="<?php esc_html_e( "State", WL_MIM_DOMAIN ); ?>">
+                        <?php  	$wlim_states = WL_MIM_Helper::get_states(); ?>
+                            <div class="form-group col-md-6">
+                                <label for="wlim-state" class="col-form-label"><?php esc_html_e('State', WL_MIM_DOMAIN); ?>:</label>
+                                <select name="state" id="wlim-state" class="form-control">
+                                    <option value="">Select State</option>
+                                    <?php foreach ($wlim_states as $state): ?>
+                                        <option value="<?php echo $state; ?>"><?php echo esc_html($state); ?></option>
+                                    <?php endforeach ?>
+                                </select>
                             </div>
                             <div class="col-sm-6 form-group">
                                 <label for="wlim-enquiry-nationality" class="col-form-label"><?php esc_html_e( 'Nationality', WL_MIM_DOMAIN ); ?>:</label>

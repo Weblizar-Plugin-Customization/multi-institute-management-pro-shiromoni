@@ -44,6 +44,7 @@ class WL_MIM_Enquiry {
 				$first_name = $row->first_name ? $row->first_name : '-';
 				$last_name  = $row->last_name ? $row->last_name : '-';
 				$phone      = $row->phone ? $row->phone : '-';
+				$mother_phone      = $row->phone2 ? $row->phone2 : '-';
 				$email      = $row->email ? $row->email : '-';
 				$is_acitve  = $row->is_active ? esc_html__( 'Yes', WL_MIM_DOMAIN ) : esc_html__( 'No', WL_MIM_DOMAIN );
 				$added_by   = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
@@ -63,6 +64,7 @@ class WL_MIM_Enquiry {
 					esc_html( $first_name ),
 					esc_html( $last_name ),
 					esc_html( $phone ),
+					esc_html( $mother_phone ),
 					esc_html( $email ),
 					esc_html( $reference ),
 					esc_html( $business_manager ),
@@ -503,10 +505,17 @@ class WL_MIM_Enquiry {
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="wlim-enquiry-state_update" class="col-form-label"><?php esc_html_e( 'State', WL_MIM_DOMAIN ); ?>:</label>
-                <input name="state" type="text" class="form-control" id="wlim-enquiry-state_update" placeholder="<?php esc_html_e( "State", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->state ); ?>">
-            </div>
+		<?php $states = WL_MIM_Helper::get_states(); ?>
+			<div class="form-group col-md-6">
+				<label for="wlim-student-state_update"  class="col-form-label"><?php esc_html_e('State', WL_MIM_DOMAIN); ?>:</label>
+				<select name="state" id="wlim-student-state_update" class="form-control">
+				<option value="">Select State</option>
+					<?php foreach ($states as $state): ?>
+						<option value="<?php echo $state; ?>" <?php if($row->state == $state) echo 'selected';
+							?>><?php echo esc_html($state); ?></option>
+					<?php endforeach ?>
+				</select>
+		</div>
             <div class="col-sm-6 form-group">
                 <label for="wlim-enquiry-nationality_update" class="col-form-label"><?php esc_html_e( 'Nationality', WL_MIM_DOMAIN ); ?>:</label>
                 <input name="nationality" type="text" class="form-control" id="wlim-enquiry-nationality_update" placeholder="<?php esc_html_e( "Nationality", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->nationality ); ?>">
