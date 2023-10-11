@@ -1872,6 +1872,16 @@ class WL_MIM_Student
 			</div>
 		</div>
 		<div class="row">
+		<div class="col-sm-6 form-group">
+				<label for="wlim-student-phone_update" class="col-form-label">* <?php esc_html_e('Father Phone', WL_MIM_DOMAIN); ?>:</label>
+				<input name="phone" type="text" class="form-control" id="wlim-student-phone_update" placeholder="<?php esc_html_e("Phone", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->phone); ?>">
+			</div>
+			<div class="col-sm-6 form-group">
+				<label for="wlim-student-phone_update" class="col-form-label">* <?php esc_html_e('Mother Phone', WL_MIM_DOMAIN); ?>:</label>
+				<input name="phone2" type="text" class="form-control" id="wlim-student-phone_update" placeholder="<?php esc_html_e("Phone", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->phone2); ?>">
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-sm-6 form-group">
 				<label for="wlim-student-address_update" class="col-form-label"><?php esc_html_e('Address', WL_MIM_DOMAIN); ?>:</label>
 				<textarea name="address" class="form-control" rows="4" id="wlim-student-address_update" placeholder="<?php esc_html_e("Address", WL_MIM_DOMAIN); ?>"><?php echo esc_html($row->address); ?></textarea>
@@ -1909,14 +1919,7 @@ class WL_MIM_Student
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-6 form-group">
-				<label for="wlim-student-phone_update" class="col-form-label">* <?php esc_html_e('Phone', WL_MIM_DOMAIN); ?>:</label>
-				<input name="phone" type="text" class="form-control" id="wlim-student-phone_update" placeholder="<?php esc_html_e("Phone", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->phone); ?>">
-			</div>
-			<div class="col-sm-6 form-group">
-				<label for="wlim-student-phone_update" class="col-form-label">* <?php esc_html_e('Mother Phone', WL_MIM_DOMAIN); ?>:</label>
-				<input name="phone2" type="text" class="form-control" id="wlim-student-phone_update" placeholder="<?php esc_html_e("Phone", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->phone2); ?>">
-			</div>
+
 			<div class="col-sm-6 form-group">
 				<label for="wlim-student-email_update" class="col-form-label"><?php esc_html_e('Email', WL_MIM_DOMAIN); ?>:</label>
 				<input name="email" type="text" class="form-control" id="wlim-student-email_update" placeholder="<?php esc_html_e("Email", WL_MIM_DOMAIN); ?>" value="<?php echo esc_attr($row->email); ?>">
@@ -3644,6 +3647,16 @@ class WL_MIM_Student
 	</div>
 	<div class="row">
 		<div class="col-sm-6 form-group">
+			<label for="wlim-student-phone" class="col-form-label">* <?php esc_html_e('Father Phone', WL_MIM_DOMAIN); ?>:</label>
+			<input name="phone" type="text" class="form-control" id="wlim-student-phone" placeholder="<?php esc_html_e("Phone", WL_MIM_DOMAIN); ?>">
+		</div>
+		<div class="col-sm-6 form-group">
+			<label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Mother Phone', WL_MIM_DOMAIN ); ?>:</label>
+			<input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Mother Phone", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->phone2 ); ?>">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6 form-group">
 			<label for="wlim-student-address" class="col-form-label"><?php esc_html_e('Address', WL_MIM_DOMAIN); ?>:</label>
 			<textarea name="address" class="form-control" rows="4" id="wlim-student-address" placeholder="<?php esc_html_e("Address", WL_MIM_DOMAIN); ?>"></textarea>
 		</div>
@@ -3679,10 +3692,10 @@ class WL_MIM_Student
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-6 form-group">
+		<!-- <div class="col-sm-6 form-group">
 			<label for="wlim-student-phone" class="col-form-label">* <?php esc_html_e('Phone', WL_MIM_DOMAIN); ?>:</label>
 			<input name="phone" type="text" class="form-control" id="wlim-student-phone" placeholder="<?php esc_html_e("Phone", WL_MIM_DOMAIN); ?>">
-		</div>
+		</div> -->
 		<div class="col-sm-6 form-group">
 			<label for="wlim-student-email" class="col-form-label"><?php esc_html_e('Email', WL_MIM_DOMAIN); ?>:</label>
 			<input name="email" type="text" class="form-control" id="wlim-student-email" placeholder="<?php esc_html_e("Email", WL_MIM_DOMAIN); ?>">

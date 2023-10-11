@@ -261,13 +261,11 @@ class WL_MIM_Menu {
 				add_action('admin_print_styles-' . $studios, array('WL_MIM_Menu', 'studios_assets'));
 
 				/** Sub menu for the timeTable */
-				$timetble = add_submenu_page('multi-institute-management', esc_html__('Time Table', WL_MIM_DOMAIN), esc_html__('Time Table', WL_MIM_DOMAIN), 'wl_min_manage_timetable', 'multi-institute-management-timetable', array(
+				$timetble = add_submenu_page('multi-institute-management', esc_html__('Time Table', WL_MIM_DOMAIN), esc_html__('Time Table', WL_MIM_DOMAIN), 'wl_min_view_timetable', 'multi-institute-management-timetable', array(
 					'WL_MIM_Menu',
 					'timetable'
 				));
 				add_action('admin_print_styles-' . $timetble, array('WL_MIM_Menu', 'timetable_assets'));
-
-
 
 				if (!current_user_can('manage_options')) :
 					/* Student dashboard */

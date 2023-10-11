@@ -20,6 +20,7 @@ class WL_MIM_Helper {
 			'wl_min_manage_topics'         => esc_html__('Manage Topics', WL_MIM_DOMAIN),
 			'wl_min_manage_studios'        => esc_html__('Manage Studios', WL_MIM_DOMAIN),
 			'wl_min_manage_timetable'	   => esc_html__('Manage Time Table', WL_MIM_DOMAIN),
+			'wl_min_view_timetable'	       => esc_html__('View Time Table', WL_MIM_DOMAIN),
 			'wl_min_manage_attendance'     => esc_html__('Manage Attendance', WL_MIM_DOMAIN),
 			'wl_min_manage_notes'          => esc_html__('Manage Notes', WL_MIM_DOMAIN),
 			'wl_min_manage_expense'        => esc_html__('Manage Expense', WL_MIM_DOMAIN),
@@ -875,7 +876,7 @@ class WL_MIM_Helper {
 
 		$course_data = $wpdb->get_results("SELECT id, course_name, course_code, is_deleted, is_active FROM {$wpdb->prefix}wl_min_courses WHERE institute_id = $institute_id ORDER BY course_name", OBJECT_K);
 
-		
+
 
 		$sql              = "SELECT id, course_id, created_at FROM {$wpdb->prefix}wl_min_enquiries WHERE is_deleted = 0 AND is_active = 1 AND institute_id = $institute_id ORDER BY id DESC LIMIT 5";
 		$recent_enquiries = $wpdb->get_results($sql);
@@ -1168,7 +1169,7 @@ class WL_MIM_Helper {
 		}
 		global $wpdb;
 		$insituteID = isset( $_POST['instituteId'] ) ? sanitize_text_field($_POST['instituteId']) : '';
-		$courseId   = isset( $_POST['courseId'] ) ? sanitize_text_field($_POST['courseId']) : ''; 
+		$courseId   = isset( $_POST['courseId'] ) ? sanitize_text_field($_POST['courseId']) : '';
 		$a = [];
 		$subjects   = $wpdb->get_results("SELECT id, subject_name FROM {$wpdb->prefix}wl_min_subjects WHERE instituteId = $insituteID AND courseId = $courseId");
 		echo "<option value=''>". __('Select Subject', WL_MIM_DOMAIN) ."</option>";
@@ -1180,7 +1181,7 @@ class WL_MIM_Helper {
 
 	/**
 	 * Get following information from the student id
-	 * Institute Id 
+	 * Institute Id
 	 * student certificate id
 	 */
 	public static function get_student_information_certificate( $student_id ) {
@@ -1188,7 +1189,7 @@ class WL_MIM_Helper {
 		$a = $wpdb->prefix . 'wl_min_students';
 		$query = 'SELECT * FROM ' . $a . ' WHERE id = '. absint($student_id);
 		// return $wpdb->get_results("SELECT institute_id, first_name FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id");
-		return $wpdb->get_results( $query );		
+		return $wpdb->get_results( $query );
 		// return $a;
 	}
 
@@ -1210,13 +1211,13 @@ class WL_MIM_Helper {
 	public static function getBatchesTimeTable() {
 		global $wpdb;
 		$institute_id = self::get_current_institute_id();
-		
+
 	}
 
 	//disable the remark until the class end time not come
 	public static function controlRemark( $id ) {
 		global $wpdb;
-		$institute_id = self::get_current_institute_id();	
+		$institute_id = self::get_current_institute_id();
 		$query = $wpdb->get_row( "SELECT CASE WHEN batch_date = CURRENT_DATE() AND end_time <= CURRENT_TIME() AND end_time <= '12:00:00' THEN 1 ELSE 0 END AS MATCHED FROM {$wpdb->prefix}wl_min_timetable WHERE id=$id" );
 		return $query;
 	}

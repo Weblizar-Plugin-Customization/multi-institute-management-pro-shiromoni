@@ -33,14 +33,14 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $savedBatch = $wpdb->get_row( "SELECT batch_id FROM {$wpdb->prefix}wl_min_timetable WHERE batch_date='$batch_date' AND start_time<='$startTime' AND end_time>='$endTime'" );
                 $savedTTbatchID = $savedBatch->batch_id;
 
-                $subData   = $wpdb->get_results("SELECT id, subject_name FROM {$wpdb->prefix}wl_min_subjects AS sub WHERE courseId=$courseID AND is_active = 1", ARRAY_A);                
-               
+                $subData   = $wpdb->get_results("SELECT id, subject_name FROM {$wpdb->prefix}wl_min_subjects AS sub WHERE courseId=$courseID AND is_active = 1", ARRAY_A);
+
                 array_push($data['batchData'], "<option value=''>Select A Batch</option>");
                 foreach( $batchData as $key => $value ) {
                     if( $savedTTbatchID != $value['id'] ) {
                         $bData = "<option value='" . $value['id'] . "'>" . $value['batch_name'] . "</option>";
                         array_push($data['batchData'], $bData);
-                    }                    
+                    }
                 }
                 array_push($data['subData'], "<option value=''>Select A Subject</option>");
                 foreach( $subData as $key => $value ) {
@@ -67,13 +67,13 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $classDate = isset( $_POST['classDate'] ) ? sanitize_text_field( $_POST['classDate'] ) : null;
             $starttime = isset( $_POST['starttime'] ) ? sanitize_text_field( $_POST['starttime'] ) : null;
             $endtime   = isset( $_POST['endtime'] ) ? sanitize_text_field( $_POST['endtime'] ) : null;
-            
+
             $errors = array();
             if ( empty( $subID ) ) {
                 $errors['subID'] = esc_html__( 'Please select a subject.', WL_MIM_DOMAIN );
             }
-            $errors_count = count($errors);            
-            if( isset( $errors_count )  && $errors_count < 1) { 
+            $errors_count = count($errors);
+            if( isset( $errors_count )  && $errors_count < 1) {
                 $topic      = $wpdb->get_results( "SELECT id, topic_name FROM {$wpdb->prefix}wl_min_topics WHERE subject_id = $subID", ARRAY_A );
                 array_push($data['topics'], "<option value=''>Select A Topic</option>");
                 foreach( $topic as $key => $value ) {
@@ -83,19 +83,19 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $teacher    = $wpdb->get_row( "SELECT staffId FROM {$wpdb->prefix}wl_min_subjects WHERE id = $subID" );
                 $teacherArr = unserialize($teacher->staffId);
                 //get the teacher from the time table Table for the sub id and given date, start and end time
-                $ttsid =  $wpdb->get_row( "SELECT staff_id FROM {$wpdb->prefix}wl_min_timetable WHERE subject_id='$subID' AND batch_date = '$classDate' AND start_time<='$starttime' AND end_time>='$endtime'" );                
-                $savedTeacheridTimeTable = $ttsid->staff_id;                
-                // foreach( $teacherArr as $teacherId ) { 
+                $ttsid =  $wpdb->get_row( "SELECT staff_id FROM {$wpdb->prefix}wl_min_timetable WHERE subject_id='$subID' AND batch_date = '$classDate' AND start_time<='$starttime' AND end_time>='$endtime'" );
+                $savedTeacheridTimeTable = $ttsid->staff_id;
+                // foreach( $teacherArr as $teacherId ) {
                 array_push($data['teacherNames'], "<option value=''>Select Teacher</option>");
                 for( $ti=0; $ti<count($teacherArr); $ti++ ) {
                     $tid = $teacherArr[$ti];
-                    if( $savedTeacheridTimeTable !== $tid ){ 
+                    if( $savedTeacheridTimeTable !== $tid ){
                      $getTeacherNames = $wpdb->get_row( "SELECT id, first_name, last_name, user_id FROM {$wpdb->prefix}wl_min_staffs WHERE user_id=$tid");
                      $teacherData = "<option value='" . $getTeacherNames->user_id . "'>" . $getTeacherNames->first_name . "</option>";
                      array_push($data['teacherNames'], $teacherData);
-                    }                   
-                }                
-                // $data['topicData'] = $topic;                
+                    }
+                }
+                // $data['topicData'] = $topic;
             } else {
                 $results['data'] = [];
             }
@@ -116,7 +116,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $errors['ttsubID'] = esc_html__( 'Please select a subject.', WL_MIM_DOMAIN );
             }
             $errors_count = count($errors);
-            if( isset( $errors_count )  && $errors_count < 1) { 
+            if( isset( $errors_count )  && $errors_count < 1) {
                 $topic = $wpdb->get_results( "SELECT t.id AS topicId, t.topic_name AS topicName FROM {$wpdb->prefix}wl_min_topics AS t WHERE t.subject_id = $ttsubID" );
 
                 $data['topicData'] = $topic;
@@ -140,7 +140,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $ttcourseID    = isset( $_POST['ttcourseID'] ) ? sanitize_text_field( $_POST['ttcourseID'] ) : null;
             $ttbatchID     = isset( $_POST['ttbatchID'] ) ? sanitize_text_field( $_POST['ttbatchID'] ) : null;
             $ttsubID       = isset( $_POST['ttsubID'] ) ? sanitize_text_field( $_POST['ttsubID'] ) : null;
-            $tttopicID     = isset( $_POST['tttopicID'] ) ? sanitize_text_field( $_POST['tttopicID'] ) : null; 
+            $tttopicID     = isset( $_POST['tttopicID'] ) ? sanitize_text_field( $_POST['tttopicID'] ) : null;
             $ttroomID      = isset( $_POST['ttroomID'] ) ? sanitize_text_field( $_POST['ttroomID'] ) : null;
             $ttteacherID   = isset( $_POST['ttteacherID'] ) ? sanitize_text_field( $_POST['ttteacherID'] ) : null;
             $wlim_tt_class_date      = isset( $_POST['wlim_tt_class_date'] ) ? sanitize_text_field( $_POST['wlim_tt_class_date'] ) : null;
@@ -169,17 +169,17 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             if ($ttbatchID) {
                 global $wpdb;
                 $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_timetable WHERE batch_id = $ttbatchID AND batch_date = '$wlim_tt_class_date' AND start_time <= '$wlim_tt_class_startTime' AND end_time >= '$wlim_tt_class_endTime'");
-               
+
                 if (!empty($result)) {
                     $errors['ttbatchID'] = esc_html__( 'This Batch already exists for given date and time', WL_MIM_DOMAIN );
                 }
             }
-            
+
 
             if ($ttteacherID) {
                 global $wpdb;
                 $result = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_timetable WHERE staff_id = $ttteacherID AND batch_date = '$wlim_tt_class_date' AND start_time <='$wlim_tt_class_startTime' AND end_time >= '$wlim_tt_class_endTime'");
-                
+
                 if (!empty($result)) {
                     $errors['ttteacherID'] = esc_html__( 'This Teacher already exists for given date and time', WL_MIM_DOMAIN );
                 }
@@ -210,7 +210,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             }
 
             $errors_count = count($errors);
-            if( isset( $errors_count )  && $errors_count < 1) { 
+            if( isset( $errors_count )  && $errors_count < 1) {
                 try {
                     $wpdb->query('BEGIN;');
                     //data
@@ -232,7 +232,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         'updated_at'  => ''
                     );
                     $success         = $wpdb->insert($wpdb->prefix . 'wl_min_timetable', $timeTable_data);
-                    $previousaddedID = $wpdb->insert_id;                
+                    $previousaddedID = $wpdb->insert_id;
                     if (false === $success) {
                         throw new Exception($wpdb->last_error);
                     }
@@ -249,27 +249,34 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
 
         //data table
         public static function fetch_timetable() {
-            self::check_permission();
+            // self::check_permission();
             if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
                 die();
             }
             global $wpdb;
             $institute_id = WL_MIM_Helper::get_current_institute_id();
+            if ( current_user_can( 'wl_min_view_timetable' ) ) {
+
+            } else {
+                die();
+            }
             //get current user
             $currentUserId = get_current_user_id();
-            $user            = wp_get_current_user(); 
+            $user            = wp_get_current_user();
             $currentUserRole = $user->roles[0];
+
+
             $result1       = $wpdb->get_results("SELECT tt.id as tid, tt.subject_id AS subid, tt.topic_name AS tname, tt.is_active AS tisActive, st.`id` AS subID, st.subject_name AS subName FROM {$wpdb->prefix}wl_min_topics AS tt JOIN {$wpdb->prefix}wl_min_subjects AS st ON tt.subject_id=st.id");
            // if( $currentUserId == 1 ) {
             if( current_user_can( 'manage_options' ) ) {
                 $result = $wpdb->get_results( "SELECT id, batch_id, courseId,subject_id, topic_id, room_id, timeTableName, is_active, created_at, batch_date, start_time, end_time, staff_id, remark FROM {$wpdb->prefix}wl_min_timetable WHERE institute_id=$institute_id" );
             } else {
                 $result = $wpdb->get_results( "SELECT id, batch_id, courseId,subject_id, topic_id, room_id, timeTableName, is_active, created_at, batch_date, start_time, end_time, staff_id, remark FROM {$wpdb->prefix}wl_min_timetable WHERE staff_id = $currentUserId AND institute_id=$institute_id" );
-            }            
+            }
             if(count($result) != 0) {
                 $i = 1;
                 foreach ($result as $row) {
-                    $sno           = $i;                    
+                    $sno           = $i;
                     $id            = $row->id;
                     $courseID      = WL_MIM_Helper::get_course($row->courseId);
                     $courseName    = $courseID->course_name . " (" . $courseID->course_code . ")";
@@ -296,38 +303,21 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                     } else {
                         $remark = '';
                     }
-                    
+
                     $nonce         = wp_create_nonce( "tRemark" );
-                    
-                    $remarkControl = WL_MIM_Helper::controlRemark($id)->MATCHED; 
+
+                    $remarkControl = WL_MIM_Helper::controlRemark($id)->MATCHED;
                     if($remarkControl == 1) {
                         $remark = "<form id='teacherRemark'><input type='hidden' name='tRemark' value='" . $nonce ."'/><input type='text' class='form-control' name='teacherRemark' id='teacherRemark' value='" . $remark . "' /><input type='hidden' name='timeTableID' id='timeTableID' value='".$id ."' /><button class='btn btn-success' type='submit' id='saveRemark'>Save</button></form>";
                     } elseif($remarkControl == 0) {
                         $remark = "<input type='text' name='remark' id='remark' value='" . $remark ."' disabled />";
                     }
                     $nonce = wp_create_nonce( "sRemark" );
-                    if($currentUserRole == 'subscriber') {
+                    if (  current_user_can( 'wl_min_manage_timetable' ) ) {
                         $results['data'][] = array(
                             $sno,
                             esc_html($timetablename),
-                            $room_id->room_name, 
-                            $courseName,
-                            $batch_name,
-                            $subjectName,
-                            $topic_name,
-                            $staff_name,
-                            $is_acitve,
-                            $date,
-                            $start_time,
-                            $end_time,
-                            $remark,
-                            ''
-                        );
-                    } else {
-                        $results['data'][] = array(
-                            $sno,
-                            esc_html($timetablename),
-                            $room_id->room_name, 
+                            $room_id->room_name,
                             $courseName,
                             $batch_name,
                             $subjectName,
@@ -340,13 +330,30 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                             $remark,
                             '<a class="mr-3" href="#update-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> ' . '<a href="javascript:void(0)" delete-timetable-security="' . wp_create_nonce( "delete-timetable-$id" ) . '"delete-timetable-id="' . $id . '" class="delete-timetable"> <i class="fa fa-trash text-danger"></i></a>' . ' <a class="mr-3" href="#view-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-eye"></i></a> '
                         );
+                    } else {
+                        $results['data'][] = array(
+                            $sno,
+                            esc_html($timetablename),
+                            $room_id->room_name,
+                            $courseName,
+                            $batch_name,
+                            $subjectName,
+                            $topic_name,
+                            $staff_name,
+                            $is_acitve,
+                            $date,
+                            $start_time,
+                            $end_time,
+                            $remark,
+                            ''
+                        );
                     }
-                    
+
                     $i++;
                 }
             } else {
-                $results['data'] = array();   
-            }            
+                $results['data'] = array();
+            }
             echo json_encode($results);
             die();
         }
@@ -356,36 +363,36 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             self::check_permission();
             if ( ! wp_verify_nonce( $_REQUEST['tRemark'], 'tRemark' ) ) {
                 die();
-            }         
+            }
             global $wpdb;
             $institute_id  = WL_MIM_Helper::get_current_institute_id();
             $teacherRemark = isset( $_POST['teacherRemark'] ) ? sanitize_text_field( $_POST['teacherRemark'] ) : null;
-            $timeTableID   = isset( $_POST['timeTableID'] ) ? sanitize_text_field( $_POST['timeTableID'] ) : null;            
+            $timeTableID   = isset( $_POST['timeTableID'] ) ? sanitize_text_field( $_POST['timeTableID'] ) : null;
             //UPDATE `wp_wl_min_timetable` SET remark='' WHERE `id`
             $errors = array();
             if ( empty( $teacherRemark ) ) {
                 $errors['teacherRemark'] = esc_html__( 'Please enter remark .', WL_MIM_DOMAIN );
             }
             $errors_count = count($errors);
-            if( isset( $errors_count )  && $errors_count < 1) {  
+            if( isset( $errors_count )  && $errors_count < 1) {
                 try {
                     $wpdb->query('BEGIN;');
                     //data
                     $created_at   = current_time('Y-m-d H:i:s');
-                    $timeTable_data = array(                        
-                        'remark'    => $teacherRemark,                                             
+                    $timeTable_data = array(
+                        'remark'    => $teacherRemark,
                         'updated_at'  => $created_at
                     );
-                    
+
                     $success = $wpdb->update( "{$wpdb->prefix}wl_min_timetable", $timeTable_data, array(
                         'id' => $timeTableID,
                     ) );
-                    // $previousaddedID = $wpdb->insert_id;                   
+                    // $previousaddedID = $wpdb->insert_id;
                     if (false === $success) {
                         throw new Exception($wpdb->last_error);
-                    }                   
+                    }
                     $wpdb->query('COMMIT;');
-                    
+
                     wp_send_json_success( array('message'=>'Time Table Updated') );
                 } catch (Exception $exception) {
                     $wpdb->query('ROLLBACK;');
@@ -393,18 +400,18 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 }
             } else {
                 wp_send_json_error($errors);
-            } 
+            }
 
             die();
         }
 
-        
+
 
         //add the student remark
         public static function post_student_timetableRemark() {
             if ( ! wp_verify_nonce( $_REQUEST['sRemark'], 'sRemark' ) ) {
                 die();
-            }         
+            }
             global $wpdb;
             $institute_id  = WL_MIM_Helper::get_current_institute_id();
             $studentRemark = isset( $_POST['studentRemark'] ) ? sanitize_text_field( $_POST['studentRemark'] ) : null;
@@ -419,9 +426,9 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $errors['studentRemark'] = esc_html__( 'Please enter remark .', WL_MIM_DOMAIN );
             }
             $errors_count = count($errors);
-            $checkSavedRecord = $wpdb->get_var( "SELECT COUNT(*) as count FROM {$wpdb->prefix}wl_min_studentremark WHERE `batch_id`='$batch_id' AND `batch_date`='$batch_date' AND `subject_id`='$subjectID' AND `student_id`='$currentUserId'" );           
-            
-            if( isset( $errors_count )  && $errors_count < 1) { 
+            $checkSavedRecord = $wpdb->get_var( "SELECT COUNT(*) as count FROM {$wpdb->prefix}wl_min_studentremark WHERE `batch_id`='$batch_id' AND `batch_date`='$batch_date' AND `subject_id`='$subjectID' AND `student_id`='$currentUserId'" );
+
+            if( isset( $errors_count )  && $errors_count < 1) {
                 if( $checkSavedRecord ) {
                     $savedTTIDData = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}wl_min_studentremark WHERE `batch_id`='$batch_id' AND `batch_date`='$batch_date' AND `subject_id`='$subjectID' AND `student_id`='$currentUserId'");
                     $studentTTID = $savedTTIDData->id;
@@ -429,20 +436,20 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         $wpdb->query('BEGIN;');
                         //data
                         $created_at   = current_time('Y-m-d H:i:s');
-                        $timeTable_data = array(                        
-                            'remark'    => $studentRemark,                                             
+                        $timeTable_data = array(
+                            'remark'    => $studentRemark,
                             'updated_at'  => $created_at
                         );
-                        
+
                         $success = $wpdb->update( "{$wpdb->prefix}wl_min_studentremark", $timeTable_data, array(
                             'id' => $studentTTID, 'student_id' => $currentUserId,
                         ) );
-                        // $previousaddedID = $wpdb->insert_id;                   
+                        // $previousaddedID = $wpdb->insert_id;
                         if (false === $success) {
                             throw new Exception($wpdb->last_error);
-                        }                   
+                        }
                         $wpdb->query('COMMIT;');
-                        
+
                         wp_send_json_success( array('message'=>'Time Table Updated') );
                     } catch (Exception $exception) {
                         $wpdb->query('ROLLBACK;');
@@ -458,8 +465,8 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                             'student_id'   => $currentUserId,
                             'timeTableId'  => $timeTableID,
                             'batch_id'     => $batch_id,
-                            'subject_id'   => $subjectID,                        
-                            'topic_id'     => $topicID,                        
+                            'subject_id'   => $subjectID,
+                            'topic_id'     => $topicID,
                             'remark'       => $studentRemark,
                             'batch_date'   => $batch_date,
                             'is_active'    => '1',
@@ -467,7 +474,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                             'updated_at'   => ''
                         );
                         $success         = $wpdb->insert($wpdb->prefix . 'wl_min_studentremark', $timeTable_data);
-                        //$previousaddedID = $wpdb->insert_id;                
+                        //$previousaddedID = $wpdb->insert_id;
                         if (false === $success) {
                             throw new Exception($wpdb->last_error);
                         }
@@ -478,14 +485,14 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         wp_send_json_error($exception->getMessage());
                     }
                 }
-                
+
             } else {
                 wp_send_json_error($errors);
-            }         
-            
+            }
+
         }
-        
-        
+
+
         // public static function fetch_timetable() {
         //     self::check_permission();
         //     if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
@@ -498,7 +505,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
         //     if(count($result) != 0) {
         //         $i = 1;
         //         foreach ($result as $row) {
-        //             $sno           = $i;                    
+        //             $sno           = $i;
         //             $id            = $row->id;
         //             $courseID      = $row->courseId;
         //             $timetablename = $row->timeTableName;
@@ -510,15 +517,15 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
         //             $results['data'][] = array(
         //                 $sno,
         //                 esc_html($timetablename),
-        //                 '',                        
-        //                 $is_acitve,                        
-        //                 $added_on,                        
+        //                 '',
+        //                 $is_acitve,
+        //                 $added_on,
         //                 '<a class="mr-3" href="#update-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-edit"></i></a> ' . '<a href="javascript:void(0)" delete-timetable-security="' . wp_create_nonce( "delete-timetable-$id" ) . '"delete-timetable-id="' . $id . '" class="delete-timetable"> <i class="fa fa-trash text-danger"></i></a>' . ' <a class="mr-3" href="#view-timetable" data-keyboard="false" data-backdrop="static" data-toggle="modal" data-id="' . $id . '"><i class="fa fa-eye"></i></a> '
         //             );
         //             $i++;
         //         }
         //     } else {
-        //         $results['data'] = array();   
+        //         $results['data'] = array();
         //     }
         //     echo json_encode($results);
         //     die();
@@ -537,30 +544,30 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $query = $wpdb->get_row("SELECT timeTableName, courseId, batch_date, start_time, end_time, created_at, batch_id, subject_id, topic_id, staff_id, room_id FROM {$wpdb->prefix}wl_min_timetable WHERE id=$id AND institute_id=$institute_id");
             $courseId   = $query->courseId;
             $subject_id = $query->subject_id;
-            $room_id    = $query->room_id;     
-            $topic_id   = $query->topic_id;     
-            $staff_id   = $query->staff_id;     
-            $batch_id   = $query->batch_id;     
+            $room_id    = $query->room_id;
+            $topic_id   = $query->topic_id;
+            $staff_id   = $query->staff_id;
+            $batch_id   = $query->batch_id;
             $batch_date = $query->batch_id;
             $start_time = $query->start_time;
             $end_time   = $query->end_time;
 
             $query_subjects = "";
             $query_topics   = "";
-            ob_start(); 
+            ob_start();
             ?>
-            <?php 
-                wp_nonce_field( 'update-timetable', 'update-timetable' );                           
+            <?php
+                wp_nonce_field( 'update-timetable', 'update-timetable' );
             ?>
             <input type="hidden" name="timetableid" value="<?php echo $id; ?>" />
-            <div class="row">                                
+            <div class="row">
                 </div>
-            <div class="wlim-add-topic-form-fields">                            
+            <div class="wlim-add-topic-form-fields">
                 <div class="row">
                     <div class="col-6 form-group">
                         <label for="wlim-institute-name" class="col-form-label">
                             <?php esc_html_e('Institute Name', WL_MIM_DOMAIN); ?>
-                        </label>                                
+                        </label>
                         <input type="text" class="form-control" for="wlin-institute-name" value="<?php echo $institute_name; ?>" disabled />
                         <input type="hidden" name="instituteId" id="instituteId" class="form-control" value="<?php echo $institute_id; ?>" />
                     </div>
@@ -574,17 +581,17 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col">                                
+                    <div class="form-group col">
                         <label for="ttcourseID" class="col-form-label">
                             <?php _e( 'Course', WL_MIM_DOMAIN ); ?>
-                        </label> 
-                        <?php 
+                        </label>
+                        <?php
                             $courses = WL_MIM_Helper::getCourses();
-                        ?>                              
+                        ?>
                         <select name="ttcourseID" id="ttcourseID" class="form-control">
                             <option value=""><?php esc_html_e('Select a Course', WL_MIM_DOMAIN); ?></option>
-                            <?php 
-                                    foreach($courses as $key=>$value) {                                        
+                            <?php
+                                    foreach($courses as $key=>$value) {
                                     ?>
                                     <option value="<?php echo $value->id; ?>" <?php selected(  $courseId, $value->id ); ?>><?php esc_html_e($value->course_name, WL_MIM_DOMAIN); echo $courseID; ?></option>
                                     <?php
@@ -592,18 +599,18 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                             ?>
                         </select>
                     </div>
-                </div>                            
+                </div>
                 <div class="row">
-                    <div class="form-group col">                                
+                    <div class="form-group col">
                         <label for="ttbatchID" class="col-form-label">
                             <?php _e( 'Batch', WL_MIM_DOMAIN ); ?>
-                        </label> 
-                        <?php 
+                        </label>
+                        <?php
                             $batches = WL_MIM_Helper::get_batches_by_course_id($courseId);
-                        ?>                              
+                        ?>
                         <select name="ttbatchID" id="ttbatchID" class="form-control ">
                             <option value="">-------- <?php esc_html_e("Select Batch", WL_MIM_DOMAIN); ?> --------</option>
-                            <?php 
+                            <?php
                                 foreach( $batches AS $value ) {
                                     ?>
                                         <option value="<?php $value->id; ?>" <?php selected( $batch_id, $value->id ); ?>><?php echo $value->batch_name; ?></option>
@@ -614,16 +621,16 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col">                                
+                    <div class="form-group col">
                         <label for="ttsubID" class="col-form-label">
                             <?php _e( 'Subjects', WL_MIM_DOMAIN ); ?>
                         </label>
                         <?php
-                             $subjectsvalues = WL_MIM_Helper::get_subjects_by_courseID( $courseId ); 
+                             $subjectsvalues = WL_MIM_Helper::get_subjects_by_courseID( $courseId );
                         ?>
                         <select name="ttsubID" id="ttsubID" class="form-control">
                             <option value="">-------- <?php esc_html_e("Select Subject", WL_MIM_DOMAIN); ?> --------</option>
-                            <?php 
+                            <?php
                                 foreach( $subjectsvalues as $subvalue ) {
                                     ?>
                                     <option value="<?php echo $subvalue->id; ?>" <?php selected( $subject_id, $subvalue->id ); ?>>
@@ -631,22 +638,22 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                                     </option>
                                     <?php
                                 }
-                            ?>                            
+                            ?>
                         </select>
                     </div>
-                </div>                           
-                
+                </div>
+
                 <div class="row">
-                    <div class="form-group col">                                
+                    <div class="form-group col">
                         <label for="tttopicID" class="col-form-label">
                             <?php _e( 'Topic', WL_MIM_DOMAIN ); ?>
                         </label>
-                        <?php 
-                            $topicSubject = WL_MIM_Helper::get_topics_by_subjectID( $subject_id ); 
+                        <?php
+                            $topicSubject = WL_MIM_Helper::get_topics_by_subjectID( $subject_id );
                         ?>
                         <select name="tttopicID" id="tttopicID" class="form-control">
                             <option value="">-------- <?php esc_html_e("Select Topic", WL_MIM_DOMAIN); ?> --------</option>
-                            <?php 
+                            <?php
                                 foreach( $topicSubject as $topicvalue ) {
                                     ?>
                                         <option value="<?php echo $topicvalue->id; ?>" <?php selected( $topic_id, $topicvalue->id ); ?>><?php echo $topicvalue->topic_name; ?></option>
@@ -658,22 +665,22 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 </div>
 
                 <div class="row">
-                    <div class="form-group col">                                
+                    <div class="form-group col">
                         <label for="ttteacherID" class="col-form-label">
                             <?php _e( 'Teacher', WL_MIM_DOMAIN ); ?>
                         </label>
-                        <?php 
-                            $staffSubject = WL_MIM_Helper::get_staff_by_subjectID( $subject_id ); 
-                            $staffid_Arr = unserialize($staffSubject->staffId);                            
+                        <?php
+                            $staffSubject = WL_MIM_Helper::get_staff_by_subjectID( $subject_id );
+                            $staffid_Arr = unserialize($staffSubject->staffId);
                         ?>
                         <select name="ttteacherID" id="ttteacherID" class="form-control">
                             <option value="">-------- <?php esc_html_e('Select a Teacher', WL_MIM_DOMAIN); ?> --------</option>
-                            <?php 
+                            <?php
                                 for( $i=0; $i<count($staffid_Arr); $i++ ) {
                                     $staff_data = WL_MIM_Helper::get_staffName_by_staffID( $staffid_Arr[$i] );
                                     ?>
                                         <option value="<?php echo $staffid_Arr[$i]; ?>" <?php selected( $staff_id, $staffid_Arr[$i] ); ?>>
-                                        <?php                                            
+                                        <?php
                                            echo $staff_data->first_name . " " . $staff_data->last_name;
                                         ?>
                                         </option>
@@ -685,22 +692,22 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-4">                                
+                    <div class="form-group col-4">
                         <label for="wlim_tt_class_date" class="col-form-label">
                             <?php _e( 'Date', WL_MIM_DOMAIN ); ?>
-                        </label>                               
+                        </label>
                         <input type="date" class="form-control" name="wlim_tt_class_date" id="wlim_tt_class_date" value="<?php echo $batch_date; ?>" />
                     </div>
-                    <div class="form-group col-4">                                
+                    <div class="form-group col-4">
                         <label for="wlim_tt_class_startTime" class="col-form-label">
                             <?php _e( 'Start Time', WL_MIM_DOMAIN ); ?>
-                        </label>                               
+                        </label>
                         <input type="time" class="form-control" name="wlim_tt_class_startTime" id="wlim_tt_class_startTime" value="<?php echo $start_time; ?>" />
                     </div>
-                    <div class="form-group col-4">                                
+                    <div class="form-group col-4">
                         <label for="wlim_tt_class_endTime" class="col-form-label">
                             <?php _e( 'End Time', WL_MIM_DOMAIN ); ?>
-                        </label>                                    
+                        </label>
                         <input type="time" class="form-control" name="wlim_tt_class_endTime" id="wlim_tt_class_endTime" value="<?php echo $end_time; ?>" />
                     </div>
                 </div>
@@ -731,7 +738,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $wlim_tt_class_date      = isset( $_POST['wlim_tt_class_date'] ) ? sanitize_text_field( $_POST['wlim_tt_class_date'] ) : null;
             $wlim_tt_class_startTime = isset( $_POST['wlim_tt_class_startTime'] ) ? sanitize_text_field( $_POST['wlim_tt_class_startTime'] ) : null;
             $wlim_tt_class_endTime   = isset( $_POST['wlim_tt_class_endTime'] ) ? sanitize_text_field( $_POST['wlim_tt_class_endTime'] ) : null;
-            
+
             /* Validations */
             $errors = array();
             // if ( empty( $timeTableName ) ) {
@@ -770,9 +777,9 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             //     $errors['wlim_tt_class_endTime'] = esc_html__( 'Please select a .', WL_MIM_DOMAIN );
             // }
 
-           
+
             $errors_count = count($errors);
-            if( isset( $errors_count )  && $errors_count < 1) {  
+            if( isset( $errors_count )  && $errors_count < 1) {
                 try {
                     $wpdb->query('BEGIN;');
                     //data
@@ -789,19 +796,19 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         'batch_date'  => $wlim_tt_class_date,
                         'start_time'  => $wlim_tt_class_startTime,
                         'end_time'    => $wlim_tt_class_endTime,
-                        'is_active'   => '1',                        
+                        'is_active'   => '1',
                         'updated_at'  => $created_at
                     );
-                    
+
                     $success = $wpdb->update( "{$wpdb->prefix}wl_min_timetable", $timeTable_data, array(
                         'id' => $timetableid,
                     ) );
-                    // $previousaddedID = $wpdb->insert_id;                   
+                    // $previousaddedID = $wpdb->insert_id;
                     if (false === $success) {
                         throw new Exception($wpdb->last_error);
-                    }                   
+                    }
                     $wpdb->query('COMMIT;');
-                    
+
                     wp_send_json_success( array('message'=>'Time Table Updated') );
                 } catch (Exception $exception) {
                     $wpdb->query('ROLLBACK;');
@@ -809,7 +816,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 }
             } else {
                 wp_send_json_error($errors);
-            }            
+            }
         }
 
         //delete time table
@@ -823,7 +830,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $institute_id = WL_MIM_Helper::get_current_institute_id();
 
             try {
-                $wpdb->query( 'BEGIN;' );    
+                $wpdb->query( 'BEGIN;' );
                 /*$success = $wpdb->update( "{$wpdb->prefix}wl_min_topic",
                     array(
                         'is_deleted' => 1,
@@ -836,7 +843,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 if ( ! $success ) {
                     throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
                 }
-    
+
                 $wpdb->query( 'COMMIT;' );
                 wp_send_json_success( array( 'message' => esc_html__( 'Time Table removed successfully.', WL_MIM_DOMAIN ) ) );
             } catch ( Exception $exception ) {
@@ -866,10 +873,10 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             /*$timeTableName = $query->timeTableName;
             $courseId      = $query->courseId;
             $subject_id    = $query->subject_id;
-            $room_id       = $query->room_id;     
-            $topic_id      = $query->topic_id;     
-            $staff_id      = $query->staff_id;     
-            $batch_id      = $query->batch_id;     
+            $room_id       = $query->room_id;
+            $topic_id      = $query->topic_id;
+            $staff_id      = $query->staff_id;
+            $batch_id      = $query->batch_id;
             $batch_date    = $query->batch_id;
             $start_time    = $query->start_time;
             $end_time      = $query->end_time;*/
@@ -877,7 +884,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $i = 1;
                 $tableData = [];
                 foreach ($query as $row) {
-                    $sno           = $i;                    
+                    $sno           = $i;
                     $id            = $row->id;
                     $courseID      = $row->courseId;
                     $timetablename = $row->timeTableName;
@@ -891,23 +898,23 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                     //     esc_html($timetablename),
                     //     '',
                     //     $date,
-                    //     $start_time                      
+                    //     $start_time
                     // );
                     $results['data'][] = $tableData;
                     $i++;
                 }
             } else {
-                $results['data'] = array();   
+                $results['data'] = array();
             }
             echo json_encode($results);
-            die();            
+            die();
         }
 
         public static function get_room() {
             self::check_permission();
             if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'wl-ima' ) ) {
                 die();
-            }            
+            }
             global $wpdb;
             $institute_id   = WL_MIM_Helper::get_current_institute_id();
             $institute_name = WL_MIM_Helper::get_current_institute_name();
@@ -928,8 +935,8 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $errors['wlim_tt_class_endTime'] = esc_html__( 'Please select the end time.', WL_MIM_DOMAIN );
             }
             $errors_count = count($errors);
-            if( isset( $errors_count )  && $errors_count < 1) {                
-                $query = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_room WHERE id NOT IN (SELECT room_id FROM {$wpdb->prefix}wl_min_timetable WHERE batch_date = '$classDate' AND start_time BETWEEN '$starttime' AND '$endtime')");               
+            if( isset( $errors_count )  && $errors_count < 1) {
+                $query = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_room WHERE id NOT IN (SELECT room_id FROM {$wpdb->prefix}wl_min_timetable WHERE batch_date = '$classDate' AND start_time BETWEEN '$starttime' AND '$endtime')");
                 $data['roomlist']   = $query;
             } else {
                 $results['data'] = [];
@@ -944,24 +951,24 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
         // self::check_permission();
         if ( ! wp_verify_nonce( $_REQUEST['security'], 'wl-ima' ) ) {
             die();
-        }            
+        }
         global $wpdb;
         $institute_id              = WL_MIM_Helper::get_current_institute_id();
         $general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
-        $user_id = get_current_user_id();           
+        $user_id = get_current_user_id();
 
         $student_id = $wpdb->get_row("SELECT id FROM {$wpdb->prefix}wl_min_students WHERE `user_id`=$user_id;");
         $student_id = $student_id->id;
 
         $batch_idD = $wpdb->get_row( "SELECT batch_id FROM {$wpdb->prefix}wl_min_students WHERE id=$student_id" );
         $batch_idStudent = $batch_idD->batch_id;
-        
+
         $get_timeTableD = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_timetable WHERE batch_id=$batch_idStudent" );
         if(count($get_timeTableD) != 0) {
             $i = 1;
             foreach ($get_timeTableD as $row) {
-                $sno           = $i;                    
+                $sno           = $i;
                 $id            = $row->id;
                 $courseID      = WL_MIM_Helper::get_course($row->courseId);
                 $courseName    = $courseID->course_name . " (" . $courseID->course_code . ")";
@@ -974,7 +981,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $subID         = $subjectID->id;
                 $staff_nameR   = WL_MIM_Helper::get_staffName_by_staffID($row->staff_id);
                 $staff_name    = $staff_nameR->first_name . " " . $staff_nameR->last_name;
-                $timetablename = $row->timeTableName;                
+                $timetablename = $row->timeTableName;
                 $date          = date_format( date_create( $row->batch_date ), "d-m-Y" );
                 $topic_id      = WL_MIM_Helper::getTopicName($row->topic_id);
                 $topicID       = $topic_id->id;
@@ -988,8 +995,8 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 //$added_by     = ( $user = get_userdata( $row->added_by ) ) ? $user->user_login : '-';
                 $remark        = '';
                 $savedRemark   = $row->remark;
-                $remarkControl = WL_MIM_Helper::controlRemark($id)->MATCHED; 
-                $nonce         = wp_create_nonce( "sRemark" );                   
+                $remarkControl = WL_MIM_Helper::controlRemark($id)->MATCHED;
+                $nonce         = wp_create_nonce( "sRemark" );
                 if($remarkControl == 1) {
                     $remark = "<form id='studentRemarkPost' method='post'><input type='text' class='form-control' name='studentRemark' id='studentRemark' value='" . $savedremark . "' /><input  type='hidden' value='". $nonce ."' name='sRemark' /><input type='hidden' name='timeTableID' id='timeTableID' value='".$id ."' /><input type='hidden' name='batch_id' id='batch_id' value='".$batchID ."' /><input type='hidden' name='subjectID' id='subjectID' value='".$subID ."' /><input type='hidden' name='topicID' id='topicID' value='".$topicID ."' /><input type='hidden' name='batch_date' id='batch_date' value='".$row->batch_date ."' /><button class='btn btn-success' id='saveRemark'>Save</button></form>";
                 } elseif($remarkControl == 0) {
@@ -999,7 +1006,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $results['data'][] = array(
                     $sno,
                     esc_html($timetablename),
-                    $room_id->room_name, 
+                    $room_id->room_name,
                     $courseName,
                     $batch_name,
                     $subjectName,
@@ -1009,36 +1016,36 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                     $date,
                     $start_time,
                     $end_time,
-                    $remark                        
+                    $remark
                 );
                 $i++;
             }
         } else {
-            $results['data'] = array();   
+            $results['data'] = array();
         }
         echo json_encode($results);
         die();
     }
 
-    public static function getStudentTimeTableremark( $batch_date, $student_id, $time_table_id, $topicID, $batchID) {                  
+    public static function getStudentTimeTableremark( $batch_date, $student_id, $time_table_id, $topicID, $batchID) {
         global $wpdb;
         $institute_id              = WL_MIM_Helper::get_current_institute_id();
         $general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
-        $user_id = get_current_user_id();         
+        $user_id = get_current_user_id();
         $row = $wpdb->get_row("SELECT remark FROM {$wpdb->prefix}wl_min_studentremark WHERE batch_date='$batch_date' AND `batch_id`='$batchID' AND `topic_id`='$topicID' AND `student_id`='$student_id' AND `timeTableId`='$time_table_id'");
 
 		if (!$row) {
 			return null;
 		}
 
-		return $row->remark;        
+		return $row->remark;
     }
 
         /* Check permission to manage course */
         private static function check_permission() {
             $institute_id = WL_MIM_Helper::get_current_institute_id();
-            if ( ! current_user_can( 'wl_min_manage_timetable' ) || ! $institute_id ) {
+            if ( ! current_user_can( 'wl_min_view_timetable' ) || ! $institute_id ) {
                 die();
             }
             global $wpdb;
@@ -1051,6 +1058,6 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             //     if($institute) {
             //         $can_delete_timetable = (bool) $institute->can_timetable;
             //     }
-            }            
+            }
         }
     }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('ABSPATH') || die();
 require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_Helper.php');
 require_once(WL_MIM_PLUGIN_DIR_PATH . 'admin/inc/helpers/WL_MIM_SettingHelper.php');
@@ -147,8 +147,8 @@ if (empty($general_institute['institute_name'])) {
                                 <tr>
                                     <th><input type="checkbox" name="select_all" id="wl-mim-select-all" value="1"></th>
                                     <th scope="col"><?php esc_html_e( 'Time Table Name', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'Studio', WL_MIM_DOMAIN); ?></th>                                    
-                                    <th scope="col"><?php esc_html_e( 'Course', WL_MIM_DOMAIN); ?></th>                                    
+                                    <th scope="col"><?php esc_html_e( 'Studio', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Course', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Batch', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Subject', WL_MIM_DOMAIN ); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Topic', WL_MIM_DOMAIN ); ?></th>
@@ -182,49 +182,49 @@ if (empty($general_institute['institute_name'])) {
                     </button>
                 </div>
                 <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_add_timetable">
-                    <div class="modal-body pr-4 pl-4">                        
-                        <?php 
-                            wp_nonce_field( 'add-timetable', 'add-timetable' );                           
+                    <div class="modal-body pr-4 pl-4">
+                        <?php
+                            wp_nonce_field( 'add-timetable', 'add-timetable' );
                         ?>
                         <div class="row"></div>
                         <!-- Date and time -->
                         <div class="row">
-                            <div class="form-group col-4">                                
+                            <div class="form-group col-4">
                                 <label for="wlim_tt_class_date" class="col-form-label">
                                     <?php _e( 'Date', WL_MIM_DOMAIN ); ?>
-                                </label>                               
+                                </label>
                                 <input type="date" class="form-control" name="wlim_tt_class_date" id="wlim_tt_class_date" />
                             </div>
-                            <div class="form-group col-4">                                
+                            <div class="form-group col-4">
                                 <label for="wlim_tt_class_startTime" class="col-form-label">
                                     <?php _e( 'Start Time', WL_MIM_DOMAIN ); ?>
-                                </label>                               
+                                </label>
                                 <input type="time" class="form-control" name="wlim_tt_class_startTime" id="wlim_tt_class_startTime" />
                             </div>
-                            <div class="form-group col-4">                                
+                            <div class="form-group col-4">
                                 <label for="wlim_tt_class_endTime" class="col-form-label">
                                     <?php _e( 'End Time', WL_MIM_DOMAIN ); ?>
-                                </label>                                    
+                                </label>
                                 <input type="time" class="form-control" name="wlim_tt_class_endTime" id="wlim_tt_class_endTime" />
                             </div>
                         </div>
                         <!-- room list -->
                         <div class="row">
-                                <div class="form-group col">                                
+                                <div class="form-group col">
                                     <label for="ttroomID" class="col-form-label">
                                         <?php _e( 'Studio', WL_MIM_DOMAIN ); ?>
-                                    </label>                                                                  
+                                    </label>
                                     <select name="ttroomID" id="ttroomID" class="form-control" data-live-search="true">
-                                        <option value=""><?php esc_html_e('Select a Studio', WL_MIM_DOMAIN); ?></option>                                        
+                                        <option value=""><?php esc_html_e('Select a Studio', WL_MIM_DOMAIN); ?></option>
                                     </select>
                                 </div>
                             </div>
-                        <div class="wlim-add-topic-form-fields">                            
+                        <div class="wlim-add-topic-form-fields">
                             <div class="row">
                                 <div class="col-6 form-group">
                                     <!--<label for="wlim-institute-name" class="col-form-label">
                                         <?php //esc_html_e('Institute Name', WL_MIM_DOMAIN); ?>
-                                    </label>                                
+                                    </label>
                                      <input type="text" class="form-control" for="wlin-institute-name" value="<?php echo $institute_name; ?>" disabled /> -->
                                     <input type="hidden" name="instituteId" id="instituteId" class="form-control" value="<?php echo $institute_id; ?>" />
                                 </div>
@@ -238,17 +238,17 @@ if (empty($general_institute['institute_name'])) {
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col">                                
+                                <div class="form-group col">
                                     <label for="ttcourseID" class="col-form-label">
                                         <?php _e( 'Course', WL_MIM_DOMAIN ); ?>
-                                    </label> 
-                                    <?php 
+                                    </label>
+                                    <?php
                                         $courses = WL_MIM_Helper::getCourses();
-                                    ?>                              
+                                    ?>
                                     <select name="ttcourseID" id="ttcourseID" class="form-control">
                                         <option value=""><?php esc_html_e('Select a Course', WL_MIM_DOMAIN); ?></option>
-                                        <?php 
-                                             foreach($courses as $key=>$value) {                                        
+                                        <?php
+                                             foreach($courses as $key=>$value) {
                                                 ?>
                                                 <option value="<?php echo $value->id; ?>"><?php esc_html_e($value->course_name, WL_MIM_DOMAIN); ?></option>
                                                 <?php
@@ -256,32 +256,32 @@ if (empty($general_institute['institute_name'])) {
                                         ?>
                                     </select>
                                 </div>
-                            </div>                            
+                            </div>
                             <div class="row">
-                                <div class="form-group col">                                
+                                <div class="form-group col">
                                     <label for="ttbatchID" class="col-form-label">
                                         <?php _e( 'Batch', WL_MIM_DOMAIN ); ?>
-                                    </label> 
-                                    <?php 
-                                        $batches = WL_MIM_Helper::getBatch();                                       
-                                    ?>                              
+                                    </label>
+                                    <?php
+                                        $batches = WL_MIM_Helper::getBatch();
+                                    ?>
                                     <select name="ttbatchID" id="ttbatchID" class="form-control "></select>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col">                                
+                                <div class="form-group col">
                                     <label for="ttsubID" class="col-form-label">
                                         <?php _e( 'Subjects', WL_MIM_DOMAIN ); ?>
                                     </label>
                                     <select name="ttsubID" id="ttsubID" class="form-control"></select>
                                 </div>
-                            </div>                           
-                            
+                            </div>
+
                             <div class="row">
-                                <div class="form-group col">                                
+                                <div class="form-group col">
                                     <label for="tttopicID" class="col-form-label">
                                         <?php _e( 'Topic', WL_MIM_DOMAIN ); ?>
-                                    </label>                               
+                                    </label>
                                     <select name="tttopicID" id="tttopicID" class="form-control">
                                     <option value="">-------- <?php esc_html_e("Select Topic", WL_MIM_DOMAIN); ?> --------</option>
                                     </select>
@@ -289,10 +289,10 @@ if (empty($general_institute['institute_name'])) {
                             </div>
 
                             <div class="row">
-                                <div class="form-group col">                                
+                                <div class="form-group col">
                                     <label for="ttteacherID" class="col-form-label">
                                         <?php _e( 'Teacher', WL_MIM_DOMAIN ); ?>
-                                    </label>                               
+                                    </label>
                                     <select name="ttteacherID" id="ttteacherID" class="form-control ">
                                         <option value="">-------- <?php esc_html_e('Select a Teacher', WL_MIM_DOMAIN); ?> --------</option>
                                     </select>
@@ -319,8 +319,8 @@ if (empty($general_institute['institute_name'])) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_update_timetable">             
-                <?php                     
+                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_update_timetable">
+                <?php
                     wp_nonce_field( 'update-timetable', 'update-timetable' );
                 ?>
                 <div class="modal-body pr-4 pl-4" id="fetch_timetable"></div>
@@ -343,8 +343,8 @@ if (empty($general_institute['institute_name'])) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_view_timetable">             
-                <?php                     
+                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_view_timetable">
+                <?php
                     // wp_nonce_field( 'View-timetable', 'view-timetable' );
                 ?>
                 <div class="modal-body pr-4 pl-4" id="view_saved_timetable">
@@ -356,7 +356,7 @@ if (empty($general_institute['institute_name'])) {
                         <thead>
                             <tr>
                                 <th><input type="checkbox" name="select_all" id="wl-mim-select-all" value="1"></th>
-                                <th scope="col"><?php esc_html_e('Time Table Name', WL_MIM_DOMAIN); ?></th>                                                             
+                                <th scope="col"><?php esc_html_e('Time Table Name', WL_MIM_DOMAIN); ?></th>
                                 <th scope="col"><?php esc_html_e('Date', WL_MIM_DOMAIN); ?></th>
                                 <th scope="col"><?php esc_html_e('Start Time', WL_MIM_DOMAIN); ?></th>
                             </tr>
