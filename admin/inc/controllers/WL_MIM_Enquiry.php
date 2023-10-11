@@ -452,7 +452,7 @@ class WL_MIM_Enquiry {
 			</select>
 		</div>
 
-		
+
         <div class="row">
             <div class="col-sm-6 form-group">
                 <label for="wlim-enquiry-first_name_update" class="col-form-label">* <?php esc_html_e( 'First Name', WL_MIM_DOMAIN ); ?>:</label>
@@ -488,6 +488,16 @@ class WL_MIM_Enquiry {
                 <input name="mother_name" type="text" class="form-control" id="wlim-enquiry-mother_name_update" placeholder="<?php esc_html_e( "Mother's Name", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->mother_name ); ?>">
             </div>
         </div>
+		<div class="row">
+		<div class="col-sm-6 form-group">
+                <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Father Phone', WL_MIM_DOMAIN ); ?>:</label>
+                <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Father Phone", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->phone ); ?>">
+            </div>
+			 <div class="col-sm-6 form-group">
+                <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Mother Phone', WL_MIM_DOMAIN ); ?>:</label>
+                <input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Mother Phone", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->phone2 ); ?>">
+            </div>
+		</div>
         <div class="row">
             <div class="col-sm-6 form-group">
                 <label for="wlim-enquiry-address_update" class="col-form-label"><?php esc_html_e( 'Address', WL_MIM_DOMAIN ); ?> :</label>
@@ -522,14 +532,7 @@ class WL_MIM_Enquiry {
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:</label>
-                <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->phone ); ?>">
-            </div>
-			 <div class="col-sm-6 form-group">
-                <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Second Phone', WL_MIM_DOMAIN ); ?>:</label>
-                <input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Second Phone", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->phone2 ); ?>">
-            </div>
+
             <div class="col-sm-6 form-group">
                 <label for="wlim-enquiry-email_update" class="col-form-label"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>:</label>
                 <input name="email" type="text" class="form-control" id="wlim-enquiry-email_update" placeholder="<?php esc_html_e( "Email", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr( $row->email ); ?>">
@@ -591,7 +594,7 @@ class WL_MIM_Enquiry {
             <div class="col-md-6">
 				<div class="form-group">
 					<label for="wlim-enquiry-follow_up_date" class="col-form-label"><?php esc_html_e( 'Follow Up Date', WL_MIM_DOMAIN ); ?>:</label>
-					<input name="follow_up_update_date" type="text" class="form-control wlim-enquiry-follow_up_date" id="wlim-enquiry-follow_up_date" value="<?php echo esc_attr( $row->follow_up_date ); ?>"> 
+					<input name="follow_up_update_date" type="text" class="form-control wlim-enquiry-follow_up_date" id="wlim-enquiry-follow_up_date" value="<?php echo esc_attr( $row->follow_up_date ); ?>">
 				</div>
             </div>
             <div class="col-md-6">
@@ -620,7 +623,7 @@ class WL_MIM_Enquiry {
 		<?php $html         = ob_get_clean();
 		$wlim_date_selector = '.wlim-date_of_birth_update';
 		$wlim_follow_selector = '.wlim-enquiry-follow_up_date';
-	
+
 
 		$json = json_encode( array(
 			'wlim_date_selector'  => esc_attr( $wlim_date_selector ),

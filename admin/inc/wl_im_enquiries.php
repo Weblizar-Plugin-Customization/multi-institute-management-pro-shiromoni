@@ -90,7 +90,7 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                 <div class="row">
                     <div class="col">
                         <table class="table table-hover table-striped table-bordered" id="enquiry-table" data-follow-up="<?php echo esc_attr( $follow_up ); ?>">
-                        <?php 
+                        <?php
                         $entity = 'inquiry';
                         require( WL_MIM_PLUGIN_DIR_PATH . 'admin/inc/controllers/bulk_action.php' ); ?>
                             <thead>
@@ -137,7 +137,7 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                     <input type="hidden" name="add-enquiry" value="<?php echo esc_attr( $nonce ); ?>">
                     <input type="hidden" name="action" value="wl-mim-add-enquiry">
                     <div class="wlim-add-enquiry-form-fields">
-                        
+
 						<?php
 						if ( count( $wlim_institute_active_categories ) > 0 ) { ?>
                             <div class="form-group">
@@ -182,7 +182,7 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                                 <?php endfor; ?>
                             </select>
                         </div>
-                        <div class="row">                        
+                        <div class="row">
                             <div class="col-sm-6 form-group">
                                 <label for="wlim-enquiry-first_name" class="col-form-label">* <?php esc_html_e( 'First Name', WL_MIM_DOMAIN ); ?>:</label>
                                 <input name="first_name" type="text" class="form-control" id="wlim-enquiry-first_name" placeholder="<?php esc_html_e( "First Name", WL_MIM_DOMAIN ); ?>">
@@ -210,6 +210,16 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                             </div>
                         </div>
                         <div class="row">
+                            <!-- <div class="col-sm-6 form-group">
+                                <label for="wlim-enquiry-phone" class="col-form-label">* <?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>">
+                            </div> -->
+                            <div class="col-sm-6 form-group">
+                                <label for="wlim-enquiry-email" class="col-form-label"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>:</label>
+                                <input name="email" type="text" class="form-control" id="wlim-enquiry-email" placeholder="<?php esc_html_e( "Email", WL_MIM_DOMAIN ); ?>">
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6 form-group">
                                 <label for="wlim-enquiry-father_name" class="col-form-label"><?php esc_html_e( "Father's Name", WL_MIM_DOMAIN ); ?>:</label>
                                 <input name="father_name" type="text" class="form-control" id="wlim-enquiry-father_name" placeholder="<?php esc_html_e( "Father's Name", WL_MIM_DOMAIN ); ?>">
@@ -219,6 +229,16 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                                 <input name="mother_name" type="text" class="form-control" id="wlim-enquiry-mother_name" placeholder="<?php esc_html_e( "Mother's Name", WL_MIM_DOMAIN ); ?>">
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                    <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Father Phone', WL_MIM_DOMAIN ); ?>:</label>
+                                    <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Father Phone", WL_MIM_DOMAIN ); ?>" >
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="wlim-enquiry-phone_update" class="col-form-label">* <?php esc_html_e( 'Mother Phone', WL_MIM_DOMAIN ); ?>:</label>
+                                    <input name="phone2" type="text" class="form-control" id="wlim-enquiry-phone_update" placeholder="<?php esc_html_e( "Mother Phone", WL_MIM_DOMAIN ); ?>" >
+                                </div>
+                            </div>
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <label for="wlim-enquiry-address" class="col-form-label"><?php esc_html_e( 'Address', WL_MIM_DOMAIN ); ?>:</label>
@@ -251,16 +271,7 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                                 <input name="nationality" type="text" class="form-control" id="wlim-enquiry-nationality" placeholder="<?php esc_html_e( "Nationality", WL_MIM_DOMAIN ); ?>">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-phone" class="col-form-label">* <?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="phone" type="text" class="form-control" id="wlim-enquiry-phone" placeholder="<?php esc_html_e( "Phone", WL_MIM_DOMAIN ); ?>">
-                            </div>
-                            <div class="col-sm-6 form-group">
-                                <label for="wlim-enquiry-email" class="col-form-label"><?php esc_html_e( 'Email', WL_MIM_DOMAIN ); ?>:</label>
-                                <input name="email" type="text" class="form-control" id="wlim-enquiry-email" placeholder="<?php esc_html_e( "Email", WL_MIM_DOMAIN ); ?>">
-                            </div>
-                        </div>
+
                         <div class="row">
                             <div class="col-sm-6 form-group">
                                 <label for="wlim-enquiry-qualification" class="col-form-label"><?php esc_html_e( 'Qualification', WL_MIM_DOMAIN ); ?>:</label>
@@ -301,13 +312,13 @@ if ( isset( $_GET['follow_up'] ) && ! empty( $_GET['follow_up'] ) ) {
                             <label for="wlim-enquiry-message" class="col-form-label"><?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?>:</label>
                             <textarea name="message" class="form-control" rows="3" id="wlim-enquiry-message" placeholder="<?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>"></textarea>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-6">
                                  <div class="form-group">
                                    <label for="wlim-enquiry-follow_up_date" class="col-form-label"><?php esc_html_e( 'Follow Up Date', WL_MIM_DOMAIN ); ?>:</label>
                                         <input name="follow_up_date" type="text" class="form-control wlim-follow_up_date" id="wlim-enquiry-follow_up_date" placeholder="<?php esc_html_e( "Follow Up Date", WL_MIM_DOMAIN ); ?>">
-                                
+
                                 </div>
                             </div>
                             <div class="col-md-6">
