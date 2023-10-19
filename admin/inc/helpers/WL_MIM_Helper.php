@@ -517,6 +517,13 @@ class WL_MIM_Helper {
 			'student_registered'        => esc_html__('Student registered confirmation to student', WL_MIM_DOMAIN),
 			'fees_submitted'            => esc_html__('Fees submitted confirmation to student', WL_MIM_DOMAIN),
 			'student_birthday'          => esc_html__('Birthday message to student', WL_MIM_DOMAIN),
+			'reminder'                  => esc_html__('Reminder Template (Notifications)', WL_MIM_DOMAIN),
+			'reminder_two_days'         => esc_html__('Reminder after two days (EMI)', WL_MIM_DOMAIN),
+			'reminder_three_days'       => esc_html__('Reminder before two days (EMI)', WL_MIM_DOMAIN),
+			'student_absent'            => esc_html__('Student absent (Attendance)', WL_MIM_DOMAIN),
+			'time_table'                => esc_html__('time table created', WL_MIM_DOMAIN),
+			'class_cancel'              => esc_html__('Class cancel notification', WL_MIM_DOMAIN),
+			'batch_change'              => esc_html__('Batch change', WL_MIM_DOMAIN),
 		);
 	}
 

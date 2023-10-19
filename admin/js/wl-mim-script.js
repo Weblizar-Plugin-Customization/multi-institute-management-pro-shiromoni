@@ -486,66 +486,109 @@
             }
         });
 
-        /* On selecting sms template */
-        var smsEnquiryReceived = jQuery('.wlmim-sms-enquiry_received');
-        var smsEnquiryReceivedToAdmin = jQuery('.wlmim-sms-enquiry_received_to_admin');
-        var smsStudentregistered = jQuery('.wlmim-sms-student_registered');
-        var smsFeesSubmitted = jQuery('.wlmim-sms-fees_submitted');
-        var smsStudentBirthday = jQuery('.wlmim-sms-student_birthday');
+       // Select SMS templates
+var smsEnquiryReceived             = jQuery('.wlmim-sms-enquiry_received');
+var smsEnquiryReceivedToAdmin      = jQuery('.wlmim-sms-enquiry_received_to_admin');
+var smsStudentRegistered           = jQuery('.wlmim-sms-student_registered');
+var smsFeesSubmitted               = jQuery('.wlmim-sms-fees_submitted');
+var smsStudentBirthday             = jQuery('.wlmim-sms-student_birthday');
+var smsStudentReminderNotification = jQuery('.wlmim-sms-student_reminder_notification');
+var smsStudentReminderTwo          = jQuery('.wlmim-sms-student_reminder_two_days');
+var smsStudentReminderThree        = jQuery('.wlmim-sms-student_reminder_three_days');
+var smsStudentAbsent               = jQuery('.wlmim-sms-student_absent');
+var smsStudentTimetable            = jQuery('.wlmim-sms-student_time_table');
+var smsStudentClassCancel          = jQuery('.wlmim-sms-student_class_cancel');
+var smsStudentBatchChange          = jQuery('.wlmim-sms-student_batch_change');
 
-        var smsTemplate = jQuery('#wlim-setting-sms_template').val();
+// Get the selected SMS template
+var smsTemplate = jQuery('#wlim-setting-sms_template').val();
 
-        smsEnquiryReceived.hide();
-        smsEnquiryReceivedToAdmin.hide();
-        smsStudentregistered.hide();
-        smsFeesSubmitted.hide();
-        smsStudentBirthday.hide();
+// Hide all SMS templates initially
+smsEnquiryReceived.hide();
+smsEnquiryReceivedToAdmin.hide();
+smsStudentRegistered.hide();
+smsFeesSubmitted.hide();
+smsStudentBirthday.hide();
+smsStudentReminderNotification.hide();
+smsStudentReminderTwo.hide();
+smsStudentReminderThree.hide();
+smsStudentAbsent.hide();
+smsStudentTimetable.hide();
+smsStudentClassCancel.hide();
+smsStudentBatchChange.hide();
 
-        if (smsTemplate == 'enquiry_received') {
-            smsEnquiryReceived.show();
-        } else if (smsTemplate == 'enquiry_received_to_admin') {
-            smsEnquiryReceivedToAdmin.show();
-        } else if (smsTemplate == 'student_registered') {
-            smsStudentregistered.show();
-        } else if (smsTemplate == 'fees_submitted') {
-            smsFeesSubmitted.show();
-        } else if (smsTemplate == 'student_birthday') {
-            smsStudentBirthday.show();
-        }
+// Show the selected SMS template
+if (smsTemplate == 'enquiry_received') {
+    smsEnquiryReceived.show();
+} else if (smsTemplate == 'enquiry_received_to_admin') {
+    smsEnquiryReceivedToAdmin.show();
+} else if (smsTemplate == 'student_registered') {
+    smsStudentRegistered.show();
+} else if (smsTemplate == 'fees_submitted') {
+    smsFeesSubmitted.show();
+} else if (smsTemplate == 'student_birthday') {
+    smsStudentBirthday.show();
+} else if (smsTemplate == 'reminder') {
+    smsStudentReminderNotification.show();
+} else if (smsTemplate == 'reminder_two_days') {
+    smsStudentReminderNotification.show();
+} else if (smsTemplate == 'reminder_three_days') {
+    smsStudentReminderNotification.show();
+} else if (smsTemplate == 'student_absent') {
+    smsStudentReminderNotification.show();
+} else if (smsTemplate == 'time_table') {
+    smsStudentReminderNotification.show();
+} else if (smsTemplate == 'class_cancel') {
+    smsStudentReminderNotification.show();
+} else if (smsTemplate == 'batch_change') {
+    smsStudentReminderNotification.show();
+}
 
-        jQuery(document).on('change', '#wlim-setting-sms_template', function () {
-            if (this.value == 'enquiry_received') {
-                smsEnquiryReceivedToAdmin.hide();
-                smsStudentregistered.hide();
-                smsFeesSubmitted.hide();
-                smsStudentBirthday.hide();
-                smsEnquiryReceived.fadeIn();
-            } else if (this.value == 'enquiry_received_to_admin') {
-                smsEnquiryReceived.hide();
-                smsStudentregistered.hide();
-                smsFeesSubmitted.hide();
-                smsStudentBirthday.hide();
-                smsEnquiryReceivedToAdmin.fadeIn();
-            } else if (this.value == 'student_registered') {
-                smsEnquiryReceived.hide();
-                smsEnquiryReceivedToAdmin.hide();
-                smsFeesSubmitted.hide();
-                smsStudentBirthday.hide();
-                smsStudentregistered.fadeIn();
-            } else if (this.value == 'fees_submitted') {
-                smsEnquiryReceived.hide();
-                smsEnquiryReceivedToAdmin.hide();
-                smsStudentregistered.hide();
-                smsStudentBirthday.hide();
-                smsFeesSubmitted.fadeIn();
-            } else if (this.value == 'student_birthday') {
-                smsEnquiryReceived.hide();
-                smsEnquiryReceivedToAdmin.hide();
-                smsStudentregistered.hide();
-                smsFeesSubmitted.hide();
-                smsStudentBirthday.fadeIn();
-            }
-        });
+// Listen for changes in the SMS template selection
+jQuery(document).on('change', '#wlim-setting-sms_template', function () {
+    var selectedTemplate = this.value;
+
+    // Hide all templates
+    smsEnquiryReceived.hide();
+    smsEnquiryReceivedToAdmin.hide();
+    smsStudentRegistered.hide();
+    smsFeesSubmitted.hide();
+    smsStudentBirthday.hide();
+    smsStudentReminderNotification.hide();
+    smsStudentReminderTwo.hide();
+    smsStudentReminderThree.hide();
+    smsStudentAbsent.hide();
+    smsStudentTimetable.hide();
+    smsStudentClassCancel.hide();
+    smsStudentBatchChange.hide();
+
+    // Show the selected template
+    if (selectedTemplate == 'enquiry_received') {
+        smsEnquiryReceived.fadeIn();
+    } else if (selectedTemplate == 'enquiry_received_to_admin') {
+        smsEnquiryReceivedToAdmin.fadeIn();
+    } else if (selectedTemplate == 'student_registered') {
+        smsStudentRegistered.fadeIn();
+    } else if (selectedTemplate == 'fees_submitted') {
+        smsFeesSubmitted.fadeIn();
+    } else if (selectedTemplate == 'student_birthday') {
+        smsStudentBirthday.fadeIn();
+    } else if (selectedTemplate == 'reminder') {
+        smsStudentReminderNotification.fadeIn();
+    }else if (selectedTemplate == 'reminder_two_days') {
+        smsStudentReminderTwo.fadeIn();
+    }else if (selectedTemplate == 'reminder_three_days') {
+        smsStudentReminderThree.fadeIn();
+    }else if (selectedTemplate == 'student_absent') {
+        smsStudentAbsent.fadeIn();
+    }else if (selectedTemplate == 'time_table') {
+        smsStudentTimetable.fadeIn();
+    }else if (selectedTemplate == 'class_cancel') {
+        smsStudentClassCancel.fadeIn();
+    }else if (selectedTemplate == 'batch_change') {
+        smsStudentBatchChange.fadeIn();
+    }
+});
 
         /* Remove note */
         jQuery(document).on('click', '.wlmim-remove-note', function (e) {

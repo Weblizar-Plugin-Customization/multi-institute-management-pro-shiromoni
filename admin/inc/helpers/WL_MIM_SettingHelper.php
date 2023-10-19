@@ -269,7 +269,7 @@ class WL_MIM_SettingHelper {
 		$et_inquiry_approved_body      = '';
 
 		$email            = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'email_template'");
-		
+
 		if ($email) {
 			// var_dump($email); die;
 			$email            = unserialize($email->mim_value);
@@ -660,5 +660,48 @@ class WL_MIM_SettingHelper {
 		$message = '';
 
 		return self::get_sms_template('sms_template_student_birthday', $institute_id, $message);
+	}
+
+	/* SMS template settings: student birthday */
+	public static function sms_template_student_reminder_notification($institute_id) {
+		$message = '';
+
+		return self::get_sms_template('sms_template_student_reminder_notification', $institute_id, $message);
+	}
+
+	public static function sms_template_student_reminder_two_days($institute_id) {
+		$message = '';
+
+		return self::get_sms_template('sms_template_student_reminder_two_days', $institute_id, $message);
+	}
+
+	public static function sms_template_student_reminder_three_days($institute_id) {
+		$message = '';
+
+		return self::get_sms_template('sms_template_student_reminder_three_days', $institute_id, $message);
+	}
+
+	public static function sms_template_student_absent($institute_id) {
+		$message = '';
+
+		return self::get_sms_template('sms_template_student_absent', $institute_id, $message);
+	}
+
+	public static function sms_template_student_time_table($institute_id) {
+		$message = '';
+
+		return self::get_sms_template('sms_template_student_time_table', $institute_id, $message);
+	}
+
+	public static function sms_template_student_class_cancel($institute_id) {
+		$message = '';
+
+		return self::get_sms_template('sms_template_student_class_cancel', $institute_id, $message);
+	}
+
+	public static function sms_template_student_batch_change($institute_id) {
+		$message = '';
+
+		return self::get_sms_template('sms_template_student_batch_change', $institute_id, $message);
 	}
 }

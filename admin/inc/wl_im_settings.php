@@ -37,11 +37,18 @@ $sms_nexmo         = WL_MIM_SettingHelper::get_sms_nexmo_settings($institute_id)
 $sms_textlocal     = WL_MIM_SettingHelper::get_sms_textlocal_settings($institute_id);
 $sms_ebulksms      = WL_MIM_SettingHelper::get_sms_ebulksms_settings($institute_id);
 
-$sms_template_enquiry_received          = WL_MIM_SettingHelper::get_sms_template_enquiry_received($institute_id);
-$sms_template_enquiry_received_to_admin = WL_MIM_SettingHelper::get_sms_template_enquiry_received_to_admin($institute_id);
-$sms_template_student_registered        = WL_MIM_SettingHelper::get_sms_template_student_registered($institute_id);
-$sms_template_fees_submitted            = WL_MIM_SettingHelper::get_sms_template_fees_submitted($institute_id);
-$sms_template_student_birthday          = WL_MIM_SettingHelper::get_sms_template_student_birthday($institute_id);
+$sms_template_enquiry_received              = WL_MIM_SettingHelper::get_sms_template_enquiry_received($institute_id);
+$sms_template_enquiry_received_to_admin     = WL_MIM_SettingHelper::get_sms_template_enquiry_received_to_admin($institute_id);
+$sms_template_student_registered            = WL_MIM_SettingHelper::get_sms_template_student_registered($institute_id);
+$sms_template_fees_submitted                = WL_MIM_SettingHelper::get_sms_template_fees_submitted($institute_id);
+$sms_template_student_birthday              = WL_MIM_SettingHelper::get_sms_template_student_birthday($institute_id);
+$sms_template_student_reminder_notification = WL_MIM_SettingHelper::sms_template_student_reminder_notification($institute_id);
+$sms_template_student_reminder_two_days     = WL_MIM_SettingHelper::sms_template_student_reminder_two_days($institute_id);
+$sms_template_student_reminder_three_days   = WL_MIM_SettingHelper::sms_template_student_reminder_three_days($institute_id);
+$sms_template_student_absent                = WL_MIM_SettingHelper::sms_template_student_absent($institute_id);
+$sms_template_student_time_table            = WL_MIM_SettingHelper::sms_template_student_time_table($institute_id);
+$sms_template_student_class_cancel          = WL_MIM_SettingHelper::sms_template_student_class_cancel($institute_id);
+$sms_template_student_batch_change          = WL_MIM_SettingHelper::sms_template_student_batch_change($institute_id);
 
 $admit_card_dob_enable  = WL_MIM_SettingHelper::get_admit_card_dob_enable_settings($institute_id);
 $id_card_dob_enable     = WL_MIM_SettingHelper::get_id_card_dob_enable_settings($institute_id);
@@ -144,7 +151,7 @@ if (empty($general_institute['institute_name'])) {
                                     <?php esc_html_e('Institute Name', WL_MIM_DOMAIN); ?>:
                                 </label>
                                 <input name="institute_name" type="text" class="form-control" id="wlim-setting-institute_name" placeholder="<?php esc_html_e("Institute Name", WL_MIM_DOMAIN); ?>" value="<?php
-                                                                                                                                                                                                            // echo esc_attr( $general_institute['institute_name'] ); 
+                                                                                                                                                                                                            // echo esc_attr( $general_institute['institute_name'] );
                                                                                                                                                                                                             echo esc_attr($row->name);
 
                                                                                                                                                                                                             ?>">
@@ -155,7 +162,7 @@ if (empty($general_institute['institute_name'])) {
                                     <?php esc_html_e('Institute Address', WL_MIM_DOMAIN); ?>:
                                 </label>
                                 <textarea name="institute_address" type="text" class="form-control" id="wlim-setting-institute_address" placeholder="<?php esc_html_e("Institute Address", WL_MIM_DOMAIN); ?>"><?php
-                                                                                                                                                                                                                    // echo esc_html( $general_institute['institute_address'] ); 
+                                                                                                                                                                                                                    // echo esc_html( $general_institute['institute_address'] );
                                                                                                                                                                                                                     echo esc_attr($row->address);
                                                                                                                                                                                                                     ?></textarea>
                             </div>
@@ -172,7 +179,7 @@ if (empty($general_institute['institute_name'])) {
                                     <?php esc_html_e('Institute Phone', WL_MIM_DOMAIN); ?>:
                                 </label>
                                 <input name="institute_phone" type="text" class="form-control" id="wlim-setting-institute_phone" placeholder="<?php esc_html_e("Institute Phone", WL_MIM_DOMAIN); ?>" value="<?php
-                                                                                                                                                                                                                // echo esc_attr( $general_institute['institute_phone'] ); 
+                                                                                                                                                                                                                // echo esc_attr( $general_institute['institute_phone'] );
                                                                                                                                                                                                                 echo esc_attr($row->phone);
 
                                                                                                                                                                                                                 ?>">
@@ -183,7 +190,7 @@ if (empty($general_institute['institute_name'])) {
                                     <?php esc_html_e('Institute Email', WL_MIM_DOMAIN); ?>:
                                 </label>
                                 <input name="institute_email" type="email" class="form-control" id="wlim-setting-institute_email" placeholder="<?php esc_html_e("Institute Email", WL_MIM_DOMAIN); ?>" value="<?php
-                                                                                                                                                                                                                //  echo esc_attr( $general_institute['institute_email'] ); 
+                                                                                                                                                                                                                //  echo esc_attr( $general_institute['institute_email'] );
                                                                                                                                                                                                                 echo esc_attr($row->email);
                                                                                                                                                                                                                 ?>">
                             </div>
@@ -568,7 +575,7 @@ if (empty($general_institute['institute_name'])) {
                                     <li class="list-group-item">
                                         <strong>[COURSE_NAME] - [STUDENT_NAME] - [STUDENT_EMAIL] - [STUDENT_BATCH] - [REGISTRATION_DATE] - [EXPIRATION_DATE] - [STUDENT_USERNAME] - [STUDENT_PASSWORD] - [ENROLLMENT_NUMBER]</strong>
                                     </li>
-                                
+
                                     <li class="list-group-item">
                                         <strong>[INSTALLMENTS]</strong> - [TOTAL_COURSE_FEE] - [COURSE_DISCOUNT] - [COURSE_PAYABLE] - [INSTALLMENT_COUNT] <?php esc_html_e("to replace with student fees", WL_MIM_DOMAIN); ?>
                                     </li>
@@ -618,7 +625,7 @@ if (empty($general_institute['institute_name'])) {
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <div class="col-12 bg-primary text-white p-2">
                                 <div class="h5 "><?php esc_html_e(' Admission (approved)', WL_MIM_DOMAIN); ?></div>
                             </div>
@@ -1095,6 +1102,251 @@ if (empty($general_institute['institute_name'])) {
                                         <?php esc_html_e('Message on student birthday', WL_MIM_DOMAIN); ?>:
                                     </label>
                                     <textarea name="sms_student_birthday_message" class="form-control" id="wlim-setting-sms_student_birthday_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_birthday['message']); ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wlmim-sms-student_reminder_notification col-sm-12">
+                                <div class="form-check pl-0">
+                                    <input name="sms_student_reminder_notification_enable" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-sms_student_reminder_notification_enable" <?php checked($sms_template_student_reminder_notification['enable'], true, true); ?>>
+                                    <label class="form-check-label" for="wlim-setting-sms_student_reminder_notification_enable">
+                                        <?php esc_html_e('Enable?', WL_MIM_DOMAIN); ?>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-2">
+                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>[FIRST_NAME]</strong> - <?php esc_html_e("to replace with student's first name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_template_id" class="col-form-label">
+                                        <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <input type="text" name="sms_reminder_notification_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_reminder_notification['template_id']; ?>"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_student_reminder_notification_message" class="col-form-label">
+                                        <?php esc_html_e('Message on student Notifications', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <textarea name="sms_student_reminder_notification_message" class="form-control" id="wlim-setting-sms_student_reminder_notification_message" rows="4" placeholder="<?php esc_html_e("Message on student reminder_notification", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_reminder_notification['message']); ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wlmim-sms-student_reminder_two_days col-sm-12">
+                                <div class="form-check pl-0">
+                                    <input name="sms_student_reminder_two_days_enable" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-sms_student_reminder_two_days_enable" <?php checked($sms_template_student_reminder_two_days['enable'], true, true); ?>>
+                                    <label class="form-check-label" for="wlim-setting-sms_student_reminder_two_days_enable">
+                                        <?php esc_html_e('Enable?', WL_MIM_DOMAIN); ?>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-2">
+                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>[FIRST_NAME]</strong> - <?php esc_html_e("to replace with student's first name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_template_id" class="col-form-label">
+                                        <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_reminder_two_days['template_id']; ?>"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_student_reminder_two_days_message" class="col-form-label">
+                                        <?php esc_html_e('Message on student emi reminder after two days', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <textarea name="sms_student_reminder_two_days_message" class="form-control" id="wlim-setting-sms_student_reminder_two_days_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_reminder_two_days['message']); ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wlmim-sms-student_reminder_three_days col-sm-12">
+                                <div class="form-check pl-0">
+                                    <input name="sms_student_reminder_three_days_enable" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-sms_student_reminder_three_days_enable" <?php checked($sms_template_student_reminder_three_days['enable'], true, true); ?>>
+                                    <label class="form-check-label" for="wlim-setting-sms_student_reminder_three_days_enable">
+                                        <?php esc_html_e('Enable?', WL_MIM_DOMAIN); ?>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-2">
+                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>[FIRST_NAME]</strong> - <?php esc_html_e("to replace with student's first name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_template_id" class="col-form-label">
+                                        <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_reminder_three_days['template_id']; ?>"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_student_reminder_three_days_message" class="col-form-label">
+                                        <?php esc_html_e('Message on student befor three days', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <textarea name="sms_student_reminder_three_days_message" class="form-control" id="wlim-setting-sms_student_reminder_three_days_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_reminder_three_days['message']); ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wlmim-sms-student_absent col-sm-12">
+                                <div class="form-check pl-0">
+                                    <input name="sms_student_absent_enable" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-sms_student_absent_enable" <?php checked($sms_template_student_absent['enable'], true, true); ?>>
+                                    <label class="form-check-label" for="wlim-setting-sms_student_absent_enable">
+                                        <?php esc_html_e('Enable?', WL_MIM_DOMAIN); ?>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-2">
+                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>[FIRST_NAME]</strong> - <?php esc_html_e("to replace with student's first name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_template_id" class="col-form-label">
+                                        <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_absent['template_id']; ?>"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_student_absent_message" class="col-form-label">
+                                        <?php esc_html_e('Message on student absent', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <textarea name="sms_student_absent_message" class="form-control" id="wlim-setting-sms_student_absent_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_absent['message']); ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wlmim-sms-student_time_table col-sm-12">
+                                <div class="form-check pl-0">
+                                    <input name="sms_student_time_table_enable" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-sms_student_time_table_enable" <?php checked($sms_template_student_time_table['enable'], true, true); ?>>
+                                    <label class="form-check-label" for="wlim-setting-sms_student_time_table_enable">
+                                        <?php esc_html_e('Enable?', WL_MIM_DOMAIN); ?>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-2">
+                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>[FIRST_NAME]</strong> - <?php esc_html_e("to replace with student's first name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_template_id" class="col-form-label">
+                                        <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_time_table['template_id']; ?>"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_student_time_table_message" class="col-form-label">
+                                        <?php esc_html_e('Message on student time table created', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <textarea name="sms_student_time_table_message" class="form-control" id="wlim-setting-sms_student_time_table_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_time_table['message']); ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wlmim-sms-student_class_cancel col-sm-12">
+                                <div class="form-check pl-0">
+                                    <input name="sms_student_class_cancel_enable" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-sms_student_class_cancel_enable" <?php checked($sms_template_student_class_cancel['enable'], true, true); ?>>
+                                    <label class="form-check-label" for="wlim-setting-sms_student_class_cancel_enable">
+                                        <?php esc_html_e('Enable?', WL_MIM_DOMAIN); ?>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-2">
+                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>[FIRST_NAME]</strong> - <?php esc_html_e("to replace with student's first name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_template_id" class="col-form-label">
+                                        <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_class_cancel['template_id']; ?>"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_student_class_cancel_message" class="col-form-label">
+                                        <?php esc_html_e('Message on student class cancel', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <textarea name="sms_student_class_cancel_message" class="form-control" id="wlim-setting-sms_student_class_cancel_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_class_cancel['message']); ?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wlmim-sms-student_batch_change col-sm-12">
+                                <div class="form-check pl-0">
+                                    <input name="sms_student_batch_change_enable" class="position-static mt-0 form-check-input" type="checkbox" id="wlim-setting-sms_student_batch_change_enable" <?php checked($sms_template_student_batch_change['enable'], true, true); ?>>
+                                    <label class="form-check-label" for="wlim-setting-sms_student_batch_change_enable">
+                                        <?php esc_html_e('Enable?', WL_MIM_DOMAIN); ?>
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info mt-2">
+                                    <h6><?php esc_html_e('You can use the following vairable(s)', WL_MIM_DOMAIN); ?>:</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <strong>[FIRST_NAME]</strong> - <?php esc_html_e("to replace with student's first name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_template_id" class="col-form-label">
+                                        <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_batch_change['template_id']; ?>"><br>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="wlim-setting-sms_student_batch_change_message" class="col-form-label">
+                                        <?php esc_html_e('Message on student batch change', WL_MIM_DOMAIN); ?>:
+                                    </label>
+                                    <textarea name="sms_student_batch_change_message" class="form-control" id="wlim-setting-sms_student_batch_change_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_batch_change['message']); ?></textarea>
                                 </div>
                             </div>
 

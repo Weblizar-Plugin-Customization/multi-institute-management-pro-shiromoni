@@ -387,7 +387,7 @@ class WL_MIM_Setting {
 		$sms_msgclub_peid = isset($_POST['sms_msgclub_peid']) ? sanitize_text_field($_POST['sms_msgclub_peid']) : '';
 		$sms_msgclub_tel_id = isset($_POST['sms_msgclub_tel_id']) ? sanitize_text_field($_POST['sms_msgclub_tel_id']) : '';
 
-		
+
 
 		/* SMS textlocal settings */
 		$sms_textlocal_api_key = isset($_POST['sms_textlocal_api_key']) ? sanitize_text_field($_POST['sms_textlocal_api_key']) : '';
@@ -423,6 +423,10 @@ class WL_MIM_Setting {
 		$sms_student_birthday_enable  = isset($_POST['sms_student_birthday_enable']) ? boolval(sanitize_text_field($_POST['sms_student_birthday_enable'])) : 0;
 		$sms_student_birthday_message = isset($_POST['sms_student_birthday_message']) ? sanitize_text_field($_POST['sms_student_birthday_message']) : '';
 		$sms_birthday_template_id = isset($_POST['sms_birthday_template_id']) ? sanitize_text_field($_POST['sms_birthday_template_id']) : '';
+
+		$sms_student_reminder_notification_enable      = isset($_POST['sms_student_reminder_notification_enable']) ? boolval(sanitize_text_field($_POST['sms_student_reminder_notification_enable'])) : 0;
+		$sms_student_reminder_notification_message     = isset($_POST['sms_student_reminder_notification_message']) ? sanitize_text_field($_POST['sms_student_reminder_notification_message']) : '';
+		$sms_student_reminder_notification_template_id = isset($_POST['sms_reminder_notification_template_id']) ? sanitize_text_field($_POST['sms_reminder_notification_template_id']) : '';
 
 		/* Validations */
 		$errors = array();
@@ -750,6 +754,30 @@ class WL_MIM_Setting {
 						'mim_value' => serialize($sms_template_student_birthday_data)
 					), array(
 						'id'           => $sms_template_student_birthday->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				/* SMS template settings: student birthday */
+				$sms_template_student_reminder_notification = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'sms_template_student_reminder_notification'");
+
+				$sms_template_student_reminder_notification_data = array(
+					'enable'      => $sms_student_reminder_notification_enable,
+					'message'     => $sms_student_reminder_notification_message,
+					'template_id' => $sms_student_reminder_notification_template_id
+				);
+
+				if (!$sms_template_student_reminder_notification) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'sms_template_student_reminder_notification',
+						'mim_value'    => serialize($sms_template_student_reminder_notification_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($sms_template_student_reminder_notification_data)
+					), array(
+						'id'           => $sms_template_student_reminder_notification->id,
 						'institute_id' => $institute_id
 					));
 				}
