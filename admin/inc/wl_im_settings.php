@@ -1164,7 +1164,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="wlim-setting-sms_template_id" class="col-form-label">
                                         <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
                                     </label>
-                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_reminder_two_days['template_id']; ?>"><br>
+                                    <input type="text" name="sms_student_reminder_two_days_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_reminder_two_days['template_id']; ?>"><br>
                                 </div>
 
                                 <div class="form-group">
@@ -1199,7 +1199,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="wlim-setting-sms_template_id" class="col-form-label">
                                         <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
                                     </label>
-                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_reminder_three_days['template_id']; ?>"><br>
+                                    <input type="text" name="sms_student_reminder_three_days_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_reminder_three_days['template_id']; ?>"><br>
                                 </div>
 
                                 <div class="form-group">
@@ -1234,7 +1234,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="wlim-setting-sms_template_id" class="col-form-label">
                                         <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
                                     </label>
-                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_absent['template_id']; ?>"><br>
+                                    <input type="text" name="sms_student_absent_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_absent['template_id']; ?>"><br>
                                 </div>
 
                                 <div class="form-group">
@@ -1269,7 +1269,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="wlim-setting-sms_template_id" class="col-form-label">
                                         <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
                                     </label>
-                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_time_table['template_id']; ?>"><br>
+                                    <input type="text" name="sms_student_time_table_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_time_table['template_id']; ?>"><br>
                                 </div>
 
                                 <div class="form-group">
@@ -1304,7 +1304,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="wlim-setting-sms_template_id" class="col-form-label">
                                         <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
                                     </label>
-                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_class_cancel['template_id']; ?>"><br>
+                                    <input type="text" name="sms_student_class_cancel_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_class_cancel['template_id']; ?>"><br>
                                 </div>
 
                                 <div class="form-group">
@@ -1339,7 +1339,7 @@ if (empty($general_institute['institute_name'])) {
                                     <label for="wlim-setting-sms_template_id" class="col-form-label">
                                         <?php esc_html_e('Template ID', WL_MIM_DOMAIN); ?>:
                                     </label>
-                                    <input type="text" name="sms_birthday_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_batch_change['template_id']; ?>"><br>
+                                    <input type="text" name="sms_student_batch_change_template_id" placeholder="Template ID" value="<?php echo $sms_template_student_batch_change['template_id']; ?>"><br>
                                 </div>
 
                                 <div class="form-group">

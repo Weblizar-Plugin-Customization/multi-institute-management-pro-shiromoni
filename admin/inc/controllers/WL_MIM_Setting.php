@@ -428,6 +428,30 @@ class WL_MIM_Setting {
 		$sms_student_reminder_notification_message     = isset($_POST['sms_student_reminder_notification_message']) ? sanitize_text_field($_POST['sms_student_reminder_notification_message']) : '';
 		$sms_student_reminder_notification_template_id = isset($_POST['sms_reminder_notification_template_id']) ? sanitize_text_field($_POST['sms_reminder_notification_template_id']) : '';
 
+		$sms_student_reminder_two_days_enable      = isset($_POST['sms_student_reminder_two_days_enable']) ? boolval(sanitize_text_field($_POST['sms_student_reminder_two_days_enable'])) : 0;
+		$sms_student_reminder_two_days_message     = isset($_POST['sms_student_reminder_two_days_message']) ? sanitize_text_field($_POST['sms_student_reminder_two_days_message']) : '';
+		$sms_student_reminder_two_days_template_id = isset($_POST['sms_student_reminder_two_days_template_id']) ? sanitize_text_field($_POST['sms_student_reminder_two_days_template_id']) : '';
+
+		$sms_student_reminder_three_days_enable      = isset($_POST['sms_student_reminder_three_days_enable']) ? boolval(sanitize_text_field($_POST['sms_student_reminder_three_days_enable'])) : 0;
+		$sms_student_reminder_three_days_message     = isset($_POST['sms_student_reminder_three_days_message']) ? sanitize_text_field($_POST['sms_student_reminder_three_days_message']) : '';
+		$sms_student_reminder_three_days_template_id = isset($_POST['sms_student_reminder_three_days_template_id']) ? sanitize_text_field($_POST['sms_student_reminder_three_days_template_id']) : '';
+
+		$sms_student_absent_enable      = isset($_POST['sms_student_absent_enable']) ? boolval(sanitize_text_field($_POST['sms_student_absent_enable'])) : 0;
+		$sms_student_absent_message     = isset($_POST['sms_student_absent_message']) ? sanitize_text_field($_POST['sms_student_absent_message']) : '';
+		$sms_student_absent_template_id = isset($_POST['sms_student_absent_template_id']) ? sanitize_text_field($_POST['sms_student_absent_template_id']) : '';
+
+		$sms_student_time_table_enable      = isset($_POST['sms_student_time_table_enable']) ? boolval(sanitize_text_field($_POST['sms_student_time_table_enable'])) : 0;
+		$sms_student_time_table_message     = isset($_POST['sms_student_time_table_message']) ? sanitize_text_field($_POST['sms_student_time_table_message']) : '';
+		$sms_student_time_table_template_id = isset($_POST['sms_student_time_table_template_id']) ? sanitize_text_field($_POST['sms_student_time_table_template_id']) : '';
+
+		$sms_student_class_cancel_enable      = isset($_POST['sms_student_class_cancel_enable']) ? boolval(sanitize_text_field($_POST['sms_student_class_cancel_enable'])) : 0;
+		$sms_student_class_cancel_message     = isset($_POST['sms_student_class_cancel_message']) ? sanitize_text_field($_POST['sms_student_class_cancel_message']) : '';
+		$sms_student_class_cancel_template_id = isset($_POST['sms_student_class_cancel_template_id']) ? sanitize_text_field($_POST['sms_student_class_cancel_template_id']) : '';
+
+		$sms_student_batch_change_enable      = isset($_POST['sms_student_batch_change_enable']) ? boolval(sanitize_text_field($_POST['sms_student_batch_change_enable'])) : 0;
+		$sms_student_batch_change_message     = isset($_POST['sms_student_batch_change_message']) ? sanitize_text_field($_POST['sms_student_batch_change_message']) : '';
+		$sms_student_batch_change_template_id = isset($_POST['sms_student_batch_change_template_id']) ? sanitize_text_field($_POST['sms_student_batch_change_template_id']) : '';
+
 		/* Validations */
 		$errors = array();
 
@@ -778,6 +802,145 @@ class WL_MIM_Setting {
 						'mim_value' => serialize($sms_template_student_reminder_notification_data)
 					), array(
 						'id'           => $sms_template_student_reminder_notification->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				/* SMS template settings: student birthday */
+				$sms_template_student_reminder_two_days = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'sms_template_student_reminder_two_days'");
+
+				$sms_template_student_reminder_two_days_data = array(
+					'enable'      => $sms_student_reminder_two_days_enable,
+					'message'     => $sms_student_reminder_two_days_message,
+					'template_id' => $sms_student_reminder_two_days_template_id
+				);
+
+				if (!$sms_template_student_reminder_two_days) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'sms_template_student_reminder_two_days',
+						'mim_value'    => serialize($sms_template_student_reminder_two_days_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($sms_template_student_reminder_two_days_data)
+					), array(
+						'id'           => $sms_template_student_reminder_two_days->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				$sms_template_student_reminder_three_days = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'sms_template_student_reminder_three_days'");
+
+				$sms_template_student_reminder_three_days_data = array(
+					'enable'      => $sms_student_reminder_three_days_enable,
+					'message'     => $sms_student_reminder_three_days_message,
+					'template_id' => $sms_student_reminder_three_days_template_id
+				);
+
+				if (!$sms_template_student_reminder_three_days) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'sms_template_student_reminder_three_days',
+						'mim_value'    => serialize($sms_template_student_reminder_three_days_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($sms_template_student_reminder_three_days_data)
+					), array(
+						'id'           => $sms_template_student_reminder_three_days->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				$sms_template_student_absent = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'sms_template_student_absent'");
+
+				$sms_template_student_absent_data = array(
+					'enable'      => $sms_student_absent_enable,
+					'message'     => $sms_student_absent_message,
+					'template_id' => $sms_student_absent_template_id
+				);
+
+				if (!$sms_template_student_absent) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'sms_template_student_absent',
+						'mim_value'    => serialize($sms_template_student_absent_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($sms_template_student_absent_data)
+					), array(
+						'id'           => $sms_template_student_absent->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				$sms_template_student_time_table = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'sms_template_student_time_table'");
+
+				$sms_template_student_time_table_data = array(
+					'enable'      => $sms_student_time_table_enable,
+					'message'     => $sms_student_time_table_message,
+					'template_id' => $sms_student_time_table_template_id
+				);
+
+				if (!$sms_template_student_time_table) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'sms_template_student_time_table',
+						'mim_value'    => serialize($sms_template_student_time_table_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($sms_template_student_time_table_data)
+					), array(
+						'id'           => $sms_template_student_time_table->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				$sms_template_student_class_cancel = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'sms_template_student_class_cancel'");
+
+				$sms_template_student_class_cancel_data = array(
+					'enable'      => $sms_student_class_cancel_enable,
+					'message'     => $sms_student_class_cancel_message,
+					'template_id' => $sms_student_class_cancel_template_id
+				);
+
+				if (!$sms_template_student_class_cancel) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'sms_template_student_class_cancel',
+						'mim_value'    => serialize($sms_template_student_class_cancel_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($sms_template_student_class_cancel_data)
+					), array(
+						'id'           => $sms_template_student_class_cancel->id,
+						'institute_id' => $institute_id
+					));
+				}
+
+				$sms_template_student_batch_change = $wpdb->get_row("SELECT id, mim_value FROM {$wpdb->prefix}wl_min_settings WHERE institute_id = $institute_id AND mim_key = 'sms_template_student_batch_change'");
+
+				$sms_template_student_batch_change_data = array(
+					'enable'      => $sms_student_batch_change_enable,
+					'message'     => $sms_student_batch_change_message,
+					'template_id' => $sms_student_batch_change_template_id
+				);
+
+				if (!$sms_template_student_batch_change) {
+					$wpdb->insert("{$wpdb->prefix}wl_min_settings", array(
+						'mim_key'      => 'sms_template_student_batch_change',
+						'mim_value'    => serialize($sms_template_student_batch_change_data),
+						'institute_id' => $institute_id
+					));
+				} else {
+					$wpdb->update("{$wpdb->prefix}wl_min_settings", array(
+						'mim_value' => serialize($sms_template_student_batch_change_data)
+					), array(
+						'id'           => $sms_template_student_batch_change->id,
 						'institute_id' => $institute_id
 					));
 				}
