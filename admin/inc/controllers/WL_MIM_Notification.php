@@ -458,14 +458,12 @@ class WL_MIM_Notification {
 	private static function send_students_notification( $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  ) {
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
-
 		$students    = ( isset( $_POST['student'] ) && is_array( $_POST['student'] ) ) ? $_POST['student'] : array();
-		$students    = array_map( 'esc_attr', $students );
-		$student_ids = implode( $students, ',' );
 
 		/* Validations */
 		$errors = array();
 
+		$student_ids = implode( ',', $students );
 		$data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND id IN ($student_ids) AND institute_id = $institute_id" );
 
 		if ( count( $data ) == 0 ) {
@@ -548,7 +546,7 @@ class WL_MIM_Notification {
 
 	private static function submit_notification( $errors, $data, $email_notification, $email_subject, $email_body, $email_from, $attachments, $sms_notification, $sms_body, $template_id  ) {
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
-	
+
 		if ( count( $errors ) < 1 ) {
 			try {
 				if ( $email_notification ) {
@@ -558,7 +556,7 @@ class WL_MIM_Notification {
 					if ( ! empty( $email_from ) ) {
 						$headers[] = "From: $email_from";
 					}
-					
+
 					$attachments = array();
 					if ( isset( $attachments["tmp_name"] ) && is_array( $attachments ) ) {
 						foreach ( $attachments["tmp_name"] as $key => $attachment ) {
@@ -574,14 +572,14 @@ class WL_MIM_Notification {
 						if ( $last_name ) {
 							$name .= " $last_name";
 						}
-	
+
 						if ( $email ) {
 							wp_mail( $email, $email_subject, $email_body, $headers, array(), $attachments );
 							$email_notification_sent = true;
 						}
 					}
 				}
-	
+
 				$sms_notification_sent = false;
 				if ( $sms_notification && $sms_body ) {
 					$phone_numbers = array();
@@ -591,14 +589,14 @@ class WL_MIM_Notification {
 							array_push( $phone_numbers, $phone );
 						}
 					}
-	
+
 					/* Get SMS settings */
 					$sms = WL_MIM_SettingHelper::get_sms_settings( $institute_id );
-	
+
 					/* Send SMS */
 					$sms_notification_sent = WL_MIM_SMSHelper::send_sms( $sms, $institute_id, $sms_body, $phone_numbers, $template_id  );
 				}
-	
+
 				if ( $email_notification_sent && $sms_notification_sent ) {
 					$message = esc_html__( 'Email and SMS notification sent successfully.', WL_MIM_DOMAIN );
 				} elseif ( $email_notification_sent ) {
@@ -617,17 +615,17 @@ class WL_MIM_Notification {
 			wp_send_json_error( $errors );
 		}
 	}
-	
+
 
 	private static function initialize_email( $institute_id ) {
 		$email = WL_MIM_SettingHelper::get_email_settings( $institute_id );
 		global $wp_version;
-	
+
 		require_once(ABSPATH . WPINC . '/PHPMailer/PHPMailer.php');
 		require_once(ABSPATH . WPINC . '/PHPMailer/SMTP.php');
 		require_once(ABSPATH . WPINC . '/PHPMailer/Exception.php');
 		$mail = new PHPMailer\PHPMailer\PHPMailer( true );
-		
+
 		$mail->CharSet  = 'UTF-8';
 		$mail->Encoding = 'base64';
 		$mail->IsSMTP();

@@ -126,6 +126,10 @@ if ( empty( $general_institute['institute_name'] ) ) {
                             <div class="card col wlim-sms-template">
                                 <div class="card-header"><?php esc_html_e( 'SMS Template', WL_MIM_DOMAIN ); ?></div>
                                 <div class="card-body">
+                                <div class="form-group">
+                                        <label for="wlim_sms_body" class="col-form-label"><?php esc_html_e( 'Template ID', WL_MIM_DOMAIN ); ?>:</label>
+                                        <input type="text" name="template_id" class="form-control">
+                                    </div>
                                     <div class="form-group">
                                         <label for="wlim_sms_body" class="col-form-label">* <?php esc_html_e( 'Body', WL_MIM_DOMAIN ); ?>:</label>
                                         <textarea name="sms_body" class="form-control" id="wlim_sms_body" rows="4"></textarea>
