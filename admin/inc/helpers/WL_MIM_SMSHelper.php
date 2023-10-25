@@ -104,7 +104,7 @@ class WL_MIM_SMSHelper {
 		// catch (Exception $e) {
 		// }
 
-		// wp-mail 
+		// wp-mail
 		$body =  '<pre style="font-size: 18px;">'. $body .'<pre/>';
 		$attachments = [];
 		if ( is_array( $email ) ) {
@@ -127,7 +127,7 @@ class WL_MIM_SMSHelper {
 
 			$status = wp_mail( $email, html_entity_decode( $subject ), $body, $headers, array(), $attachments );
 			return $status;
-		
+
 	}
 
 	/* Send SMS using SMSStriker */

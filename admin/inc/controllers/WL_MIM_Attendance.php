@@ -214,6 +214,22 @@ class WL_MIM_Attendance {
 							);
 							$data['created_at'] = current_time( 'Y-m-d H:i:s' );
 							$success = $wpdb->insert( "{$wpdb->prefix}wl_min_attendance", $data );
+
+							if ($attendance_status === 'a') {
+								// get student phone with student_id.
+								$phone = $wpdb->get_var( "SELECT phone FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id" );
+
+								$sms_template_student_absent = WL_MIM_SettingHelper::sms_template_student_absent($institute_id);
+								$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
+
+								if ($sms_template_student_absent['enable']) {
+									$sms_message = $sms_template_student_absent['message'];
+									$template_id = $sms_template_student_absent['template_id'];
+									WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
+								}
+							}
+
+
 							if ( ! $success ) {
 								throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
 							}

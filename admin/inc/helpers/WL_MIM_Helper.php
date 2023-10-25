@@ -849,6 +849,73 @@ class WL_MIM_Helper {
 		}
 	}
 
+	public static function send_emi_two_day_reminder() {
+		global $wpdb;
+
+		$institues = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}wl_min_institutes ORDER BY id DESC");
+
+		foreach ($institues as $institute) {
+			$institute_id = $institute->id;
+
+			/* Get SMS template */
+			$ms_student_reminder_two_days = WL_MIM_SettingHelper::sms_template_student_reminder_two_days($institute_id);
+
+			/* Get SMS settings */
+			$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
+			if ($ms_student_reminder_two_days['enable'] && !empty($ms_student_reminder_two_days['message'])) {
+
+				$data = $wpdb->get_results("
+					SELECT s.first_name, s.last_name, s.phone, i.invoice_number
+					FROM {$wpdb->prefix}wl_min_students s
+					JOIN {$wpdb->prefix}wl_min_invoices i ON s.id = i.student_id
+					WHERE s.is_deleted = 0 AND s.institute_id = $institute_id AND i.is_paid = 0 AND i.due_date = DATE_ADD(CURDATE(), INTERVAL 2 DAY) ");
+
+				foreach ($data as $row) {
+					$sms_message = $ms_student_reminder_two_days['message'];
+					$template_id = $ms_student_reminder_two_days['template_id'];
+					$sms_message = str_replace('[FIRST_NAME]', $row->first_name, $sms_message);
+					$sms_message = str_replace('[LAST_NAME]', $row->last_name, $sms_message);
+					/* Send SMS */
+					WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $row->phone, $template_id);
+				}
+			}
+		}
+	}
+
+	public static function send_emi_three_days_reminder() {
+		global $wpdb;
+
+		$institues = $wpdb->get_results("SELECT id FROM {$wpdb->prefix}wl_min_institutes ORDER BY id DESC");
+
+		foreach ($institues as $institute) {
+			$institute_id = $institute->id;
+
+			/* Get SMS template */
+			$ms_student_reminder_two_days = WL_MIM_SettingHelper::sms_template_student_reminder_two_days($institute_id);
+
+			/* Get SMS settings */
+			$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
+			if ($ms_student_reminder_two_days['enable'] && !empty($ms_student_reminder_two_days['message'])) {
+
+				// send sms to studuent before three days
+				$data = $wpdb->get_results("
+					SELECT s.first_name, s.last_name, s.phone, i.invoice_number
+					FROM {$wpdb->prefix}wl_min_students s
+					JOIN {$wpdb->prefix}wl_min_invoices i ON s.id = i.student_id
+					WHERE s.is_deleted = 0 AND s.institute_id = $institute_id AND i.is_paid = 0 AND i.due_date = DATE_ADD(CURDATE(), INTERVAL 3 DAY)");
+
+				foreach ($data as $row) {
+					$sms_message = $ms_student_reminder_two_days['message'];
+					$template_id = $ms_student_reminder_two_days['template_id'];
+					$sms_message = str_replace('[FIRST_NAME]', $row->first_name, $sms_message);
+					$sms_message = str_replace('[LAST_NAME]', $row->last_name, $sms_message);
+					/* Send SMS */
+					WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $row->phone, $template_id);
+				}
+			}
+		}
+	}
+
 	/* Get data for dashboard */
 	public static function get_data() {
 		global $wpdb;

@@ -1847,7 +1847,7 @@
         let startTime = jQuery('#wlim_tt_class_startTime').val();
         let endTime   = jQuery('#wlim_tt_class_endTime').val();
         let batch_date   = jQuery('#wlim_tt_class_date').val();
-        
+
         let batchhtml = jQuery('#ttbatchID');
         let subhtml   = jQuery('#ttsubID');
         jQuery.ajax({
@@ -1868,7 +1868,7 @@
                 let batch    = '';
                 let subjects = '';
 
-                jQuery('#ttbatchID').html(data.batchData);                              
+                jQuery('#ttbatchID').html(data.batchData);
                 jQuery('#ttsubID').html(data.subData);
 
                 // batchD.forEach(function(item){
@@ -1889,13 +1889,13 @@
     //ajax call to get the topic and teacher
     jQuery('#ttsubID').on('change', function(e){
         e.preventDefault();
-        var subID       = jQuery(this).val(); 
-        let endtime     = jQuery('#wlim_tt_class_endTime').val(); 
+        var subID       = jQuery(this).val();
+        let endtime     = jQuery('#wlim_tt_class_endTime').val();
         let starttime   = jQuery('#wlim_tt_class_startTime').val();
-        let classDate   = jQuery('#wlim_tt_class_date').val();   
+        let classDate   = jQuery('#wlim_tt_class_date').val();
         let topichtml   = jQuery('#tttopicID');
-        let teacherhtml = jQuery('#ttteacherID'); 
-        
+        let teacherhtml = jQuery('#ttteacherID');
+
         jQuery.ajax({
             url: ajaxurl,
             type: 'post',
@@ -1915,9 +1915,9 @@
                 let topic    = '';
                 let teacher  = '';
                 console.log( data );
-                jQuery('#tttopicID').html(data.topics);                              
-                jQuery('#ttteacherID').html(data.teacherNames);               
-            }   
+                jQuery('#tttopicID').html(data.topics);
+                jQuery('#ttteacherID').html(data.teacherNames);
+            }
         });
     });
 
@@ -2068,7 +2068,7 @@
             data: new FormData(this),
             processData: false,
             contentType: false,
-            success: function(response){                
+            success: function(response){
                 if( response.success == true ) {
                     toastr.success(response.data.message);
                    // jQuery('#addTopic')[0].reset();
@@ -2082,18 +2082,18 @@
      //Save the student remark
      //wl-mim-student-timetableRemark
      jQuery(document).on('submit', '#studentRemarkPost', function(e){
-        e.preventDefault();        
+        e.preventDefault();
         // console.log( `the teachers remark is ${teacherRemark} and the time table id is ${timeTableID}` );
-        jQuery.ajax({           
+        jQuery.ajax({
             url: ajaxurl + '?action=wl-mim-student-timetableRemark',
             type: "post",
             data: new FormData(this),
             processData: false,
             contentType: false,
-            success: function(response){                
+            success: function(response){
                 if( response.success == true ) {
                     toastr.success(response.data.message);
-                   // jQuery('#addTopic')[0].reset();                  
+                   // jQuery('#addTopic')[0].reset();
                    jQuery("#student_timetableList").DataTable().ajax.reload();
                 }
             }

@@ -2136,6 +2136,7 @@ class WL_MIM_Student
 		$teacher = isset($_POST['teacher']) ? sanitize_text_field($_POST['teacher']) : '';
 		$student_status = isset($_POST['student_status']) ? sanitize_text_field($_POST['student_status']) : '';
 		$row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND id = $id AND institute_id = $institute_id");
+		$old_batch_id = $row->batch_id;
 		if (!$row) {
 			die();
 		}
@@ -2524,6 +2525,20 @@ class WL_MIM_Student
 							// add string to $body
 
 							WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
+					}
+				}
+
+				if ($old_batch_id != $batch_id) {
+					// get student phone with student_id.
+					$phone = $row->phone;
+
+					$sms_template_student_batch_change = WL_MIM_SettingHelper::sms_template_student_batch_change($institute_id);
+					$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
+
+					if ($sms_template_student_batch_change['enable']) {
+						$sms_message = $sms_template_student_batch_change['message'];
+						$template_id = $sms_template_student_batch_change['template_id'];
+						WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
 					}
 				}
 

@@ -232,6 +232,25 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         'updated_at'  => ''
                     );
                     $success         = $wpdb->insert($wpdb->prefix . 'wl_min_timetable', $timeTable_data);
+
+                    if ($ttbatchID) {
+                        $institute_id = WL_MIM_Helper::get_current_institute_id();
+                        $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND batch_id = $ttbatchID AND is_active = 1 AND institute_id = $institute_id" );
+
+                        foreach ($data as $student ) {
+
+                           $phone = $student->phone;
+                           $sms_template_student_time_table = WL_MIM_SettingHelper::sms_template_student_time_table($institute_id);
+                           $sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
+
+                           if ($sms_template_student_time_table['enable']) {
+                               $sms_message = $sms_template_student_time_table['message'];
+                               $template_id = $sms_template_student_time_table['template_id'];
+                               WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
+                           }
+                        }
+                    }
+
                     $previousaddedID = $wpdb->insert_id;
                     if (false === $success) {
                         throw new Exception($wpdb->last_error);
@@ -541,7 +560,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $institute_id   = WL_MIM_Helper::get_current_institute_id();
             $institute_name = WL_MIM_Helper::get_current_institute_name();
             $id = intval( sanitize_text_field( $_POST['id'] ) );
-            $query = $wpdb->get_row("SELECT timeTableName, courseId, batch_date, start_time, end_time, created_at, batch_id, subject_id, topic_id, staff_id, room_id FROM {$wpdb->prefix}wl_min_timetable WHERE id=$id AND institute_id=$institute_id");
+            $query = $wpdb->get_row("SELECT timeTableName, courseId, batch_date, start_time, end_time, created_at, batch_id, subject_id, topic_id, staff_id, room_id, is_active FROM {$wpdb->prefix}wl_min_timetable WHERE id=$id AND institute_id=$institute_id");
             $courseId   = $query->courseId;
             $subject_id = $query->subject_id;
             $room_id    = $query->room_id;
@@ -551,6 +570,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $batch_date = $query->batch_id;
             $start_time = $query->start_time;
             $end_time   = $query->end_time;
+            $is_active   = $query->is_active;
 
             $query_subjects = "";
             $query_topics   = "";
@@ -712,6 +732,22 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="form-group col-4">
+                        <!-- create input for active and inactive -->
+                        <label  for="is_active" class=" ">
+                            <?php _e( 'Active', WL_MIM_DOMAIN ); ?>
+                        </label>
+                        <input type="checkbox" class="form-control" name="is_active" id="is_active" <?php
+                        // check if $is_active is 1.
+                        if( $is_active == 1 ) {
+                            echo "checked";
+                        }
+
+                        ?>  />
+                    </div>
+                </div>
+
             </div>
             <?php
 		    $html = ob_get_clean();
@@ -738,6 +774,13 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
             $wlim_tt_class_date      = isset( $_POST['wlim_tt_class_date'] ) ? sanitize_text_field( $_POST['wlim_tt_class_date'] ) : null;
             $wlim_tt_class_startTime = isset( $_POST['wlim_tt_class_startTime'] ) ? sanitize_text_field( $_POST['wlim_tt_class_startTime'] ) : null;
             $wlim_tt_class_endTime   = isset( $_POST['wlim_tt_class_endTime'] ) ? sanitize_text_field( $_POST['wlim_tt_class_endTime'] ) : null;
+            $is_active   = isset( $_POST['is_active'] ) ? sanitize_text_field( $_POST['is_active'] ) : null;
+            // if is_active is on the store 1 else 0
+            if( $is_active == 'on' ) {
+                $is_active = 1;
+            } else {
+                $is_active = 0;
+            }
 
             /* Validations */
             $errors = array();
@@ -796,7 +839,7 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         'batch_date'  => $wlim_tt_class_date,
                         'start_time'  => $wlim_tt_class_startTime,
                         'end_time'    => $wlim_tt_class_endTime,
-                        'is_active'   => '1',
+                        'is_active'   => $is_active,
                         'updated_at'  => $created_at
                     );
 
@@ -808,6 +851,24 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                         throw new Exception($wpdb->last_error);
                     }
                     $wpdb->query('COMMIT;');
+
+                    if ($ttbatchID) {
+                        $institute_id = WL_MIM_Helper::get_current_institute_id();
+                        $data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND batch_id = $ttbatchID AND is_active = 1 AND institute_id = $institute_id" );
+
+                        foreach ($data as $student ) {
+
+                           $phone = $student->phone;
+                           $sms_template_student_class_cancel = WL_MIM_SettingHelper::sms_template_student_class_cancel($institute_id);
+                           $sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
+
+                           if ($sms_template_student_class_cancel['enable']) {
+                               $sms_message = $sms_template_student_class_cancel['message'];
+                               $template_id = $sms_template_student_class_cancel['template_id'];
+                               WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
+                           }
+                        }
+                    }
 
                     wp_send_json_success( array('message'=>'Time Table Updated') );
                 } catch (Exception $exception) {
