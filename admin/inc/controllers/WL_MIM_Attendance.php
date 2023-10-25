@@ -217,7 +217,8 @@ class WL_MIM_Attendance {
 
 							if ($attendance_status === 'a') {
 								// get student phone with student_id.
-								$phone = $wpdb->get_var( "SELECT phone FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id" );
+								$student_detail = $wpdb->get_var( "SELECT * FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id" );
+								$phone = $student_detail->phone;
 
 								$sms_template_student_absent = WL_MIM_SettingHelper::sms_template_student_absent($institute_id);
 								$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
@@ -225,6 +226,10 @@ class WL_MIM_Attendance {
 								if ($sms_template_student_absent['enable']) {
 									$sms_message = $sms_template_student_absent['message'];
 									$template_id = $sms_template_student_absent['template_id'];
+
+									$sms_message = str_replace( '[FIRST_NAME]', $student_detail->first_name, $sms_message );
+									$sms_message = str_replace( '[LAST_NAME]', $student_detail->last_name, $sms_message );
+
 									WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
 								}
 							}

@@ -1157,6 +1157,9 @@ if (empty($general_institute['institute_name'])) {
                                         <li class="list-group-item">
                                             <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
                                         </li>
+                                        <li class="list-group-item">
+                                            <strong>[DUE_DATE]</strong> - <?php esc_html_e("to replace with Due Date", WL_MIM_DOMAIN); ?>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -1192,6 +1195,9 @@ if (empty($general_institute['institute_name'])) {
                                         <li class="list-group-item">
                                             <strong>[LAST_NAME]</strong> - <?php esc_html_e("to replace with student's last name", WL_MIM_DOMAIN); ?>
                                         </li>
+                                        <li class="list-group-item">
+                                            <strong>[DUE_DATE]</strong> - <?php esc_html_e("to replace with Due Date", WL_MIM_DOMAIN); ?>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -1204,7 +1210,7 @@ if (empty($general_institute['institute_name'])) {
 
                                 <div class="form-group">
                                     <label for="wlim-setting-sms_student_reminder_three_days_message" class="col-form-label">
-                                        <?php esc_html_e('Message on student befor three days', WL_MIM_DOMAIN); ?>:
+                                        <?php esc_html_e('Message on student After three days', WL_MIM_DOMAIN); ?>:
                                     </label>
                                     <textarea name="sms_student_reminder_three_days_message" class="form-control" id="wlim-setting-sms_student_reminder_three_days_message" rows="4" placeholder="<?php esc_html_e("Message on student birthday", WL_MIM_DOMAIN); ?>"><?php echo esc_html($sms_template_student_reminder_three_days['message']); ?></textarea>
                                 </div>
