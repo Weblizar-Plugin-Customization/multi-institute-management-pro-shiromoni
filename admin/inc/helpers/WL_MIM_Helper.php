@@ -864,17 +864,18 @@ class WL_MIM_Helper {
 			$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
 			if ($ms_student_reminder_two_days['enable'] && !empty($ms_student_reminder_two_days['message'])) {
 
-				$data = $wpdb->get_results("
-					SELECT s.first_name, s.last_name, s.phone, i.invoice_number
+				// send sms to student before two days.
+				$data = $wpdb->get_results("SELECT s.first_name, s.last_name, s.phone, i.invoice_number, i.due_date
 					FROM {$wpdb->prefix}wl_min_students s
 					JOIN {$wpdb->prefix}wl_min_invoices i ON s.id = i.student_id
-					WHERE s.is_deleted = 0 AND s.institute_id = $institute_id AND i.is_paid = 0 AND i.due_date = DATE_ADD(CURDATE(), INTERVAL 2 DAY) ");
+					WHERE s.is_deleted = 0 AND s.institute_id = $institute_id AND i.is_paid = 0 AND i.due_date = DATE_ADD(CURDATE(), INTERVAL 2 DAY)");
 
 				foreach ($data as $row) {
 					$sms_message = $ms_student_reminder_two_days['message'];
 					$template_id = $ms_student_reminder_two_days['template_id'];
 					$sms_message = str_replace('[FIRST_NAME]', $row->first_name, $sms_message);
 					$sms_message = str_replace('[LAST_NAME]', $row->last_name, $sms_message);
+					$sms_message = str_replace('[DUE_DATE]', $row->due_date, $sms_message);
 					/* Send SMS */
 					WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $row->phone, $template_id);
 				}
@@ -891,24 +892,25 @@ class WL_MIM_Helper {
 			$institute_id = $institute->id;
 
 			/* Get SMS template */
-			$ms_student_reminder_two_days = WL_MIM_SettingHelper::sms_template_student_reminder_two_days($institute_id);
+			$sms_student_reminder_three_days = WL_MIM_SettingHelper::sms_template_student_reminder_three_days($institute_id);
 
 			/* Get SMS settings */
 			$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
-			if ($ms_student_reminder_two_days['enable'] && !empty($ms_student_reminder_two_days['message'])) {
+			if ($sms_student_reminder_three_days['enable'] && !empty($sms_student_reminder_three_days['message'])) {
 
-				// send sms to studuent before three days
+				// send sms to studuent after three days.
 				$data = $wpdb->get_results("
-					SELECT s.first_name, s.last_name, s.phone, i.invoice_number
+					SELECT s.first_name, s.last_name, s.phone, i.invoice_number, i.due_date
 					FROM {$wpdb->prefix}wl_min_students s
 					JOIN {$wpdb->prefix}wl_min_invoices i ON s.id = i.student_id
 					WHERE s.is_deleted = 0 AND s.institute_id = $institute_id AND i.is_paid = 0 AND i.due_date = DATE_ADD(CURDATE(), INTERVAL 3 DAY)");
 
 				foreach ($data as $row) {
-					$sms_message = $ms_student_reminder_two_days['message'];
-					$template_id = $ms_student_reminder_two_days['template_id'];
+					$sms_message = $sms_student_reminder_three_days['message'];
+					$template_id = $sms_student_reminder_three_days['template_id'];
 					$sms_message = str_replace('[FIRST_NAME]', $row->first_name, $sms_message);
 					$sms_message = str_replace('[LAST_NAME]', $row->last_name, $sms_message);
+					$sms_message = str_replace('[DUE_DATE]', $row->due_date, $sms_message);
 					/* Send SMS */
 					WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $row->phone, $template_id);
 				}

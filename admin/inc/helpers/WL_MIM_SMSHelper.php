@@ -240,7 +240,7 @@ class WL_MIM_SMSHelper {
 					"text"     => $message,
 					"route"    => $route,
 				),
-				'http://smslogin.pcexpert.in/api/mt/SendSMS'
+				'http://45.113.189.74//api/mt/SendSMS'
 			);
 
 			$response = wp_remote_get($url);

@@ -246,6 +246,8 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                            if ($sms_template_student_time_table['enable']) {
                                $sms_message = $sms_template_student_time_table['message'];
                                $template_id = $sms_template_student_time_table['template_id'];
+                               $sms_message = str_replace('[FIRST_NAME]', $data->first_name, $sms_message);
+                               $sms_message = str_replace('[LAST_NAME]', $data->last_name, $sms_message);
                                WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
                            }
                         }
@@ -865,6 +867,9 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                            if ($sms_template_student_class_cancel['enable']) {
                                $sms_message = $sms_template_student_class_cancel['message'];
                                $template_id = $sms_template_student_class_cancel['template_id'];
+
+                               $sms_message = str_replace('[FIRST_NAME]', $data->first_name, $sms_message);
+                               $sms_message = str_replace('[LAST_NAME]', $data->last_name, $sms_message);
                                WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
                            }
                         }

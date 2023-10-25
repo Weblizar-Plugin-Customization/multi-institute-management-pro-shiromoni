@@ -2538,6 +2538,9 @@ class WL_MIM_Student
 					if ($sms_template_student_batch_change['enable']) {
 						$sms_message = $sms_template_student_batch_change['message'];
 						$template_id = $sms_template_student_batch_change['template_id'];
+
+						$sms_message = str_replace('[FIRST_NAME]', $row->first_name, $sms_message);
+						$sms_message = str_replace('[LAST_NAME]', $row->last_name, $sms_message);
 						WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
 					}
 				}
