@@ -1160,6 +1160,9 @@ if (empty($general_institute['institute_name'])) {
                                         <li class="list-group-item">
                                             <strong>[DUE_DATE]</strong> - <?php esc_html_e("to replace with Due Date", WL_MIM_DOMAIN); ?>
                                         </li>
+                                        <li class="list-group-item">
+                                            <strong>[AMOUNT]</strong> - <?php esc_html_e("to replace with amount", WL_MIM_DOMAIN); ?>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -1197,6 +1200,9 @@ if (empty($general_institute['institute_name'])) {
                                         </li>
                                         <li class="list-group-item">
                                             <strong>[DUE_DATE]</strong> - <?php esc_html_e("to replace with Due Date", WL_MIM_DOMAIN); ?>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>[AMOUNT]</strong> - <?php esc_html_e("to replace with amount", WL_MIM_DOMAIN); ?>
                                         </li>
                                     </ul>
                                 </div>

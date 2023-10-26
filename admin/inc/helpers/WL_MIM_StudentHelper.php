@@ -19,7 +19,7 @@ class WL_MIM_StudentHelper {
 
 	public static function fetch_student($institute_id, $user_id) {
 		global $wpdb;
-	
+
 			$student = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}wl_min_students as ms
 			JOIN {$wpdb->prefix}wl_min_batches as mb ON mb.id = ms.batch_id
 			JOIN {$wpdb->prefix}wl_min_certificate_student as cs ON cs.student_record_id = ms.id
@@ -35,18 +35,19 @@ class WL_MIM_StudentHelper {
 				if ( $show_buffer_error ) {
 					throw new Exception( $buffer );
 				}
-	
+
 				throw new Exception( esc_html__( 'Unexpected error occurred!', WL_MIM_DOMAIN ) );
 			}
 		}
 
 	/* Get notices */
-	public static function get_notices( $limit = null ) {
+	public static function get_notices( $limit = null, $course_id = null, $batch_id = null ) {
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
 		$limit        = $limit ? "LIMIT $limit" : "";
 
-		return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_notices WHERE is_deleted = 0 AND is_active = 1 AND institute_id = $institute_id ORDER BY priority ASC, id DESC $limit" );
+		// return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_notices WHERE is_deleted = 0 AND is_active = 1 AND institute_id = $institute_id ORDER BY priority ASC, id DESC $limit" );
+		return $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_notices WHERE is_deleted = 0 AND is_active = 1 AND institute_id = $institute_id AND course_id = $course_id AND batch_id = $batch_id ORDER BY priority ASC, id DESC $limit" );
 	}
 }
 

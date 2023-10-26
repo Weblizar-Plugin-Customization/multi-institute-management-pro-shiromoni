@@ -55,6 +55,8 @@ class WL_MIM_Notice {
 		$attachment = ( isset( $_FILES['attachment'] ) && is_array( $_FILES['attachment'] ) ) ? $_FILES['attachment'] : null;
 		$url        = isset( $_POST['url'] ) ? esc_url_raw( $_POST['url'] ) : null;
 		$priority   = isset( $_POST['priority'] ) ? intval( sanitize_text_field( $_POST['priority'] ) ) : 10;
+		$course_id   = isset( $_POST['ttcourseID'] ) ? intval( sanitize_text_field( $_POST['ttcourseID'] ) ) : 10;
+		$batch_id   = isset( $_POST['ttbatchID'] ) ? intval( sanitize_text_field( $_POST['ttbatchID'] ) ) : 10;
 		$is_active  = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 0;
 
 		/* Validations */
@@ -107,6 +109,8 @@ class WL_MIM_Notice {
 					'priority'     => $priority,
 					'is_active'    => $is_active,
 					'added_by'     => get_current_user_id(),
+					'course_id'    => $course_id,
+					'batch_id'     => $batch_id,
 					'institute_id' => $institute_id
 				);
 

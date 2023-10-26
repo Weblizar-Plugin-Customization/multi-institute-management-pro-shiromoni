@@ -11,7 +11,9 @@ $institute_id = WL_MIM_Helper::get_current_institute_id();
 $general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
 $student = WL_MIM_StudentHelper::get_student();
-$notices = WL_MIM_StudentHelper::get_notices( 8 );
+$course_id = $student->course_id;
+$batch_id = $student->batch_id;
+$notices = WL_MIM_StudentHelper::get_notices( 8, $course_id, $batch_id );
 
 if ( ! $student ) {
 	die();
@@ -106,13 +108,13 @@ WHERE sr.ID = ' . absint( $id )
 						</div>
 						<ul class="list-group list-group-flush">
 							<?php
-					
+
 							if (get_option( 'multi_institute_enable_seprate_enrollment_id', $institute_id )) {
 								$student_id = $student->enrollment_id;
 							} else {
 								$student_id = $student->id;
 							}
-							
+
 							?>
 							<li class="list-group-item mt-2">
 								<strong><?php esc_html_e( 'Enrollment ID', WL_MIM_DOMAIN ); ?></strong>:&nbsp;

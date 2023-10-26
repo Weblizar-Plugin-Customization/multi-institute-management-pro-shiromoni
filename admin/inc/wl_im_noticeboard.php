@@ -100,6 +100,52 @@ if ( empty( $general_institute['institute_name'] ) ) {
 					<?php $nonce = wp_create_nonce( 'add-notice' ); ?>
                     <input type="hidden" name="add-notice" value="<?php echo esc_attr( $nonce ); ?>">
                     <input type="hidden" name="action" value="wl-mim-add-notice">
+
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="ttcourseID" class="col-form-label">
+                                <?php _e( 'Course', WL_MIM_DOMAIN ); ?>
+                            </label>
+                            <?php
+                                $courses = WL_MIM_Helper::getCourses();
+                            ?>
+                            <select name="ttcourseID" id="ttcourseID" class="form-control">
+                                <option value=""><?php esc_html_e('Select a Course', WL_MIM_DOMAIN); ?></option>
+                                <?php
+                                        foreach($courses as $key=>$value) {
+                                        ?>
+                                        <option value="<?php echo $value->id; ?>"><?php esc_html_e($value->course_name, WL_MIM_DOMAIN); ?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="ttbatchID" class="col-form-label">
+                                <?php _e( 'Batch', WL_MIM_DOMAIN ); ?>
+                            </label>
+                            <?php
+                                $batches = WL_MIM_Helper::getBatch();
+                            ?>
+                            <select name="ttbatchID" id="ttbatchID" class="form-control "></select>
+                        </div>
+                    </div>
+                    <!-- student select -->
+                    <!-- <div class="row">
+                        <div class="form-group col">
+                            <label for="student_id" class="col-form-label">
+                                <?php _e( 'Students', WL_MIM_DOMAIN ); ?>
+                            </label>
+                            <?php
+                                $batches = WL_MIM_Helper::getBatch();
+                            ?>
+                            <select name="student_id[]" id="student_id" class="form-control selectpicker " multiple></select>
+                        </div>
+                    </div> -->
+
                     <div class="form-group">
                         <label for="wlim-notice-title" class="col-form-label">* <?php esc_html_e( 'Notice Title', WL_MIM_DOMAIN ); ?>:</label>
                         <textarea name="title" class="form-control" rows="3" id="wlim-notice-title" placeholder="<?php esc_html_e( "Notice Title", WL_MIM_DOMAIN ); ?>"></textarea>
