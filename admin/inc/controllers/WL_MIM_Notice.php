@@ -150,6 +150,43 @@ class WL_MIM_Notice {
 		?>
         <input type="hidden" name="update-notice-<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $nonce ); ?>">
         <input type="hidden" name="action" value="wl-mim-update-notice">
+
+		<div class="row">
+                        <div class="form-group col">
+                            <label for="ttcourseID" class="col-form-label">
+                                <?php _e( 'Course', WL_MIM_DOMAIN ); ?>
+                            </label>
+                            <?php
+                                $courses = WL_MIM_Helper::getCourses();
+                            ?>
+                            <select name="ttcourseID" id="ttcourseID" class="form-control">
+                                <option value=""><?php esc_html_e('Select a Course', WL_MIM_DOMAIN); ?></option>
+                                <?php
+                                        foreach($courses as $key=>$value) {
+                                        ?>
+                                        <option value="<?php echo $value->id; ?>" <?php selected($row->course_id, $value->id, true) ?>><?php esc_html_e($value->course_name, WL_MIM_DOMAIN); ?></option>
+                                        <?php
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="ttbatchID" class="col-form-label">
+                                <?php _e( 'Batch', WL_MIM_DOMAIN ); ?>
+                            </label>
+                            <?php
+                                $batches = WL_MIM_Helper::getBatch();
+                            ?>
+
+                            <select name="ttbatchID" id="ttbatchID" class="form-control ">
+							<?php foreach ($batches as $batch): ?>
+								<option name="ttbatchID" id="" <?php selected($row->batch_id, $batch->id, true) ?> > <?php echo $batch->batch_name; ?></option>
+							<?php endforeach ?>
+							</select>
+                        </div>
+                    </div>
         <div class="form-group">
             <label for="wlim-notice-title_update" class="col-form-label">* <?php esc_html_e( 'Notice Title', WL_MIM_DOMAIN ); ?>:</label>
             <textarea name="title" class="form-control" rows="3" id="wlim-notice-title_update" placeholder="<?php esc_html_e( "Notice Title", WL_MIM_DOMAIN ); ?>"><?php echo stripcslashes( $row->title ); ?></textarea>

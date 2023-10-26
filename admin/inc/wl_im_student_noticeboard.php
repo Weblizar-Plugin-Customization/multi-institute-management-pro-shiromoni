@@ -6,7 +6,9 @@ require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_StudentHelper.
 require_once( WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_PaymentHelper.php' );
 
 $student = WL_MIM_StudentHelper::get_student();
-$notices = WL_MIM_StudentHelper::get_notices( 25 );
+$course_id = $student->course_id;
+$batch_id = $student->batch_id;
+$notices = WL_MIM_StudentHelper::get_notices( 25, $course_id, $batch_id );
 
 if ( ! $student ) {
 	die();

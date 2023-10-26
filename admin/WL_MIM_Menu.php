@@ -289,14 +289,14 @@ class WL_MIM_Menu {
 					));
 
 					/* Student noticeboard submenu */
-					// $student_noticeboard_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Noticeboard', WL_MIM_DOMAIN), esc_html__('Noticeboard', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-noticeboard', array(
-					// 	'WL_MIM_Menu',
-					// 	'student_noticeboard'
-					// ));
-					// add_action('admin_print_styles-' . $student_noticeboard_submenu, array(
-					// 	'WL_MIM_Menu',
-					// 	'student_noticeboard_assets'
-					// ));
+					$student_noticeboard_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Noticeboard', WL_MIM_DOMAIN), esc_html__('Noticeboard', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-noticeboard', array(
+						'WL_MIM_Menu',
+						'student_noticeboard'
+					));
+					add_action('admin_print_styles-' . $student_noticeboard_submenu, array(
+						'WL_MIM_Menu',
+						'student_noticeboard_assets'
+					));
 
 					/* Student notes submenu */
 					$student_notes_submenu = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Study Material', WL_MIM_DOMAIN), esc_html__('Study Material', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-notes', array(
