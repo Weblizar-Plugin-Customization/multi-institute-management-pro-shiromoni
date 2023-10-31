@@ -185,6 +185,7 @@ class WL_MIM_Attendance {
 						}
 
 						$student_id = $student->id;
+						// var_dump($attendance_status); die;
 						if ( isset( $attendance[ $student->id ] ) ) {
 							/* Attendance exists */
 							$attendance_id = $attendance[ $student->id ]->attendance_id;
@@ -200,6 +201,28 @@ class WL_MIM_Attendance {
 								'id'           => $attendance_id,
 								'institute_id' => $institute_id
 							) );
+							if ($attendance_status === 'a') {
+								// get student phone with student_id.
+								$student_detail = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id" );
+								$phone = $student_detail->phone;
+
+								// var_dump($student_detail); die;
+								$result = print_r( $student_detail, true );
+								error_log( $result );
+
+								$sms_template_student_absent = WL_MIM_SettingHelper::sms_template_student_absent($institute_id);
+								$sms = WL_MIM_SettingHelper::get_sms_settings($institute_id);
+
+								if ($sms_template_student_absent['enable']) {
+									$sms_message = $sms_template_student_absent['message'];
+									$template_id = $sms_template_student_absent['template_id'];
+
+									$sms_message = str_replace( '[FIRST_NAME]', $student_detail->first_name, $sms_message );
+									$sms_message = str_replace( '[LAST_NAME]', $student_detail->last_name, $sms_message );
+
+									WL_MIM_SMSHelper::send_sms($sms, $institute_id, $sms_message, $phone, $template_id);
+								}
+							}
 							if ( $success === false ) {
 								throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
 							}
@@ -212,12 +235,13 @@ class WL_MIM_Attendance {
 								'added_by'        => get_current_user_id(),
 								'institute_id'    => $institute_id
 							);
+
 							$data['created_at'] = current_time( 'Y-m-d H:i:s' );
 							$success = $wpdb->insert( "{$wpdb->prefix}wl_min_attendance", $data );
 
 							if ($attendance_status === 'a') {
 								// get student phone with student_id.
-								$student_detail = $wpdb->get_var( "SELECT * FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id" );
+								$student_detail = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}wl_min_students WHERE id = $student_id" );
 								$phone = $student_detail->phone;
 
 								$sms_template_student_absent = WL_MIM_SettingHelper::sms_template_student_absent($institute_id);
