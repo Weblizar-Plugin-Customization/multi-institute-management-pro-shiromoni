@@ -111,6 +111,9 @@ add_action( 'wp_ajax_nopriv_wl-mim-get-exam-results', array( 'WL_MIM_Result_Fron
 add_action( 'wp_ajax_wl-mim-paypal-payments', array( 'WL_MIM_Payment_Front', 'paypal_payments' ) );
 add_action( 'wp_ajax_nopriv_wl-mim-paypal-payments', array( 'WL_MIM_Payment_Front', 'paypal_payments' ) );
 
+add_action( 'wp_ajax_nopriv_wl-mim-send-email-otp', array( 'WL_MIM_Helper', 'send_email_otp' ) );
+add_action( 'wp_ajax_nopriv_wl-mim-verify-email-otp', array( 'WL_MIM_Helper', 'verify_email_otp' ) );
+
 /* Send birthday messages */
 if ( ! wp_next_scheduled( 'wl_mim_send_birthday_messages' ) ) {
 	wp_schedule_event( time(), 'daily', 'wl_mim_send_birthday_messages' );

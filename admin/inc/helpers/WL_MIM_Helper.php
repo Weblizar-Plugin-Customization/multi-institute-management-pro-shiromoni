@@ -818,6 +818,34 @@ class WL_MIM_Helper {
 		return $row;
 	}
 
+	public static function send_email_otp(){
+		session_start();
+		$email = isset($_POST['email']) ? sanitize_text_field($_POST['email']) : '';
+		$institute_id = isset($_POST['institute_id_']) ? sanitize_text_field($_POST['institute_id_']) : '';
+		$otp = $_SESSION['otp'];
+
+		$subject = 'OTP for email verification';
+		$body = 'Your OTP for email verification is '.$otp;
+		WL_MIM_SMSHelper::send_email( $institute_id, $email, $subject, $body );
+
+		wp_send_json_success( array( 'message' => 'OTP sent successfully' ) );
+	}
+
+	// verify email otp.
+	public static function verify_email_otp(){
+		session_start();
+		$otp = isset($_POST['otp']) ? sanitize_text_field($_POST['otp']) : '';
+		$institute_id = isset($_POST['institute_id_']) ? sanitize_text_field($_POST['institute_id_']) : '';
+		$otp_session = $_SESSION['otp'];
+
+		if( $otp == $otp_session ){
+			$_SESSION['verification'] = true;
+			wp_send_json_success( array( 'message' => 'OTP verified successfully' ) );
+		}else{
+			wp_send_json_error( array( 'message' => 'OTP not verified' ) );
+		}
+	}
+
 	/* Send birthday messages */
 	public static function send_birthday_messages() {
 		global $wpdb;

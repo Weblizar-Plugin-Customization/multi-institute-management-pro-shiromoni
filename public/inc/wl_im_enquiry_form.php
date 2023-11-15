@@ -181,7 +181,27 @@ if (isset($attr['id'])) {
 								<div class="col-sm-12 form-group">
 									<label for="wlim-enquiry-email" class="col-form-label">* <?php esc_html_e('Email', WL_MIM_DOMAIN); ?>:</label>
 									<input name="email" type="text" class="form-control" id="wlim-enquiry-email" placeholder="<?php esc_html_e('Email', WL_MIM_DOMAIN); ?>" required>
+									<?php session_start();
+
+									// Step 1: Generate an OTP
+									$otp = rand(100000, 999999);
+
+									// Step 2: Store the OTP in a session
+									$_SESSION['otp'] = $otp; ?>
+									<input type="text" name="institute_id" id="institute_id" value="<?php echo $institute_id; ?>" hidden>
 								</div>
+								<!--create a button and input to send and verify email otp  -->
+
+								<div class="col-sm-6 form-group">
+									<label for="wlim-enquiry-email" class="col-form-label"><?php esc_html_e('Email OTP', WL_MIM_DOMAIN); ?>:</label>
+									<input name="email_otp" type="text" class="form-control" id="email_otp" placeholder="<?php esc_html_e('Email OTP', WL_MIM_DOMAIN); ?>" required>
+								</div>
+								<div class="col-sm-6 form-group" style="margin-top: 38px;">
+
+									<button type="button" class="btn btn-primary" id="send_email_otp">Send OTP</button>
+									<button type="button" class="btn btn-primary" id="verify_email_otp">Verify OTP</button>
+								</div>
+
 
 								<div class="col-sm-6 form-group">
 									<label for="wlim-enquiry-zip" class="col-form-label">* <?php esc_html_e('Zip Code', WL_MIM_DOMAIN); ?>:</label>

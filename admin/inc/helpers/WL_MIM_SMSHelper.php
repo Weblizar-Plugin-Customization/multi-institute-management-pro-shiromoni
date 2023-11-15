@@ -122,10 +122,10 @@ class WL_MIM_SMSHelper {
 			if ( ! empty( $from_name ) ) {
 				array_push( $headers, "From: $from_name <$from_name>" );
 			}
-			$result = print_r( $email, true );
-			error_log( $result );
 
 			$status = wp_mail( $email, html_entity_decode( $subject ), $body, $headers, array(), $attachments );
+			$result = print_r( $status, true );
+			error_log( $result );
 			return $status;
 
 	}

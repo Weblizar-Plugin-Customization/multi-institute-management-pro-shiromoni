@@ -235,5 +235,68 @@
             var data = jQuery('#wlim-exam-results-form').serialize();
             fetchRecords('wl-mim-get-exam-results', '#wlim-get-exam-results', data);
         });
+
+        // when #send_email_otp button is click send ajax request with #wlim-enquiry-email and #email_otp.
+        jQuery(document).on('click', '#send_email_otp', function () {
+            var email = jQuery('#wlim-enquiry-email').val();
+            var institute_id = jQuery('#institute_id').val();
+            if (email) {
+                jQuery.ajax({
+                    type: 'post',
+                    url: wlimajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-send-email-otp',
+                    data: 'email=' + email+ '&institute_id ='+ institute_id,
+                    success: function (data) {
+                        if (data.success) {
+                            // jQuery('#email_otp').prop('disabled', false);
+                            // jQuery('#send_email_otp').prop('disabled', true);
+                            // jQuery('#send_email_otp').text('Resend OTP');
+                        }
+                    }
+                });
+            }
+        });
+
+         jQuery(document).on('click', '#send_email_otp', function () {
+            var email = jQuery('#wlim-enquiry-email').val();
+            var institute_id = jQuery('#institute_id').val();
+            if (email) {
+                jQuery.ajax({
+                    type: 'post',
+                    url: wlimajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-send-email-otp',
+                    data: 'email=' + email+ '&institute_id ='+ institute_id,
+                    success: function (data) {
+                        if (data.success) {
+                            jQuery('#email_otp').prop('disabled', false);
+                            jQuery('#send_email_otp').prop('disabled', true);
+                            jQuery('#send_email_otp').text('Resend OTP');
+                        }
+                    }
+                });
+            }
+        });
+
+        // verify_email_otp button is click send ajax request with #wlim-enquiry-email and #email_otp.
+        jQuery(document).on('click', '#verify_email_otp', function () {
+            var email = jQuery('#wlim-enquiry-email').val();
+            var otp = jQuery('#email_otp').val();
+            var institute_id = jQuery('#institute_id').val();
+            if ( otp) {
+                jQuery.ajax({
+                    type: 'post',
+                    url: wlimajaxurl + '?security=' + WLIMAjax.security + '&action=wl-mim-verify-email-otp',
+                    data: 'email=' + email + '&otp=' + otp+ '&institute_id ='+ institute_id,
+                    success: function (data) {
+                        if (data.success) {
+                            jQuery('#email_otp').prop('disabled', true);
+                            jQuery('#verify_email_otp').prop('disabled', true);
+                            jQuery('#verify_email_otp').text('Verified');
+                        }
+                    }
+                });
+            }
+        });
+
+
+
     });
 })(jQuery);

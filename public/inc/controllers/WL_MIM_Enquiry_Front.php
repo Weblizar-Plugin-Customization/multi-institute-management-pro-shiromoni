@@ -132,6 +132,11 @@ class WL_MIM_Enquiry_Front {
 			$errors['email'] = esc_html__( 'Please provide a valid email address.', WL_MIM_DOMAIN );
 		}
 
+		session_start();
+		if ($_SESSION['verification'] !== true) {
+			$errors['email'] = esc_html__( 'Please verify your first email address.', WL_MIM_DOMAIN );
+		}
+
 		if ( ! empty( $custom_fields ) ) {
 			if ( ! array_key_exists( 'name', $custom_fields ) || ! array_key_exists( 'value', $custom_fields ) ) {
 				wp_send_json_error( esc_html__( 'Invalid field.', WL_MIM_DOMAIN ) );
