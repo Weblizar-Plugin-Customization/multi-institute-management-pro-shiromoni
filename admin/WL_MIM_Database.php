@@ -175,7 +175,7 @@ class WL_MIM_Database {
 			INDEX (subject_id)
 		)$charset_collate";
 		dbDelta( $sql );
-		
+
 
 		/**
 		 * Studio or room
@@ -217,7 +217,7 @@ class WL_MIM_Database {
 			batch_id  bigint(20) UNSIGNED DEFAULT NULL,
 			subject_id bigint(20) UNSIGNED DEFAULT NULL,
 			topic_id bigint(20) UNSIGNED DEFAULT NULL,
-			staff_id bigint(20) UNSIGNED DEFAULT NULL,                
+			staff_id bigint(20) UNSIGNED DEFAULT NULL,
 			room_id bigint(20) UNSIGNED DEFAULT NULL,
 			batch_date date NULL DEFAULT NULL,
 			start_time time DEFAULT NULL,
@@ -231,7 +231,7 @@ class WL_MIM_Database {
 			FOREIGN KEY (topic_id) REFERENCES {$wpdb->prefix}wl_min_topics (id) ON DELETE SET NULL,
 			FOREIGN KEY (subject_id) REFERENCES {$wpdb->prefix}wl_min_subjects (id) ON DELETE SET NULL
 		)$charset_collate";
-		dbDelta( $sql ); 
+		dbDelta( $sql );
 
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_timetable' AND COLUMN_NAME = 'remark'" );
 		if ( empty( $row ) ) {
@@ -243,18 +243,18 @@ class WL_MIM_Database {
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			institute_id bigint(20) UNSIGNED DEFAULT NULL,
 			student_id bigint(20) UNSIGNED DEFAULT NULL,
-			timeTableId bigint(20) UNSIGNED DEFAULT NULL,			
+			timeTableId bigint(20) UNSIGNED DEFAULT NULL,
 			batch_id  bigint(20) UNSIGNED DEFAULT NULL,
 			subject_id bigint(20) UNSIGNED DEFAULT NULL,
 			topic_id bigint(20) UNSIGNED DEFAULT NULL,
 			staff_id bigint(20) UNSIGNED DEFAULT NULL,
-			remark text NOT NULL,			
+			remark text NOT NULL,
 			is_active tinyint(1) NOT NULL DEFAULT '1',
 			created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at timestamp NULL DEFAULT NULL,
-			PRIMARY KEY (id)			
+			PRIMARY KEY (id)
 		)$charset_collate";
-		dbDelta( $sql ); 
+		dbDelta( $sql );
 
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_studentRemark' AND COLUMN_NAME = 'batch_date'" );
 		if ( empty( $row ) ) {
@@ -299,7 +299,7 @@ class WL_MIM_Database {
 				FOREIGN KEY (institute_id) REFERENCES {$wpdb->prefix}wl_min_institutes (id) ON DELETE CASCADE
 				) $charset_collate";
 		dbDelta( $sql );
-		
+
 		/* Create custom_fields table */
 		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_source (
 				id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -364,7 +364,13 @@ class WL_MIM_Database {
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD reference text DEFAULT NULL" );
 		}
-		
+
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_enquiries' AND COLUMN_NAME = 'audit'" );
+
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_enquiries ADD `audit` text DEFAULT NULL" );
+		}
+
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_enquiries' AND COLUMN_NAME = 'phone2'" );
 
 		if ( empty( $row ) ) {
@@ -430,7 +436,7 @@ class WL_MIM_Database {
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD enrollment_id varchar(255) DEFAULT NULL" );
 		}
-		
+
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_students' AND COLUMN_NAME = 'teacher'" );
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD teacher varchar(255) DEFAULT NULL" );
@@ -452,7 +458,7 @@ class WL_MIM_Database {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD business_manager varchar(255) DEFAULT NULL" );
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD expire_at timestamp NULL DEFAULT NULL" );
 		}
-		
+
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_students' AND COLUMN_NAME = 'student_status'" );
 		if ( empty( $row ) ) {
 			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_students ADD student_status varchar(255) DEFAULT NULL" );

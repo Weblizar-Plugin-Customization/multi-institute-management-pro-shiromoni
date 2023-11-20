@@ -34,6 +34,7 @@ class WL_MIM_Enquiry_Front {
 		$photo         = ( isset( $_FILES['photo'] ) && is_array( $_FILES['photo'] ) ) ? $_FILES['photo'] : null;
 		$signature     = ( isset( $_FILES['signature'] ) && is_array( $_FILES['signature'] ) ) ? $_FILES['signature'] : null;
 		$message       = isset( $_POST['message'] ) ? sanitize_textarea_field( $_POST['message'] ) : '';
+		$audit       = isset( $_POST['audit'] ) ? sanitize_textarea_field( $_POST['audit'] ) : '';
 		$custom_fields = ( isset( $_POST['custom_fields'] ) && is_array( $_POST['custom_fields'] ) ) ? $_POST['custom_fields'] : array();
 
 		$class     = isset( $_POST['class'] ) ? sanitize_text_field( $_POST['class'] ) : '';
@@ -235,6 +236,7 @@ class WL_MIM_Enquiry_Front {
 					'is_active'     => 1,
 					'institute_id'  => $institute_id,
 					'class'         => $class,
+					'audit'         => $audit,
 					'custom_fields' => $custom_fields
 				);
 

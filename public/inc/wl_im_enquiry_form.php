@@ -202,6 +202,10 @@ if (isset($attr['id'])) {
 									<button type="button" class="btn btn-primary" id="verify_email_otp">Verify OTP</button>
 								</div>
 
+								<div class="col-sm-6 form-group">
+									<label for="wlim-audit" class="col-form-label">* <?php esc_html_e('Audit By', WL_MIM_DOMAIN); ?>:</label>
+									<input name="audit" type="text" class="form-control" id="wlim-audit" placeholder="<?php esc_html_e('Audit By', WL_MIM_DOMAIN); ?>" required>
+								</div>
 
 								<div class="col-sm-6 form-group">
 									<label for="wlim-enquiry-zip" class="col-form-label">* <?php esc_html_e('Zip Code', WL_MIM_DOMAIN); ?>:</label>
