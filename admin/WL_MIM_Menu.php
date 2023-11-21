@@ -82,6 +82,12 @@ class WL_MIM_Menu {
 				));
 				add_action('admin_print_styles-' . $dashboard_submenu, array('WL_MIM_Menu', 'dashboard_assets'));
 
+				$welcome_Staff = add_submenu_page('multi-institute-management', esc_html__('Welcome', WL_MIM_DOMAIN), esc_html__('Welcome', WL_MIM_DOMAIN), 'wl_min_manage_dashboard', 'multi-institute-management-welcome', array(
+					'WL_MIM_Menu',
+					'welcome'
+				));
+				add_action('admin_print_styles-' . $welcome_Staff, array('WL_MIM_Menu', 'timetable_assets'));
+
 				/* Courses submenu */
 				$courses = add_submenu_page('multi-institute-management', esc_html__('Courses', WL_MIM_DOMAIN), esc_html__('Courses', WL_MIM_DOMAIN), 'wl_min_manage_courses', 'multi-institute-management-courses', array(
 					'WL_MIM_Menu',
@@ -267,6 +273,9 @@ class WL_MIM_Menu {
 				));
 				add_action('admin_print_styles-' . $timetble, array('WL_MIM_Menu', 'timetable_assets'));
 
+				/** Sub menu for the timeTable */
+
+
 				if (!current_user_can('manage_options')) :
 					/* Student dashboard */
 					$student_dashboard = add_menu_page(esc_html__('Dashboard', WL_MIM_DOMAIN), esc_html__('Dashboard', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-student-dashboard', array(
@@ -337,6 +346,12 @@ class WL_MIM_Menu {
 						'WL_MIM_Menu',
 						'student_attendance_assets'
 					));
+
+					$welcome = add_submenu_page('multi-institute-management-student-dashboard', esc_html__('Welcome', WL_MIM_DOMAIN), esc_html__('Welcome', WL_MIM_DOMAIN), 'wl_min_student', 'multi-institute-management-welcome', array(
+						'WL_MIM_Menu',
+						'welcome'
+					));
+					add_action('admin_print_styles-' . $welcome, array('WL_MIM_Menu', 'timetable_assets'));
 
 
 					/* Student admit_card submenu */
@@ -502,6 +517,10 @@ class WL_MIM_Menu {
 	/* Time table menu callback */
 	public static function timetable() {
 		require_once('inc/wl_im_timetable.php');
+	}
+
+	public static function welcome() {
+		require_once('inc/welcome.php');
 	}
 
 	/* Batches menu assets */
