@@ -88,6 +88,12 @@ class WL_MIM_Student
 				$source         = $row->source ? $row->source : '-';
 				$state         = $row->state ? $row->state : '-';
 				$teacher         = $row->teacher ? $row->teacher : '-';
+				$updated_by      = $row->updated_by ? $row->updated_by : '-';
+
+				// get wordpress username by user id.
+				$user_info = get_userdata($updated_by);
+				$user_info = $user_info->user_login;
+
 				// $fees          = unserialize($row->fees);
 				// $fees_payable  = WL_MIM_Helper::get_fees_total($fees['payable']);
 				// $fees_paid     = WL_MIM_Helper::get_fees_total($fees['paid']);
@@ -143,6 +149,7 @@ class WL_MIM_Student
 					$source,
 					$state,
 					$teacher,
+					$user_info,
 					esc_html($phone),
 					esc_html($phon2),
 					esc_html($email),
@@ -2373,7 +2380,12 @@ class WL_MIM_Student
 				}
 
 				$custom_fields = serialize($custom_fields);
-
+				// if staff is updating the student status.
+				if ($row->student_status == "processing" && $student_status == "approved") {
+					$updated_by = get_current_user_id();
+				} else {
+				  	$updated_by = null;
+				}
 				$data = array(
 					'course_id'     => $course_id,
 					'batch_id'      => $batch_id,
@@ -2403,6 +2415,7 @@ class WL_MIM_Student
 					'teacher'       => $teacher,
 					'student_status'   => $student_status,
 					'expire_at'        => $expire_at,
+					'updated_by'       => $updated_by,
 					'updated_at'       => date('Y-m-d H:i:s')
 				);
 
