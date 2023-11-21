@@ -97,8 +97,8 @@ class WL_MIM_Attendance {
                                 <td colspan="1">
                                     <div class="row mt-2">
                                         <div class="col-sm-12">
-                                            <label class="radio-inline mr-3"><input <?php echo isset( $attendance[ $student_id ] ) ? checked( $attendance[ $student_id ]->status, 'a', false ) : 'checked'; ?> type="radio" name="status[<?php echo esc_attr( $key ); ?>]" class="mr-2" value="a" id="wlim-attendance-status-absent-<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Absent', WL_MIM_DOMAIN ); ?></label>
-                                            <label class="radio-inline"><input <?php echo isset( $attendance[ $student_id ] ) ? checked( $attendance[ $student_id ]->status, 'p', false ) : ''; ?> type="radio" name="status[<?php echo esc_attr( $key ); ?>]" class="mr-2" value="p" id="wlim-attendance-status-present-<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Present', WL_MIM_DOMAIN ); ?></label>
+                                            <label class="radio-inline mr-3"><input <?php echo isset( $attendance[ $student_id ] ) ? checked( $attendance[ $student_id ]->status, 'a', false ) : ''; ?> type="radio" name="status[<?php echo esc_attr( $key ); ?>]" class="mr-2" value="a" id="wlim-attendance-status-absent-<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Absent', WL_MIM_DOMAIN ); ?></label>
+                                            <label class="radio-inline"><input <?php echo isset( $attendance[ $student_id ] ) ? checked( $attendance[ $student_id ]->status, 'p', false ) : 'checked'; ?> type="radio" name="status[<?php echo esc_attr( $key ); ?>]" class="mr-2" value="p" id="wlim-attendance-status-present-<?php echo esc_attr( $key ); ?>"><?php esc_html_e( 'Present', WL_MIM_DOMAIN ); ?></label>
                                         </div>
                                     </div>
                                 </td>
