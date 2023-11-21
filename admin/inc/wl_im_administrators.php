@@ -278,6 +278,32 @@ if ( empty( $general_institute['institute_name'] ) ) {
 								<?php esc_html_e( 'Is Active?', WL_MIM_DOMAIN ); ?>
                             </label>
                         </div>
+                        <?php
+                        $institute_id = WL_MIM_Helper::get_current_institute_id();
+
+                        $course_data        = WL_MIM_Helper::get_active_courses_institute( $institute_id );
+                        $get_active_batches = WL_MIM_Helper::get_active_batches_institute( $institute_id );
+                        ?>
+                        <div class="form-group wlim-selectpicker">
+                                    <label for="wlim-note-batch" class="col-form-label"><?php esc_html_e( "Batch", WL_MIM_DOMAIN ); ?>:</label>
+                                    <select name="batch" class="form-control selectpicker" id="wlim-note-batch" data-live-search="true">
+                                        <option value=""><?php esc_html_e( "-------- Select a Batch --------", WL_MIM_DOMAIN ); ?></option>
+                                        <?php
+                                        if ( count( $get_active_batches ) > 0 ) {
+                                            foreach ( $get_active_batches as $active_batch ) {
+                                                $batch  = $active_batch->batch_code . ' ( ' . $active_batch->batch_name . ' )';
+                                                $course = '-';
+                                                if ( $active_batch->course_id && isset( $course_data[ $active_batch->course_id ] ) ) {
+                                                    $course_name = $course_data[ $active_batch->course_id ]->course_name;
+                                                    $course_code = $course_data[ $active_batch->course_id ]->course_code;
+                                                    $course      = "$course_name ($course_code)";
+                                                } ?>
+                                                <option value="<?php echo esc_attr( $active_batch->id ); ?>"><?php echo esc_html( "$batch ( $course )" ); ?></option>
+                                            <?php
+                                            }
+                                        } ?>
+                                    </select>
+                                </div>
                     </div>
                 </div>
                 <div class="modal-footer">

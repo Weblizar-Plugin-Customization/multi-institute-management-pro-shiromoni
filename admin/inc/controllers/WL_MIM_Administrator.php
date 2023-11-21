@@ -93,6 +93,7 @@ class WL_MIM_Administrator {
 		$signature        = ( isset( $_FILES['signature'] ) && is_array( $_FILES['signature'] ) ) ? $_FILES['signature'] : null;
 		$is_active        = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 0;
 		$add_staff_record = isset( $_POST['add_staff_record'] ) ? boolval( sanitize_text_field( $_POST['add_staff_record'] ) ) : 0;
+		$batch_id         = isset( $_POST['batch'] ) ? ( sanitize_text_field( $_POST['batch'] ) ) : 0;
 
 		$errors = array();
 		if ( empty( $username ) ) {
@@ -179,6 +180,7 @@ class WL_MIM_Administrator {
 						'user_id'         => $user_id,
 						'is_active'       => $is_active,
 						'inactive_at'     => $inactive_at,
+						'batch_id'        => $batch_id,
 						'added_by'        => get_current_user_id(),
 						'institute_id'    => $institute_id
 					);
@@ -429,6 +431,34 @@ class WL_MIM_Administrator {
 					<?php esc_html_e( 'Is Active?', WL_MIM_DOMAIN ); ?>
                 </label>
             </div>
+
+			<?php
+			// var_dump($staff->batch_id); die;
+			$institute_id = WL_MIM_Helper::get_current_institute_id();
+
+			$course_data        = WL_MIM_Helper::get_active_courses_institute( $institute_id );
+			$get_active_batches = WL_MIM_Helper::get_active_batches_institute( $institute_id );
+			?>
+			<div class="form-group ">
+						<label for="wlim-note-batch" class="col-form-label"><?php esc_html_e( "Batch", WL_MIM_DOMAIN ); ?>:</label>
+						<select name="batch" class="form-control selectpicker" id="wlim-note-batch" data-live-search="true">
+							<option value=""><?php esc_html_e( "-------- Select a Batch --------", WL_MIM_DOMAIN ); ?></option>
+							<?php
+							if ( count( $get_active_batches ) > 0 ) {
+								foreach ( $get_active_batches as $active_batch ) {
+									$batch  = $active_batch->batch_code . ' ( ' . $active_batch->batch_name . ' )';
+									$course = '-';
+									if ( $active_batch->course_id && isset( $course_data[ $active_batch->course_id ] ) ) {
+										$course_name = $course_data[ $active_batch->course_id ]->course_name;
+										$course_code = $course_data[ $active_batch->course_id ]->course_code;
+										$course      = "$course_name ($course_code)";
+									} ?>
+									<option value="<?php echo esc_attr( $active_batch->id ); ?>" <?php if ($staff->batch_id == $active_batch->id ){echo 'selected';} ?>><?php echo esc_html( "$batch ( $course )" ); ?></option>
+								<?php
+								}
+							} ?>
+						</select>
+					</div>
         </div>
 		<input type="hidden" name="administrator_id" value="<?php echo esc_attr( $row->ID ); ?>">
 		<?php $html         = ob_get_clean();
@@ -490,6 +520,7 @@ class WL_MIM_Administrator {
 		$signature_in_db  = isset( $_POST['signature_in_db'] ) ? intval( sanitize_text_field( $_POST['signature_in_db'] ) ) : null;
 		$is_active        = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 0;
 		$add_staff_record = isset( $_POST['add_staff_record'] ) ? boolval( sanitize_text_field( $_POST['add_staff_record'] ) ) : 0;
+		$batch_id = isset( $_POST['batch'] ) ? boolval( sanitize_text_field( $_POST['batch'] ) ) : 0;
 
 		$errors = array();
 		if ( ! empty( $password ) && ( $password !== $password_confirm ) ) {
@@ -581,6 +612,7 @@ class WL_MIM_Administrator {
 						'user_id'         => $user_id,
 						'is_active'       => $is_active,
 						'inactive_at'     => $inactive_at,
+						'batch_id'        => $batch_id,
 						'updated_at'      => date( 'Y-m-d H:i:s' ),
 						'institute_id'    => $institute_id
 					);

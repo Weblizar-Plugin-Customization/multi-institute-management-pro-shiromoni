@@ -701,6 +701,11 @@ class WL_MIM_Database {
 				) $charset_collate";
 		dbDelta( $sql );
 
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_staffs' AND COLUMN_NAME = 'batch_id'" );
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_staffs ADD batch_id bigint(20) UNSIGNED DEFAULT NULL" );
+		}
+
 		/* Create notes table */
 		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}wl_min_notes (
 				id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
