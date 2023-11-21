@@ -124,8 +124,6 @@ class WL_MIM_SMSHelper {
 			}
 
 			$status = wp_mail( $email, html_entity_decode( $subject ), $body, $headers, array(), $attachments );
-			$result = print_r( $status, true );
-			error_log( $result );
 			return $status;
 
 	}
