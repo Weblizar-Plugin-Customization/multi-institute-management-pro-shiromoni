@@ -14,8 +14,20 @@ class WL_MIM_Note {
 		}
 		global $wpdb;
 		$institute_id = WL_MIM_Helper::get_current_institute_id();
+		$filter_query = '';
+		if (!current_user_can('administrator')) {
+			// get current user id.
+			$user_id = get_current_user_id();
+			// get user staff data by user id.
+			$user_staff_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $user_id");
+			// if user have batch_id then add batch_id in filter query.
+			if ($user_staff_data->batch_id) {
+				$filter_query .= " AND batch_id = $user_staff_data->batch_id";
+			}
+			// var_dump($filter_query); die;
+		}
 
-		$data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_notes WHERE institute_id = $institute_id ORDER BY id DESC" );
+		$data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_notes WHERE institute_id = $institute_id $filter_query ORDER BY id DESC" );
 
 		$course_data = $wpdb->get_results( "SELECT id, course_name, course_code, fees, duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE institute_id = $institute_id ORDER BY course_name", OBJECT_K );
 
@@ -91,6 +103,20 @@ class WL_MIM_Note {
 
 		if ( strlen( $title ) > 255 ) {
 			$errors['title'] = esc_html__( 'Maximum length cannot exceed 255 characters.', WL_MIM_DOMAIN );
+		}
+
+		if (!current_user_can('administrator')) {
+			// get current user id.
+			$user_id = get_current_user_id();
+			// get user staff data by user id.
+			$user_staff_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $user_id");
+			// if user have batch_id then add batch_id in filter query.
+
+			// var_dump( $user_staff_data->batch_id); die;
+			if ($user_staff_data->batch_id !== $batch_id) {
+					$errors['batch'] = esc_html__( 'Your dont have permission.', WL_MIM_DOMAIN );
+
+			}
 		}
 
 		if ( empty( $documents ) || ! is_array( $documents ) || ! count( $documents ) ) {

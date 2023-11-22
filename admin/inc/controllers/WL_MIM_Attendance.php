@@ -44,6 +44,26 @@ class WL_MIM_Attendance {
 
 		$general_enrollment_prefix = WL_MIM_SettingHelper::get_general_enrollment_prefix_settings( $institute_id );
 
+		// if user is not admin.
+		if (!current_user_can('administrator')) {
+			// get current user id.
+			$user_id = get_current_user_id();
+			// get user staff data by user id.
+			$user_staff_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $user_id");
+			// if user have batch_id then add batch_id in filter query.
+			if ($user_staff_data->batch_id) {
+				// check if batch_id is in batch_ids array.
+				if (!in_array($user_staff_data->batch_id, $batch_ids)) {
+					?>
+					<div class="text-center alert alert-info">
+						<?php esc_html_e( 'Please you dont have permission.', WL_MIM_DOMAIN ); ?>
+					</div>
+					<?php
+					die();
+				}
+			}
+		}
+
 		$batch_ids = implode(',', $batch_ids);
 
 		$query    = "SELECT s.id, s.enrollment_id, s.first_name, s.last_name, b.batch_name, b.batch_code, c.course_name, c.course_code FROM {$wpdb->prefix}wl_min_students as s, {$wpdb->prefix}wl_min_batches as b, {$wpdb->prefix}wl_min_courses as c WHERE s.batch_id = b.id AND b.course_id = c.id AND s.is_deleted = 0 AND s.batch_id IN($batch_ids) AND s.institute_id = $institute_id ORDER BY s.id ASC";

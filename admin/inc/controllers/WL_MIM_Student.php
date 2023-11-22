@@ -61,11 +61,26 @@ class WL_MIM_Student
 			$filter_query = '';
 		}
 
+		// if user is not admin.
+		if (!current_user_can('administrator')) {
+			// get current user id.
+			$user_id = get_current_user_id();
+			// get user staff data by user id.
+			$user_staff_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $user_id");
+			// if user have batch_id then add batch_id in filter query.
+			if ($user_staff_data->batch_id) {
+				$filter_query .= " AND batch_id = $user_staff_data->batch_id";
+			}
+			// var_dump($filter_query); die;
+		}
+
 		if (!empty($filter_query)) {
 			$data = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id $filter_query ORDER BY id DESC");
 		} else {
-			$data = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id ORDER BY id DESC");
+			$data = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}wl_min_students WHERE is_deleted = 0 AND institute_id = $institute_id $filter_query ORDER BY id DESC");
 		}
+
+
 
 		$course_data = $wpdb->get_results("SELECT id, course_name, course_code, fees, duration, duration_in FROM {$wpdb->prefix}wl_min_courses WHERE institute_id = $institute_id ORDER BY course_name", OBJECT_K);
 
@@ -75,20 +90,20 @@ class WL_MIM_Student
 
 		if (count($data) !== 0) {
 			foreach ($data as $row) {
-				$id            = $row->id;
-				$enrollment_id = WL_MIM_Helper::get_enrollment_id_with_prefix($row->enrollment_id, $general_enrollment_prefix);
-				$first_name    = $row->first_name ? $row->first_name : '-';
-				$last_name     = $row->last_name ? $row->last_name : '-';
+				$id                = $row->id;
+				$enrollment_id     = WL_MIM_Helper::get_enrollment_id_with_prefix($row->enrollment_id, $general_enrollment_prefix);
+				$first_name        = $row->first_name ? $row->first_name : '-';
+				$last_name         = $row->last_name ? $row->last_name : '-';
 				$qualification     = $row->qualification ? $row->qualification : '-';
-				$registration_date     = $row->created_at ? date_format(date_create($row->created_at), 'd-m-Y') : '-';
-				$expire_at     = $row->created_at ? date_format(date_create($row->expire_at), 'd-m-Y') : '-';
-				$father_name   = $row->father_name ? $row->father_name : '-';
-				$class         = $row->class ? $row->class : '-';
-				$business_manager         = $row->business_manager ? $row->business_manager : '-';
-				$source         = $row->source ? $row->source : '-';
-				$state         = $row->state ? $row->state : '-';
-				$teacher         = $row->teacher ? $row->teacher : '-';
-				$updated_by      = $row->updated_by ? $row->updated_by : '-';
+				$registration_date = $row->created_at ? date_format(date_create($row->created_at), 'd-m-Y') : '-';
+				$expire_at         = $row->created_at ? date_format(date_create($row->expire_at), 'd-m-Y') : '-';
+				$father_name       = $row->father_name ? $row->father_name : '-';
+				$class             = $row->class ? $row->class : '-';
+				$business_manager  = $row->business_manager ? $row->business_manager : '-';
+				$source            = $row->source ? $row->source : '-';
+				$state             = $row->state ? $row->state : '-';
+				$teacher           = $row->teacher ? $row->teacher : '-';
+				$updated_by        = $row->updated_by ? $row->updated_by : '-';
 
 				// get wordpress username by user id.
 				$user_info = get_userdata($updated_by);
