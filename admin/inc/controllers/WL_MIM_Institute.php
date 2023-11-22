@@ -282,7 +282,7 @@ class WL_MIM_Institute {
 		<div class="form-group">
 		<select multiple name="i_course[]" class="selectpicker form-control" id="wlim-institute-add-course" data-none-selected-text="-------- <?php esc_html_e( "Select Courses", WL_MIM_DOMAIN ); ?> --------" data-live-search="true" data-actions-box="true">
                 <?php
-                $institute_courses = WL_MIM_Helper::get_main_courses( $id ); 
+                $institute_courses = WL_MIM_Helper::get_main_courses( $id );
                 if ( count( $institute_courses ) > 0 ) {
                     foreach ( $institute_courses as $value ) { ?>
 						<option <?php selected( $value->is_active, '1', true ); ?> value="<?php echo esc_attr( $value->id ); ?>"><?php echo esc_html( "$value->course_name ($value->course_code)" ); ?></option>
@@ -383,14 +383,14 @@ class WL_MIM_Institute {
 					throw new Exception( esc_html__( 'An unexpected error occurred.', WL_MIM_DOMAIN ) );
 				}
 
-                
 
-				$institute_courses = WL_MIM_Helper::get_main_courses( $id ); 
+
+				$institute_courses = WL_MIM_Helper::get_main_courses( $id );
 
 				// add course .
 				foreach ( $institute_courses as $i_courses_id ) {
 					if (in_array($i_courses_id->id, $i_courses )) {
-					$i_data	= array( 
+					$i_data	= array(
 						'course_code'   => $i_courses_id->course_code,
 						'course_name'   => $i_courses_id->course_name,
 						'course_detail' => $i_courses_id->course_detail,
@@ -411,7 +411,7 @@ class WL_MIM_Institute {
 				$courses_ids = WL_MIM_Helper::get_courses_ids( $id );
 				// Update course status.
 				foreach ( $courses_ids as $courses_id ) {
-					
+
                 	if ( in_array( $courses_id, $courses ) ) {
                 		// Mark as active.
 						$wpdb->update( "{$wpdb->prefix}wl_min_courses", array( 'is_active' => 1 ), array( 'id' => $courses_id ) );

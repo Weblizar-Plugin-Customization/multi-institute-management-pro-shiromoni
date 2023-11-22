@@ -791,6 +791,11 @@ class WL_MIM_Database {
 			) ". $charset_collate;
 		dbDelta( $sql );
 
+		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_reminders' AND COLUMN_NAME = 'follow_up_time'" );
+		if ( empty( $row ) ) {
+			$wpdb->query( "ALTER TABLE {$wpdb->prefix}wl_min_reminders ADD follow_up_time time DEFAULT NULL" );
+		}
+
 		/* Add period column if not exists to fee_types and courses table */
 		$row = $wpdb->get_results( "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '{$wpdb->prefix}wl_min_courses' AND COLUMN_NAME = 'period'" );
 		if ( empty( $row ) ) {

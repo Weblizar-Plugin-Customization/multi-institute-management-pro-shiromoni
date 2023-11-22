@@ -16,14 +16,14 @@ class WL_MIM_Reminder {
 		$student_id = isset( $_GET['student_id'] ) ? sanitize_text_field( $_GET['student_id'] ) : null;
 
 		if ( $start_date && $end_date) {
-			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.follow_up BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY r.id DESC" );
-			
+			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.follow_up_time, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.follow_up BETWEEN CAST('$start_date' AS DATE) AND CAST('$end_date' AS DATE) ORDER BY r.id DESC" );
+
 		} else {
-			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id ORDER BY r.id DESC" );
+			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.follow_up_time, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id ORDER BY r.id DESC" );
 		}
 
 		if ($student_id ) {
-			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone, r.student_id FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.student_id = $student_id ORDER BY r.id DESC" );
+			$data = $wpdb->get_results( "SELECT r.id, r.title, r.message, r.follow_up, r.follow_up_time, r.created_at, r.status_code, s.first_name, r.added_by, s.last_name, s.enrollment_id, s.phone, r.student_id FROM {$wpdb->prefix}wl_min_reminders as r, {$wpdb->prefix}wl_min_students as s WHERE r.student_id = s.id AND s.institute_id = $institute_id AND r.student_id = $student_id ORDER BY r.id DESC" );
 		}
 
 		if ( count( $data ) !== 0 ) {
@@ -32,6 +32,11 @@ class WL_MIM_Reminder {
 				$title      = $row->title;
 				$message    = ucwords( $row->message );
 				$follow_up  = date_format( date_create( $row->follow_up ), "d-m-Y" );
+				$follow_up_time  =  $row->follow_up_time ;
+				// convert follow up time to 12 hours format
+				if ($follow_up_time) {
+					$follow_up_time = date("h:i A", strtotime($follow_up_time));
+				}
 				$status     = $row->status_code ;
 				$created_at = date_format( date_create( $row->created_at ), "d-m-Y" );
 				$phone      = $row->phone;
@@ -54,6 +59,7 @@ class WL_MIM_Reminder {
 					// esc_html( $title ),
 					esc_html( ($message) ),
 					esc_html( $follow_up ),
+					esc_html( $follow_up_time ),
 					esc_html( $status ),
 					esc_html( $student_name ),
 					esc_html( $phone ),
@@ -80,6 +86,7 @@ class WL_MIM_Reminder {
 		$message    = isset( $_POST['message'] ) ? sanitize_text_field( $_POST['message'] ) : '';
 		$status     = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
 		$follow_up  = ( isset( $_POST['follow_up'] ) && ! empty( $_POST['follow_up'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up'] ) ) ) : NULL;
+		$follow_up_time  = ( isset( $_POST['follow_up_time'] ) && ! empty( $_POST['follow_up_time'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up_time'] ) ) ) : NULL;
 
 		$errors = array();
 		// if ( empty( $title ) ) {
@@ -98,7 +105,7 @@ class WL_MIM_Reminder {
 			}
 
 		}
-		
+
 		if ( count( $errors ) < 1 ) {
 			try {
 			  	$wpdb->query( 'BEGIN;' );
@@ -111,6 +118,7 @@ class WL_MIM_Reminder {
 						'status_code' => $status,
 						'added_by'    => get_current_user_id(),
 						'institute_id'=> $institute_id,
+
 					);
 					$data['updated_at'] = current_time( 'Y-m-d H:i:s' );
 					// var_dump($data); die;
@@ -125,6 +133,7 @@ class WL_MIM_Reminder {
 						'student_id'  => $student_id,
 						'institute_id'=> $institute_id,
 						'follow_up'   => $follow_up,
+						'follow_up_time'=> $follow_up_time,
 						'status_code' => $status,
 						'added_by'    => get_current_user_id(),
 					);
@@ -176,7 +185,7 @@ class WL_MIM_Reminder {
 					<label  class="col-form-label pb-0"><?php _e( 'Student', WL_MIM_DOMAIN ); ?>:</label>
 					<div class="card mb-3 mt-2">
 						<div class="card-block">
-						<?php 
+						<?php
 						// if (get_option( 'multi_institute_enable_seprate_enrollment_id', '1' )) {
                                             $student_id = $student->enrollment_id;
                                         // } else {
@@ -195,7 +204,7 @@ class WL_MIM_Reminder {
 						<label for="wlim-message" class="col-form-label"><?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>:</label>
 						<textarea name="message" class="form-control" id="wlim-message" cols="30" rows="5"><?php echo esc_html($row->message);?></textarea>
 					</div>
-				
+
 					<div class="from-group">
 						<label for="wlim-followup" class="col-form-label"><?php esc_html_e( "Follow Up Date", WL_MIM_DOMAIN ); ?>:</label>
 						<input name="follow_up" type="text" class="form-control wlim-created_at" id="wl-min-reminder" placeholder="<?php _e( "Reminder followup", WL_MIM_DOMAIN ); ?>" value="<?php echo date('d-m-Y',strtotime($row->follow_up));?>">

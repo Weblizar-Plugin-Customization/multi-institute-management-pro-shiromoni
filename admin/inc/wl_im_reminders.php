@@ -87,7 +87,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
                     </div>
                     <div class="row mb-4 text-left">
                         <div class="col-sm-12 col-md-3">
-                           
+
                         </div>
                     </div>
 			</form>
@@ -101,6 +101,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 						        	<!-- <th scope="col"><?php esc_html_e( 'Title', WL_MIM_DOMAIN ); ?></th> -->
 						        	<th scope="col"><?php esc_html_e( 'Message', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Follow Up Date', WL_MIM_DOMAIN ); ?></th>
+						        	<th scope="col"><?php esc_html_e( 'Follow Up Time', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Status', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Student Name', WL_MIM_DOMAIN ); ?></th>
 						        	<th scope="col"><?php esc_html_e( 'Phone', WL_MIM_DOMAIN ); ?></th>
@@ -140,7 +141,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 	                            <option value="">-------- <?php esc_html_e( "Select a Student", WL_MIM_DOMAIN ); ?> --------</option>
 	                        <?php
 	                        if ( count( $wlim_active_students ) > 0 ) {
-	                            foreach ( $wlim_active_students as $active_student ) { 
+	                            foreach ( $wlim_active_students as $active_student ) {
 									// if (get_option( 'multi_institute_enable_seprate_enrollment_id', 'yes' )) {
 										$student_id = $active_student->enrollment_id;
 									// } else {
@@ -161,7 +162,7 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 							<label for="wlim-message" class="col-form-label"><?php esc_html_e( "Message", WL_MIM_DOMAIN ); ?>:</label>
 							<textarea name="message" class="form-control" id="wlim-message" cols="30" rows="5"></textarea>
 						</div>
-					
+
 						<div class="from-group">
 							<label for="wlim-followup" class="col-form-label"><?php esc_html_e( "Follow Up Date", WL_MIM_DOMAIN ); ?>:</label>
 							<input name="follow_up" type="text" class="form-control wlim-created_at" id="wl-min-reminder" placeholder="<?php _e( "Reminder followup", WL_MIM_DOMAIN ); ?>">
@@ -172,8 +173,12 @@ $status_codes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}wl_min_custom_
 							<select name="status" id="status" class="form-control" data-live-search="true">
 								<?php foreach ($status_codes as $code): ?>
 								<option value="<?= $code->field_name; ?>"><?php echo esc_html($code->field_name); ?></option>
-								<?php endforeach ?> 
+								<?php endforeach ?>
 							</select>
+						</div>
+						<div class="from-group">
+							<label for="wlim-followuptime" class="col-form-label"><?php esc_html_e( "Follow Up Time", WL_MIM_DOMAIN ); ?>:</label>
+							<input name="follow_up_time" type="time" class="form-control " id="wlim_tt_class_startTime" placeholder="<?php _e( "Follow up time", WL_MIM_DOMAIN ); ?>">
 						</div>
 	                </div>
 				</form>
