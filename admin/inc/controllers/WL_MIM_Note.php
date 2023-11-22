@@ -113,9 +113,10 @@ class WL_MIM_Note {
 			// if user have batch_id then add batch_id in filter query.
 
 			// var_dump( $user_staff_data->batch_id); die;
-			if ($user_staff_data->batch_id !== $batch_id) {
+			if ($user_staff_data->batch_id) {
+				if ($user_staff_data->batch_id !== $batch_id) {
 					$errors['batch'] = esc_html__( 'Your dont have permission.', WL_MIM_DOMAIN );
-
+				}
 			}
 		}
 

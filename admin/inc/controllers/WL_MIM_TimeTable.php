@@ -159,9 +159,11 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 // get user staff data by user id.
                 $user_staff_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $user_id");
                 // if user have batch_id then add batch_id in filter query.
+               if ($user_staff_data->batch_id) {
                 if ($user_staff_data->batch_id != $ttbatchID) {
-                        $errors['ttbatchID'] = esc_html__( 'Dont have permission for this batch.', WL_MIM_DOMAIN );
+                    $errors['ttbatchID'] = esc_html__( 'Dont have permission for this batch.', WL_MIM_DOMAIN );
                 }
+               }
             }
 
             if ( empty( $ttcourseID ) ) {
