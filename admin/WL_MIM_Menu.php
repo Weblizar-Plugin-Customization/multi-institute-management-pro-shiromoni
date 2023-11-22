@@ -75,12 +75,19 @@ class WL_MIM_Menu {
 				), 'dashicons-welcome-learn-more', 28);
 				add_action('admin_print_styles-' . $dashboard, array('WL_MIM_Menu', 'dashboard_assets'));
 
-				/* Dashboard submenu */
-				$dashboard_submenu = add_submenu_page('multi-institute-management', esc_html__('Multi Institute Management', WL_MIM_DOMAIN), esc_html__('Dashboard', WL_MIM_DOMAIN), 'wl_min_manage_dashboard', 'multi-institute-management', array(
+				/* Welcome menu */
+				$welcome = add_menu_page(esc_html__('welcome', WL_MIM_DOMAIN), esc_html__('welcome', WL_MIM_DOMAIN), 'read', 'welcome', array(
 					'WL_MIM_Menu',
-					'dashboard'
-				));
-				add_action('admin_print_styles-' . $dashboard_submenu, array('WL_MIM_Menu', 'dashboard_assets'));
+					'welcome'
+				), 'dashicons-welcome-view-site', 28);
+				add_action('admin_print_styles-' . $welcome, array('WL_MIM_Menu', 'dashboard_assets'));
+
+				// /* Dashboard submenu */
+				// $dashboard_submenu = add_submenu_page('multi-institute-management', esc_html__('Multi Institute Management', WL_MIM_DOMAIN), esc_html__('Dashboard', WL_MIM_DOMAIN), 'wl_min_manage_dashboard', 'multi-institute-management', array(
+				// 	'WL_MIM_Menu',
+				// 	'dashboard'
+				// ));
+				// add_action('admin_print_styles-' . $dashboard_submenu, array('WL_MIM_Menu', 'dashboard_assets'));
 
 				$welcome_Staff = add_submenu_page('multi-institute-management', esc_html__('Welcome', WL_MIM_DOMAIN), esc_html__('Welcome', WL_MIM_DOMAIN), 'wl_min_manage_dashboard', 'multi-institute-management-welcome', array(
 					'WL_MIM_Menu',

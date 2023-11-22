@@ -43,14 +43,19 @@ require_once WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
 		<!-- create to ANCHOR button  -->
 
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-4 mb-1">
 				<div class="wlim-student-heading text-center display-4">
 					<a href="<?php echo esc_url( home_url( '/wp-admin/admin.php?page=multi-institute-management-student-dashboard' ) ); ?>" class="btn btn-success btn-lg btn-block" role="button" aria-pressed="true"><?php esc_html_e( 'Student Dashboard', WL_MIM_DOMAIN ); ?></a>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4 mb-1">
 				<div class="wlim-student-heading text-center display-4">
 					<a href="<?php echo esc_url( home_url( '/wp-admin/admin.php?page=multi-institute-management' ) ); ?>" class="btn btn-warning btn-lg btn-block" role="button" aria-pressed="true"><?php esc_html_e( 'Staff Dashboard', WL_MIM_DOMAIN ); ?></a>
+				</div>
+			</div>
+			<div class="col-md-4 mb-1">
+				<div class="wlim-student-heading text-center display-4">
+					<a href="<?php echo esc_url( home_url( '/wp-admin/admin.php?page=employee-and-hr-management-staff-dashboard' ) ); ?>" class="btn btn-warning btn-lg btn-block" role="button" aria-pressed="true"><?php esc_html_e( 'HR  Dashboard', WL_MIM_DOMAIN ); ?></a>
 				</div>
 			</div>
 
