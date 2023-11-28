@@ -22,7 +22,7 @@ if (empty($general_institute['institute_name'])) {
                 <span class="border-bottom"><i class="fa fa-tachometer"></i> <?php echo esc_html($institute_name); ?></span>
             </h1>
             <h2 class="text-center font-weight-normal">
-                <span class="border-bottom"><i class="fa fa-users"></i> <?php esc_html_e('Time Table', WL_MIM_DOMAIN); ?></span>
+                <span class="border-bottom"><i class="fa fa-users"></i> <?php esc_html_e('Homework', WL_MIM_DOMAIN); ?></span>
             </h2>
             <?php
             $institute_active = WL_MIM_Helper::get_current_institute_status();
@@ -31,7 +31,7 @@ if (empty($general_institute['institute_name'])) {
                 die();
             } ?>
             <div class="mt-3 alert alert-info text-center" role="alert">
-                <?php esc_html_e('Here, you can either add a new time table or edit existing time table.', WL_MIM_DOMAIN); ?>
+                <?php esc_html_e('Here, you can either add a new Homework or edit existing Homework.', WL_MIM_DOMAIN); ?>
             </div>
             <!-- end main header content -->
         </div>
@@ -45,20 +45,14 @@ if (empty($general_institute['institute_name'])) {
                 <!-- card header content -->
                 <div class="row">
                     <div class="col-md-6 col-xs-12">
-                        <div class="h4"><?php esc_html_e('Manage Time Table', WL_MIM_DOMAIN); ?></div>
+                        <div class="h4"><?php esc_html_e('Manage Homework', WL_MIM_DOMAIN); ?></div>
                     </div>
-                    <div class="col-md-6 col-xs-12"><?php
-                    if (current_user_can( 'wl_min_manage_timetable' )) {
-                      ?>
+                    <div class="col-md-6 col-xs-12">
                         <button type="button" class="btn btn-outline-light float-right add-studio ml-2" data-toggle="modal" data-target="#add-timetable" data-backdrop="static" data-keyboard="false">
-                            <i class="fa fa-plus"></i> <?php esc_html_e('Add New Time Table', WL_MIM_DOMAIN); ?>
+                            <i class="fa fa-plus"></i> <?php esc_html_e('Add New Homework', WL_MIM_DOMAIN); ?>
                         </button>
-                      <?php
-                    }
-                    ?>
-
                         <!-- <button type="button" class="btn btn-outline-light float-right import-student" data-toggle="modal" data-target="#import-student" data-backdrop="static" data-keyboard="false">
-                            <i class="fa fa-cloud-upload"></i> <?php esc_html_e('Bulk Import Time Table', WL_MIM_DOMAIN); ?>
+                            <i class="fa fa-cloud-upload"></i> <?php esc_html_e('Bulk Import Homework', WL_MIM_DOMAIN); ?>
                         </button> -->
                     </div>
                 </div>
@@ -97,12 +91,12 @@ if (empty($general_institute['institute_name'])) {
                                     <ul>
                                         <?php
                                         if (isset($status_output)) { ?>
-                                            <li class="font-weight-bold mt-1"><?php echo esc_html($status_output) . ' ' . esc_html__('Time Table Id', WL_MIM_DOMAIN); ?></li>
+                                            <li class="font-weight-bold mt-1"><?php echo esc_html($status_output) . ' ' . esc_html__('Homework Id', WL_MIM_DOMAIN); ?></li>
                                         <?php
                                         }
                                         if (isset($course_output)) { ?>
                                             <li>
-                                                <span class="font-weight-bold"><?php esc_html_e('Time Table Name', WL_MIM_DOMAIN); ?>:&nbsp;</span>
+                                                <span class="font-weight-bold"><?php esc_html_e('Homework Name', WL_MIM_DOMAIN); ?>:&nbsp;</span>
                                                 <span><?php echo esc_html($course_output); ?></span>
                                                 <?php
                                                 if (isset($batch_output)) { ?>
@@ -144,30 +138,20 @@ if (empty($general_institute['institute_name'])) {
                             </form>
                         </div>
 
-                        <table class="table table-hover table-striped table-bordered" id="timetableList">
+                        <table class="table table-hover table-striped table-bordered" id="homeworkList">
                             <?php
-                            $entity = 'timetable';
+                            $entity = 'homework';
                             // require(WL_MIM_PLUGIN_DIR_PATH. 'inc/controllers/bulk_action.php' );
-                            //require(WL_MIM_PLUGIN_DIR_PATH . 'admin/inc/controllers/bulk_action.php'); ?>
+                            require(WL_MIM_PLUGIN_DIR_PATH . 'admin/inc/controllers/bulk_action.php'); ?>
                             <thead>
                                 <tr>
-                                    <th>
-                                        <!-- <input type="checkbox" name="select_all" id="wl-mim-select-all" value="1"> --> #
-                                    </th>
-                                    <th scope="col"><?php esc_html_e( 'Time Table Name', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'Studio', WL_MIM_DOMAIN); ?></th>
+                                    <th><input type="checkbox" name="select_all" id="wl-mim-select-all" value="1"></th>
+                                    <th scope="col"><?php esc_html_e( 'Title', WL_MIM_DOMAIN); ?></th>
+                                    <th scope="col"><?php esc_html_e( 'Description', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Course', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Batch', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Subject', WL_MIM_DOMAIN ); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'Topic', WL_MIM_DOMAIN ); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'Staff', WL_MIM_DOMAIN ); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'Is Active', WL_MIM_DOMAIN); ?></th>
-                                    <!-- <th scope="col"><?php esc_html_e( 'Follow Up History', WL_MIM_DOMAIN); ?></th> -->
-                                    <th scope="col"><?php esc_html_e( 'Date', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'Start Time', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'End Time', WL_MIM_DOMAIN); ?></th>
-                                    <th scope="col"><?php esc_html_e( 'Remark', WL_MIM_DOMAIN); ?></th>
-                                    <!-- <th scope="col"><?php //esc_html_e('Added By', WL_MIM_DOMAIN); ?></th> -->
+                                    <th scope="col"><?php esc_html_e( 'Submission Date', WL_MIM_DOMAIN); ?></th>
                                     <th scope="col"><?php esc_html_e( 'Edit', WL_MIM_DOMAIN); ?></th>
                                 </tr>
                             </thead>
@@ -179,54 +163,96 @@ if (empty($general_institute['institute_name'])) {
         </div>
     </div>
     <!-- end - row 2 -->
-    <!-- add new Time Table modal -->
+    <!-- add new Homework modal -->
     <div class="modal fade" id="add-timetable" tabindex="-1" role="dialog" aria-labelledby="add-timetable-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="add-topic-label"><?php esc_html_e('Add New Time Table', WL_MIM_DOMAIN); ?></h5>
+                    <h5 class="modal-title" id="add-topic-label"><?php esc_html_e('Add New Homework', WL_MIM_DOMAIN); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_add_timetable">
+                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_add_homework">
                     <div class="modal-body pr-4 pl-4">
                         <?php
-                            wp_nonce_field( 'add-timetable', 'add-timetable' );
+                            wp_nonce_field( 'add-homework', 'add-homework' );
                         ?>
                         <div class="row"></div>
-                        <!-- Date and time -->
+                        <!-- Title & Description -->
                         <div class="row">
-                            <div class="form-group col-4">
-                                <label for="wlim_tt_class_date" class="col-form-label">
-                                    <?php _e( 'Date', WL_MIM_DOMAIN ); ?>
+                            <div class="form-group col-6">
+                                <label for="wlim_hw_title" class="col-form-label">
+                                    <?php _e( 'Title', WL_MIM_DOMAIN ); ?>
                                 </label>
-                                <input type="date" class="form-control" name="wlim_tt_class_date" id="wlim_tt_class_date" />
+                                <input type="text" class="form-control" name="hw_title" id="wlim_hw_title" placeholder="Enter Title" />
                             </div>
-                            <div class="form-group col-4">
-                                <label for="wlim_tt_class_startTime" class="col-form-label">
-                                    <?php _e( 'Start Time', WL_MIM_DOMAIN ); ?>
+
+                            <div class="form-group col-6">
+                                <label for="wlim_hw_description" class="col-form-label">
+                                    <?php _e( 'Description', WL_MIM_DOMAIN ); ?>
                                 </label>
-                                <input type="time" class="form-control" name="wlim_tt_class_startTime" id="wlim_tt_class_startTime" />
-                            </div>
-                            <div class="form-group col-4">
-                                <label for="wlim_tt_class_endTime" class="col-form-label">
-                                    <?php _e( 'End Time', WL_MIM_DOMAIN ); ?>
-                                </label>
-                                <input type="time" class="form-control" name="wlim_tt_class_endTime" id="wlim_tt_class_endTime" />
+                                <textarea class="form-control" name="hw_description" id="wlim_hw_description" placeholder="Enter Description" /></textarea>
                             </div>
                         </div>
-                        <!-- room list -->
+
+                        <!-- Course & Batch -->
                         <div class="row">
-                                <div class="form-group col">
-                                    <label for="ttroomID" class="col-form-label">
-                                        <?php _e( 'Studio', WL_MIM_DOMAIN ); ?>
-                                    </label>
-                                    <select name="ttroomID" id="ttroomID" class="form-control" data-live-search="true">
-                                        <option value=""><?php esc_html_e('Select a Studio', WL_MIM_DOMAIN); ?></option>
-                                    </select>
-                                </div>
+                            <div class="form-group col-6">
+                                <label for="hwcourseID" class="col-form-label">
+                                    <?php _e( 'Course', WL_MIM_DOMAIN ); ?>
+                                </label>
+                                <?php
+                                    $courses = WL_MIM_Helper::getCourses();
+                                ?>
+                                <select name="hwcourseID" id="hwcourseID" class="form-control">
+                                    <option value=""><?php esc_html_e('Select a Course', WL_MIM_DOMAIN); ?></option>
+                                    <?php
+                                            foreach($courses as $key=>$value) {
+                                            ?>
+                                            <option value="<?php echo $value->id; ?>"><?php esc_html_e($value->course_name, WL_MIM_DOMAIN); ?></option>
+                                            <?php
+                                        }
+                                    ?>
+                                </select>
                             </div>
+
+                            <div class="form-group col-6">
+                                <label for="hwbatchID" class="col-form-label">
+                                    <?php _e( 'Batch', WL_MIM_DOMAIN ); ?>
+                                </label>
+                                <?php
+                                    $batches = WL_MIM_Helper::getBatch();
+                                ?>
+                                <select name="hwbatchID" id="hwbatchID" class="form-control "></select>
+                            </div>
+                        </div>
+
+                        <!-- Subjects & Homwwork -->
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="hwsubID" class="col-form-label">
+                                    <?php _e( 'Subject', WL_MIM_DOMAIN ); ?>
+                                </label>
+                                <select name="hwsubID" id="hwsubID" class="form-control"></select>
+                            </div>
+
+                            <div class="form-group col-6">
+                                <label for="wlim-hw-doc" class="col-form-label"><?php esc_html_e('Home Work', WL_MIM_DOMAIN); ?> :</label><br>
+                                <input name="homework" type="file" id="wlim-hw-doc">
+                            </div>
+                        </div>
+
+                        <!-- Submission Date -->
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label for="wlim_hw_sub_date" class="col-form-label">
+                                    <?php _e( 'Submission Date', WL_MIM_DOMAIN ); ?>
+                                </label>
+                                <input type="date" class="form-control" name="hw_sub_date" id="wlim_hw_sub_date" />
+                            </div>
+                        </div>
+                        
                         <div class="wlim-add-topic-form-fields">
                             <div class="row">
                                 <div class="col-6 form-group">
@@ -237,80 +263,11 @@ if (empty($general_institute['institute_name'])) {
                                     <input type="hidden" name="instituteId" id="instituteId" class="form-control" value="<?php echo $institute_id; ?>" />
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group wlim-selectpicker col-6">
-                                    <label for="wlim-timetableName" class="col-form-label">
-                                            <?php esc_html_e('Time Table Name', WL_MIM_DOMAIN); ?>
-                                    </label>
-                                    <input type="text" name="wlim-timetableName" id="wlim-timetableName" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col">
-                                    <label for="ttcourseID" class="col-form-label">
-                                        <?php _e( 'Course', WL_MIM_DOMAIN ); ?>
-                                    </label>
-                                    <?php
-                                        $courses = WL_MIM_Helper::getCourses();
-                                    ?>
-                                    <select name="ttcourseID" id="ttcourseID" class="form-control">
-                                        <option value=""><?php esc_html_e('Select a Course', WL_MIM_DOMAIN); ?></option>
-                                        <?php
-                                             foreach($courses as $key=>$value) {
-                                                ?>
-                                                <option value="<?php echo $value->id; ?>"><?php esc_html_e($value->course_name, WL_MIM_DOMAIN); ?></option>
-                                                <?php
-                                            }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col">
-                                    <label for="ttbatchID" class="col-form-label">
-                                        <?php _e( 'Batch', WL_MIM_DOMAIN ); ?>
-                                    </label>
-                                    <?php
-                                        $batches = WL_MIM_Helper::getBatch();
-                                    ?>
-                                    <select name="ttbatchID" id="ttbatchID" class="form-control "></select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col">
-                                    <label for="ttsubID" class="col-form-label">
-                                        <?php _e( 'Subjects', WL_MIM_DOMAIN ); ?>
-                                    </label>
-                                    <select name="ttsubID" id="ttsubID" class="form-control"></select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col">
-                                    <label for="tttopicID" class="col-form-label">
-                                        <?php _e( 'Topic', WL_MIM_DOMAIN ); ?>
-                                    </label>
-                                    <select name="tttopicID" id="tttopicID" class="form-control">
-                                    <option value="">-------- <?php esc_html_e("Select Topic", WL_MIM_DOMAIN); ?> --------</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col">
-                                    <label for="ttteacherID" class="col-form-label">
-                                        <?php _e( 'Teacher', WL_MIM_DOMAIN ); ?>
-                                    </label>
-                                    <select name="ttteacherID" id="ttteacherID" class="form-control ">
-                                        <option value="">-------- <?php esc_html_e('Select a Teacher', WL_MIM_DOMAIN); ?> --------</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php esc_html_e('Cancel', WL_MIM_DOMAIN); ?></button>
-                        <button type="submit" class="btn btn-primary add-topic-submit"><?php esc_html_e('Add New Time Table', WL_MIM_DOMAIN); ?></button>
+                        <button type="submit" class="btn btn-primary add-topic-submit"><?php esc_html_e('Add New Homework', WL_MIM_DOMAIN); ?></button>
                     </div>
                 </form>
             </div>
@@ -318,23 +275,23 @@ if (empty($general_institute['institute_name'])) {
     </div><!-- end - add new studio modal -->
 
     <!-- update topic modal -->
-    <div class="modal fade" id="update-timetable" tabindex="-1" role="dialog" aria-labelledby="update-timetable-label" aria-hidden="true">
+    <div class="modal fade" id="update-homwork" tabindex="-1" role="dialog" aria-labelledby="update-homework-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="update-timetable-label"><?php esc_html_e( 'Update Time Table', WL_MIM_DOMAIN ); ?></h5>
+                    <h5 class="modal-title" id="update-homework-label"><?php esc_html_e( 'Update Homework', WL_MIM_DOMAIN ); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_update_timetable">
+                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_update_homework">
                 <?php
-                    wp_nonce_field( 'update-timetable', 'update-timetable' );
+                    wp_nonce_field( 'update-homework', 'update-homework' );
                 ?>
-                <div class="modal-body pr-4 pl-4" id="fetch_timetable"></div>
+                <div class="modal-body pr-4 pl-4" id="fetch_homework"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php esc_html_e( 'Cancel', WL_MIM_DOMAIN ); ?></button>
-                    <button type="submit" class="btn btn-primary update-main-room-submit"><?php esc_html_e( 'Update Time Table', WL_MIM_DOMAIN ); ?></button>
+                    <button type="submit" class="btn btn-primary update-main-room-submit"><?php esc_html_e( 'Update Homework', WL_MIM_DOMAIN ); ?></button>
                 </div>
                 </form>
             </div>
@@ -342,39 +299,39 @@ if (empty($general_institute['institute_name'])) {
     </div><!-- end - update course modal -->
 
     <!-- View topic modal -->
-    <div class="modal fade" id="view-timetable" tabindex="-1" role="dialog" aria-labelledby="view-timetable-label" aria-hidden="true">
+    <div class="modal fade" id="view-homework" tabindex="-1" role="dialog" aria-labelledby="view-homework-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="view-timetable-label"><?php esc_html_e( 'View Time Table', WL_MIM_DOMAIN ); ?></h5>
+                    <h5 class="modal-title" id="view-homework-label"><?php esc_html_e( 'View Homework', WL_MIM_DOMAIN ); ?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_view_timetable">
+                <form action="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" method="post" id="wim_view_homework">
                 <?php
                     // wp_nonce_field( 'View-timetable', 'view-timetable' );
                 ?>
-                <div class="modal-body pr-4 pl-4" id="view_saved_timetable">
-                    <table class="table table-hover table-striped table-bordered" id="viewtimetableList">
+                <div class="modal-body pr-4 pl-4" id="view_saved_homework">
+                    <table class="table table-hover table-striped table-bordered" id="viewhomeworkList">
                         <?php
-                        $entity = 'timetable';
+                        $entity = 'homework';
                         // require(WL_MIM_PLUGIN_DIR_PATH. 'inc/controllers/bulk_action.php' );
                         require(WL_MIM_PLUGIN_DIR_PATH . 'admin/inc/controllers/bulk_action.php'); ?>
                         <thead>
                             <tr>
                                 <th><input type="checkbox" name="select_all" id="wl-mim-select-all" value="1"></th>
-                                <th scope="col"><?php esc_html_e('Time Table Name', WL_MIM_DOMAIN); ?></th>
+                                <th scope="col"><?php esc_html_e('Homework Name', WL_MIM_DOMAIN); ?></th>
                                 <th scope="col"><?php esc_html_e('Date', WL_MIM_DOMAIN); ?></th>
                                 <th scope="col"><?php esc_html_e('Start Time', WL_MIM_DOMAIN); ?></th>
                             </tr>
                         </thead>
-                        <tbody id="viewtimetableData"></tbody>
+                        <tbody id="viewhomeworkData"></tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php esc_html_e( 'Cancel', WL_MIM_DOMAIN ); ?></button>
-                    <!-- <button type="submit" class="btn btn-primary update-main-room-submit"><?php esc_html_e( 'View Time Table', WL_MIM_DOMAIN ); ?></button> -->
+                    <!-- <button type="submit" class="btn btn-primary update-main-room-submit"><?php esc_html_e( 'View Homework', WL_MIM_DOMAIN ); ?></button> -->
                 </div>
                 </form>
             </div>

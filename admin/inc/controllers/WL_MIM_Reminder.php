@@ -38,7 +38,7 @@ class WL_MIM_Reminder {
 					$follow_up_time = date("h:i A", strtotime($follow_up_time));
 				}
 				$status     = $row->status_code ;
-				$created_at = date_format( date_create( $row->created_at ), "d-m-Y" );
+				$created_at = date_format( date_create( $row->created_at ), "d-m-Y h:i A" );
 				$phone      = $row->phone;
 				$user_info  = get_userdata($row->added_by);
 				$added_by   = $user_info->display_name;
@@ -85,8 +85,8 @@ class WL_MIM_Reminder {
 		$title      = isset( $_POST['title'] ) ? sanitize_text_field( $_POST['title'] ) : '';
 		$message    = isset( $_POST['message'] ) ? sanitize_text_field( $_POST['message'] ) : '';
 		$status     = isset( $_POST['status'] ) ? sanitize_text_field( $_POST['status'] ) : '';
+		$follow_up_time     = isset( $_POST['follow_up_time'] ) ? sanitize_text_field( $_POST['follow_up_time'] ) : '';
 		$follow_up  = ( isset( $_POST['follow_up'] ) && ! empty( $_POST['follow_up'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up'] ) ) ) : NULL;
-		$follow_up_time  = ( isset( $_POST['follow_up_time'] ) && ! empty( $_POST['follow_up_time'] ) ) ? date( "Y-m-d", strtotime( sanitize_text_field( $_REQUEST['follow_up_time'] ) ) ) : NULL;
 
 		$errors = array();
 		// if ( empty( $title ) ) {
@@ -115,6 +115,7 @@ class WL_MIM_Reminder {
 						'title'       => $title,
 						'message'     => $message,
 						'follow_up'   => $follow_up,
+						'follow_up_time'=> $follow_up_time,
 						'status_code' => $status,
 						'added_by'    => get_current_user_id(),
 						'institute_id'=> $institute_id,
@@ -207,8 +208,12 @@ class WL_MIM_Reminder {
 
 					<div class="from-group">
 						<label for="wlim-followup" class="col-form-label"><?php esc_html_e( "Follow Up Date", WL_MIM_DOMAIN ); ?>:</label>
-						<input name="follow_up" type="text" class="form-control wlim-created_at" id="wl-min-reminder" placeholder="<?php _e( "Reminder followup", WL_MIM_DOMAIN ); ?>" value="<?php echo date('d-m-Y',strtotime($row->follow_up));?>">
+						<input name="follow_up" type="text" class="form-control wl_created_at"  placeholder="<?php _e( "Reminder followup", WL_MIM_DOMAIN ); ?>" value="<?php echo date('d-m-Y ',strtotime($row->follow_up));?>">
 					</div>
+					<div class="from-group">
+							<label for="wlim-followuptime" class="col-form-label"><?php esc_html_e( "Follow Up Time", WL_MIM_DOMAIN ); ?>:</label>
+							<input name="follow_up_time" type="time" class="form-control " id="wlim_tt_class_startTime" placeholder="<?php _e( "Follow up time", WL_MIM_DOMAIN ); ?>" value="<?php echo $row->follow_up_time; ?>">
+						</div>
 					<div class="from-group">
 						<label for="wlim-status" class="col-form-label"><?php esc_html_e( "Status", WL_MIM_DOMAIN ); ?>:</label>
 						<input name="status" type="text" class="form-control" id="wlim-status" placeholder="<?php _e( "Reminder status", WL_MIM_DOMAIN ); ?>" value="<?php echo esc_attr(($row->status_code));?>" >
@@ -218,6 +223,13 @@ class WL_MIM_Reminder {
 			</div>
 			<input type="hidden" name="reminder_id" value="<?php echo $row->id; ?>">
 		</form>
+		<script>
+			 jQuery('.wl_created_at').datetimepicker({
+            format: 'DD-MM-YYYY',
+            showClear: true,
+            showClose: true
+        });
+		</script>
 	<?php
 		$html = ob_get_clean();
 
