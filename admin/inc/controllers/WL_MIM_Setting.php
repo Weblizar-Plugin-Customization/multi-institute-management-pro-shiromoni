@@ -122,6 +122,17 @@ class WL_MIM_Setting {
 						'id'           => $institute->id,
 						'institute_id' => $institute_id
 					));
+
+					$wpdb->update("{$wpdb->prefix}wl_min_institutes", array(
+						'name' => $institute_name,
+						'address' => $institute_address,
+						'phone' => $institute_phone,
+						'email' => $institute_email
+
+					), array(
+						'id' => $institute_id
+					));
+					
 					if (isset($institute_logo_delete_id)) {
 						wp_delete_attachment($institute_logo_delete_id, true);
 					}

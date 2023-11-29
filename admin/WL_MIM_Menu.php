@@ -189,7 +189,7 @@ class WL_MIM_Menu {
 					add_action('admin_print_styles-' . $fees, array('WL_MIM_Menu', 'fees_assets'));
 				}
 
-				if ( current_user_can( 'wl_min_manage_collect_fees' ) ) {
+				if ( current_user_can( 'wl_min_manage_collect_fees' ) && !current_user_can( 'administrator' )) {
 					/* Fees submenu */
 					$fees = add_submenu_page('multi-institute-management', esc_html__('Collect Fees', WL_MIM_DOMAIN), esc_html__('Collect Fees', WL_MIM_DOMAIN), 'wl_min_manage_fees', 'multi-institute-management-fees', array(
 						'WL_MIM_Menu',
@@ -279,9 +279,6 @@ class WL_MIM_Menu {
 					'timetable'
 				));
 				add_action('admin_print_styles-' . $timetble, array('WL_MIM_Menu', 'timetable_assets'));
-
-				/** Sub menu for the timeTable */
-
 
 				if (!current_user_can('manage_options')) :
 					/* Student dashboard */

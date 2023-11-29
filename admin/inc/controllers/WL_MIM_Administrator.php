@@ -520,7 +520,7 @@ class WL_MIM_Administrator {
 		$signature_in_db  = isset( $_POST['signature_in_db'] ) ? intval( sanitize_text_field( $_POST['signature_in_db'] ) ) : null;
 		$is_active        = isset( $_POST['is_active'] ) ? boolval( sanitize_text_field( $_POST['is_active'] ) ) : 0;
 		$add_staff_record = isset( $_POST['add_staff_record'] ) ? boolval( sanitize_text_field( $_POST['add_staff_record'] ) ) : 0;
-		$batch_id = isset( $_POST['batch'] ) ? boolval( sanitize_text_field( $_POST['batch'] ) ) : 0;
+		$batch_id = isset( $_POST['batch'] ) ? ( sanitize_text_field( $_POST['batch'] ) ) : 0;
 
 		$errors = array();
 		if ( ! empty( $password ) && ( $password !== $password_confirm ) ) {
