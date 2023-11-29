@@ -306,18 +306,18 @@ require_once(WL_MIM_PLUGIN_DIR_PATH . '/admin/inc/helpers/WL_MIM_SettingHelper.p
                 $result = $wpdb->get_results( "SELECT id, batch_id, courseId,subject_id, topic_id, room_id, timeTableName, is_active, created_at, batch_date, start_time, end_time, staff_id, remark FROM {$wpdb->prefix}wl_min_timetable WHERE institute_id=$institute_id" );
             } else {
                 $filter_query = '';
-                if (!current_user_can('administrator')) {
-                    // get current user id.
-                    $user_id = get_current_user_id();
-                    // get user staff data by user id.
-                    $user_staff_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $user_id");
-                    // if user have batch_id then add batch_id in filter query.
-                    if ($user_staff_data->batch_id) {
-                        $filter_query .= " AND batch_id = $user_staff_data->batch_id";
-                    }
-                    // var_dump($filter_query); die;
-                }
-                $result = $wpdb->get_results( "SELECT id, batch_id, courseId,subject_id, topic_id, room_id, timeTableName, is_active, created_at, batch_date, start_time, end_time, staff_id, remark FROM {$wpdb->prefix}wl_min_timetable WHERE staff_id = $currentUserId AND institute_id=$institute_id $filter_query" );
+                // if (!current_user_can('administrator')) {
+                //     // get current user id.
+                //     $user_id = get_current_user_id();
+                //     // get user staff data by user id.
+                //     $user_staff_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wl_min_staffs WHERE user_id = $user_id");
+                //     // if user have batch_id then add batch_id in filter query.
+                //     if ($user_staff_data->batch_id) {
+                //         $filter_query .= " AND batch_id = $user_staff_data->batch_id";
+                //     }
+                //     // var_dump($filter_query); die;
+                // }
+                $result = $wpdb->get_results( "SELECT id, batch_id, courseId,subject_id, topic_id, room_id, timeTableName, is_active, created_at, batch_date, start_time, end_time, staff_id, remark FROM {$wpdb->prefix}wl_min_timetable WHERE staff_id = $currentUserId AND institute_id=$institute_id" );
                 // var_dump($result); die;
             }
             if(count($result) != 0) {
